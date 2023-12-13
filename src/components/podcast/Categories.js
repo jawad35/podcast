@@ -2,7 +2,7 @@ import { View, Text, FlatList, TouchableOpacity, SafeAreaView, Button, StyleShee
 import React, { useState } from 'react'
 import NicheItem from '../../components/podcast/nicheItem'
 import nicheItems from '../../data/nicheItems'
-const SuggestedSelections = ({ navigation }) => {
+const Categories = ({ navigation }) => {
     const [niche, setNiche] = useState(nicheItems)
     const onSelect = (index) => {
         setNiche((prevNiche) =>
@@ -13,40 +13,26 @@ const SuggestedSelections = ({ navigation }) => {
     }
     return (
         <SafeAreaView className='bg-black'>
-            <View className='h-full px-4'>
-                <Text className={`py-8 text-xl text-white_color`}>Please choose niches between 1-3 for better exprience</Text>
-           <View>
+            <View className='px-4'>
            <FlatList
                 data={niche}
-                numColumns={3}
+                horizontal={true}
                 renderItem={({ item, index }) => {
                     return <TouchableOpacity
                         key={index}
-                        className={`${item.value == false ? 'bg-white_color':'bg-brown_darker'}  m-2 rounded-lg drop-shadow-lg`}
+                        className={`m-2 rounded-lg bg-white_color drop-shadow-lg`}
                         // style={{ backgroundColor: item.value == true ? 'red' : 'blue', margin:6, borderRadius:10 }}
                         onPress={() => {
                             onSelect(index)
                         }}
                     >
-                        <NicheItem category={true} item={item} />
+                        <NicheItem category={false} item={item} />
                     </TouchableOpacity>
                 }
 
                 }
             />
            </View>
-            
-            <View className='absolute bottom-0 w-full p-8'>
-                <TouchableOpacity className='rounded-xl bg-brown_darker'
-                onPress={() => navigation.navigate('Home')}
-                >
-                <Text className='font-bold text-center text-white_color text-xl p-3'>
-                    Finish
-                </Text>
-                </TouchableOpacity>
-            </View>
-            </View>
-            
         </SafeAreaView>
     )
 }
@@ -54,4 +40,4 @@ const SuggestedSelections = ({ navigation }) => {
 
 
 
-export default SuggestedSelections
+export default Categories

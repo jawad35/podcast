@@ -2,6 +2,8 @@ import { View, Text, Button, Image, ScrollView, SafeAreaView } from 'react-nativ
 import React from 'react'
 // import trendingPodcasts from '../../data/podcastersimages'
 import {responsiveHeight, responsiveWidth} from 'react-native-responsive-dimensions'
+// import VideoPlayer from 'react-native-video'
+import Video from '../../assets/videos/videourl.mp4' 
 import HeaderTitle from '../../components/podcast/HeaderTitle'
 import { ShadowCardStyle } from '../../styles/showcard'
 
@@ -14,7 +16,7 @@ export default function PodPosts() {
   'https://assets-global.website-files.com/5fac161927bf86485ba43fd0/6470607db5ddc9c102ef4a14_How-to-Start-a-Podcast-(1).jpeg'
 ]
   return (
-    <SafeAreaView>
+    <SafeAreaView className='bg-black'>
       <HeaderTitle title={'Podcast Page'} />
       <View className='p-2'>
       <ScrollView contentContainerStyle={{ flexGrow: 1, paddingBottom: responsiveHeight(20)}}>
@@ -29,6 +31,7 @@ export default function PodPosts() {
               Podcasts have become a popular and effective medium for engagingly delivering information, offering listeners the chance to learn about any subject at their own convenience.
               </Text>
               </View>
+              {/* <VideoPlayer source={Video} paused={false} repeat style={{height:200}} /> */}
       </ScrollView>
       </View>
      

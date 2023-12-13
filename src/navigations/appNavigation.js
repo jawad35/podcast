@@ -7,20 +7,27 @@ import WelcomeScreen from '../screens/mainScreens/WelcomeScreen.js';
 import LoginScreen from '../screens/authScreens/LoginScreen.js';
 import SignUpScreen from '../screens/authScreens/SignUpScreen.js';
 import SuggestedSelections from '../screens/starterScreens/SuggestedSelections.js';
+import ForgetPassword from '../screens/authScreens/ForgetPassword.js';
+import CodeVerification from '../screens/authScreens/CodeVerification.js';
+import ChangePassword from '../screens/authScreens/ChangePassword.js';
+import PodProfile from '../screens/podcaster/PodProfile.js';
+import Parent from './Parent.js';
 
 const Stack = createNativeStackNavigator();
 
 
 export default function AppNavigation() {
   return (
-    <NavigationContainer>
-      <Stack.Navigator initialRouteName='Welcome' screenOptions={{headerShown:false}}>
-        <Stack.Screen name="Home" options={{headerShown: false}} component={HomeScreen} />
+      <Stack.Navigator screenOptions={{headerShown:false}}>
         <Stack.Screen name="Welcome" options={{headerShown: false}} component={WelcomeScreen} />
         <Stack.Screen name="Login" options={{headerShown: false}} component={LoginScreen} />
         <Stack.Screen name="SignUp" options={{headerShown: false}} component={SignUpScreen} />
         <Stack.Screen name="SuggestedSelections" options={{headerShown: false}} component={SuggestedSelections} />
+        <Stack.Screen name="ForgetPassword" options={{headerShown: false}} component={ForgetPassword} />
+        <Stack.Screen name="CodeVerification" options={{headerShown: false}} component={CodeVerification} />
+        <Stack.Screen name="ChangePassword" options={{headerShown: false}} component={ChangePassword} />
+        <Stack.Screen name="PodProfile" options={{headerShown: false}} component={PodProfile} />
+        <Stack.Screen name="Parent" options={{headerShown: false}} component={Parent} />
       </Stack.Navigator>
-    </NavigationContainer>
   )
 }

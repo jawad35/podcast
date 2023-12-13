@@ -4,54 +4,53 @@ import { SafeAreaView } from 'react-native-safe-area-context'
 // import {ArrowLeftIcon} from 'react-native-heroicons/solid';
 import { useNavigation } from '@react-navigation/native';
 import { responsiveHeight, responsiveWidth } from 'react-native-responsive-dimensions';
+import PodCastTitleLogo from '../../components/podcast/PodCastTitleLogo';
+import { ShadowCardStyle } from '../../styles/showcard';
 
 // subscribe for more videos like this :)
-export default function SignUpScreen() {
+export default function LoginScreen() {
     const navigation = useNavigation();
     return (
-        <ScrollView className="flex-1 bg-white_color">
+        <ScrollView className="flex-1 bg-black">
             <SafeAreaView className="flex">
-                <View style={{ marginTop: responsiveHeight(10) }} className="flex-row justify-center">
-                    <Text>
-                        <Text className='text-blue text-4xl font-extrabold'>PodCast</Text> <Text className='text-indigo text-2xl font-extrabold shadow-xl'>Tonight</Text>
-                    </Text>
-                </View>
+               <PodCastTitleLogo/>
             </SafeAreaView>
             <View className="flex-1"
                 style={{ borderTopLeftRadius: 50, borderTopRightRadius: 50 }}
             >
                 <View className="form m-6">
-                    <Text className='text-xl font-bold'>
+                    <Text className='text-white_color text-xl font-bold'>
                         Login to Your Account
                     </Text>
-                    <View className='mt-7' style={[styles.card, styles.elevation]}>
+                    <View className='mt-7' style={[ShadowCardStyle.card, ShadowCardStyle.elevation]}>
                         <TextInput
                             value="john@gmail.com"
                             placeholder='Enter Name'
                         />
                     </View>
-                    <View style={[styles.card, styles.elevation]}>
+                    <View style={[ShadowCardStyle.card, ShadowCardStyle.elevation]}>
                         <TextInput
                             value="john@gmail.com"
                             placeholder='Enter Name'
                             secureTextEntry
                         />
                     </View>
-                    <TouchableOpacity>
-                      <Text className='text-right'>Forgot Password?</Text>
+                    <TouchableOpacity onPress={() => navigation.navigate('ForgetPassword')}>
+                      <Text className='text-right text-white_color'>Forgot Password?</Text>
                     </TouchableOpacity>
 
 
                     <TouchableOpacity
                         style={{ marginTop: responsiveHeight(3) }}
-                        className="py-4 bg-blue rounded-md"
+                        className="py-4 bg-brown_darker rounded-md"
+                        onPress={() => navigation.navigate('Parent')}
                     >
                         <Text className="text-lg font-bold text-center text-white_color">
                             Login
                         </Text>
                     </TouchableOpacity>
                 </View>
-                <Text className="text-xl font-bold text-center py-5">
+                <Text className="text-white_color text-xl font-bold text-center py-5">
                     Or
                 </Text>
                 <View className="flex-row justify-center space-x-12">
@@ -63,21 +62,15 @@ export default function SignUpScreen() {
                     </TouchableOpacity>
                     <TouchableOpacity className="p-2 rounded-2xl">
                         <View style={[styles.card, styles.elevation]}>
-                            <Image source={require('../../assets/icons/apple.png')}
-                                className="w-10 h-10" />
-                        </View>
-                    </TouchableOpacity>
-                    <TouchableOpacity className="p-2 rounded-2xl">
-                        <View style={[styles.card, styles.elevation]}>
                             <Image source={require('../../assets/icons/facebook.png')}
                                 className="w-10 h-10" />
                         </View>
                     </TouchableOpacity>
                 </View>
                 <View className="flex-row justify-center mt-7">
-                    <Text className="font-semibold">Don't have an account?</Text>
+                    <Text className="font-semibold text-white_color">Don't have an account?</Text>
                     <TouchableOpacity onPress={() => navigation.navigate('SignUp')}>
-                        <Text className="font-semibold text-blue"> Sign Up</Text>
+                        <Text className="font-semibold text-brown_darker"> Sign Up</Text>
                     </TouchableOpacity>
                 </View>
             </View>

@@ -84,3 +84,41 @@ const styles = StyleSheet.create({
         // borderBottomLeftRadius: '100%'
     }
 })
+
+
+
+// import { NavigationContainer } from '@react-navigation/native';
+// // import AppNavigation from './src/navigations/appNavigation';
+// import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+// import PodProfile from './src/screens/podcaster/PodProfile';
+// import { createNativeStackNavigator } from '@react-navigation/native-stack';
+// import SignUpScreen from './src/screens/authScreens/SignUpScreen';
+// import LoginScreen from './src/screens/authScreens/LoginScreen';
+// import WelcomeScreen from './src/screens/mainScreens/WelcomeScreen';
+
+// const Stack = createNativeStackNavigator()
+
+// const StackScreen = () => {
+//   return (
+//     <Stack.Navigator>
+//       <Stack.Screen options={{headerShown:false}} name='signup' component={PodProfile} />
+//       <Stack.Screen options={{headerShown:false}} name='login' component={LoginScreen} />
+//     </Stack.Navigator>
+//   )
+// }
+
+// export default function App() {
+//   const Tab = createBottomTabNavigator()
+//   return (
+//     <NavigationContainer>
+//       <Tab.Navigator>
+//        <Tab.Screen options={{
+//         tabBarStyle:{display:'none'},
+//         headerShown:false
+//         }} name='start' component={WelcomeScreen} />
+//        <Tab.Screen name='home' component={StackScreen} />
+//       </Tab.Navigator>
+//     </NavigationContainer>
+//     // <AppNavigation />
+//   );
+// }

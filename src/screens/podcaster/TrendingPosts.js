@@ -13,7 +13,7 @@ export default function TrendingPosts() {
   'https://assets-global.website-files.com/5fac161927bf86485ba43fd0/6470607db5ddc9c102ef4a14_How-to-Start-a-Podcast-(1).jpeg'
 ]
   return (
-    <SafeAreaView>
+    <SafeAreaView className='bg-black'>
       <HeaderTitle title={'Podcast Trendings'} />
       <View className='p-2'>
       <ScrollView contentContainerStyle={{ flexGrow: 1, paddingBottom: responsiveHeight(20)}}>
