@@ -1,19 +1,54 @@
-import { View, Text, TouchableOpacity, Image, TextInput, StyleSheet, ScrollView } from 'react-native'
-import React from 'react'
+import { View, Text, TouchableOpacity, Image, TextInput, StyleSheet, ScrollView, Alert } from 'react-native'
+import React, { useState } from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context'
 // import {ArrowLeftIcon} from 'react-native-heroicons/solid';
 import { useNavigation } from '@react-navigation/native';
 import { responsiveHeight, responsiveWidth } from 'react-native-responsive-dimensions';
 import PodCastTitleLogo from '../../components/podcast/PodCastTitleLogo';
 import { ShadowCardStyle } from '../../styles/showcard';
-
+import Auth from '@react-native-firebase/auth'
 // subscribe for more videos like this :)
 export default function LoginScreen() {
     const navigation = useNavigation();
+    const [password, setPassword] = useState('')
+    const [email, setEmail] = useState('')
+
+    const LoginUser = async () => {
+        try {
+            if (!email) {
+                Alert.alert('Error', 'Email field is required!');
+                return;
+            }
+            if (!password) {
+                Alert.alert('Error', 'Password field is required!');
+                return;
+            }
+            const signInMethods = await Auth().fetchSignInMethodsForEmail(email);
+            if (signInMethods.length > 0) {
+                // User exists
+                Alert.alert('User Found', 'This email is associated with an existing account.');
+            } else {
+                // User does not exist
+                const res = await Auth().signInWithEmailAndPassword(email, password)
+                console.log(res, 'user')
+                // Alert.alert('User Not Found', 'No user found with this email address.');
+            }
+        } catch (error) {
+            // Handle specific error cases
+            console.error('Error checking user existence:', error.code);
+            if (error.code === 'auth/invalid-credential' || error.code === 'auth/invalid-email') {
+                Alert.alert('Invalid Credentials', 'Please check your email and password.');
+            } else {
+                console.error('Error checking user existence:', error.code);
+                Alert.alert('Error', 'An error occurred while checking user existence.');
+            }
+        }
+    }
+
     return (
         <ScrollView className="flex-1 bg-black">
             <SafeAreaView className="flex">
-               <PodCastTitleLogo/>
+                <PodCastTitleLogo />
             </SafeAreaView>
             <View className="flex-1"
                 style={{ borderTopLeftRadius: 50, borderTopRightRadius: 50 }}
@@ -24,26 +59,30 @@ export default function LoginScreen() {
                     </Text>
                     <View className='mt-7' style={[ShadowCardStyle.card, ShadowCardStyle.elevation]}>
                         <TextInput
-                            value="john@gmail.com"
-                            placeholder='Enter Name'
+                            value={email}
+                            onChangeText={(email) => setEmail(email)}
+                            autoCapitalize='none'
+                            placeholder='Email'
                         />
                     </View>
                     <View style={[ShadowCardStyle.card, ShadowCardStyle.elevation]}>
                         <TextInput
-                            value="john@gmail.com"
-                            placeholder='Enter Name'
-                            secureTextEntry
+                            value={password}
+                            onChangeText={(password) => setPassword(password)}
+                            autoCapitalize='none'
+                            placeholder='Password'
+                            secureTextEntry={true}
                         />
                     </View>
-                    <TouchableOpacity onPress={() => navigation.navigate('ForgetPassword')}>
-                      <Text className='text-right text-white_color'>Forgot Password?</Text>
+                    <TouchableOpacity onPress={() => LoginUser()}>
+                        <Text className='text-right text-white_color'>Forgot Password?</Text>
                     </TouchableOpacity>
 
 
                     <TouchableOpacity
                         style={{ marginTop: responsiveHeight(3) }}
                         className="py-4 bg-brown_darker rounded-md"
-                        onPress={() => navigation.navigate('Parent')}
+                        onPress={() => LoginUser()}
                     >
                         <Text className="text-lg font-bold text-center text-white_color">
                             Login

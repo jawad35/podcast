@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "614368503988",
+    "project_id": "podcast-4bedf",
+    "storage_bucket": "podcast-4bedf.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:614368503988:android:fe1bf57f050c32e078cfe1",
+        "android_client_info": {
+          "package_name": "com.podcasttonight"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDpwTnrgI5CvPPVKx5nuXfRSJB_6ouYVWU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

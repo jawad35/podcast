@@ -2,8 +2,6 @@ import { View, Text, Button, Image, ScrollView, SafeAreaView } from 'react-nativ
 import React from 'react'
 // import trendingPodcasts from '../../data/podcastersimages'
 import {responsiveHeight, responsiveWidth} from 'react-native-responsive-dimensions'
-// import VideoPlayer from 'react-native-video'
-import Video from '../../assets/videos/videourl.mp4' 
 import HeaderTitle from '../../components/podcast/HeaderTitle'
 import { ShadowCardStyle } from '../../styles/showcard'
 
