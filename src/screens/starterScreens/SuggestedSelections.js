@@ -38,7 +38,7 @@ const SuggestedSelections = ({ navigation }) => {
             
             <View className='absolute bottom-0 w-full p-8'>
                 <TouchableOpacity className='rounded-xl bg-brown_darker'
-                onPress={() => navigation.navigate('Home')}
+                onPress={() => navigation.navigate('Parent')}
                 >
                 <Text className='font-bold text-center text-white_color text-xl p-3'>
                     Finish

@@ -27,7 +27,7 @@ const PodProfile = () => {
                         style={{ marginTop: responsiveHeight(3) }}
                         className="py-3 mx-5 bg-brown_darker rounded-md"
                     >
-                        <Text onPress={() => navigation.navigate('CreatePodcast')} className="text-lg font-bold text-center text-white_color">
+                        <Text onPress={() => navigation.navigate('Login')} className="text-lg font-bold text-center text-white_color">
                             Update
                         </Text>
                     </TouchableOpacity>

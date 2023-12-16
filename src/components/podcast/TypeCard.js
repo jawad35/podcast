@@ -4,14 +4,14 @@ import {responsiveHeight, responsiveWidth} from 'react-native-responsive-dimensi
 const TypeCard = ({title, image}) => {
   return (
     <View className=''>
-      <Text className='font-bold text-xl py-2'>
+      <Text className='font-bold text-3xl py-4 text-white_color'>
               {title}
             </Text>
            <View className='flex justify-center items-center'>
            <Image source={image} 
-              style={{height: responsiveHeight(30), width:'100%'}}
+              style={{height: responsiveHeight(40), width:'100%'}}
               resizeMode='cover'
-              className='rounded-lg'
+              className='rounded-lg mb-9'
               />
            </View>
     </View>
