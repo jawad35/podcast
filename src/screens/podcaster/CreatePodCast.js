@@ -1,129 +1,145 @@
 import {
-    View,
-    Text,
-    TouchableOpacity,
-    Image,
-    TextInput,
-    FlatList,
-    ScrollView,
-  } from 'react-native';
-  import React, {useRef, useState} from 'react';
+  View,
+  Text,
+  TouchableOpacity,
+  Image,
+  TextInput,
+  FlatList,
+  ScrollView,
+  SafeAreaView,
+} from 'react-native';
+import SelectDropdown from 'react-native-select-dropdown'
+import { SelectList } from 'react-native-dropdown-select-list'
+import React, { useRef, useState } from 'react';
 import CustomShadow from '../../components/Items/CustomShadow';
 import CustomButtons from '../../components/Items/CustomButtons';
 import HeaderTitle from '../../components/podcast/HeaderTitle';
 import nicheItems from '../../data/nicheItems';
-  const CreatePodCast = () => {
-    const [search, setSearch] = useState('');
-    const [clicked, setClicked] = useState(false);
-    const [data, setData] = useState(nicheItems);
-    const [selectedCountry, setSelectedCountry] = useState('');
-    const searchRef = useRef();
-    const onSearch = search => {
-      if (search !== '') {
-        let tempData = data.filter(item => {
-          return item.country.toLowerCase().indexOf(search.toLowerCase()) > -1;
-        });
-        setData(tempData);
-      } else {
-        setData(nicheItems);
-      }
-    };
-    return (
-      <ScrollView style={{flex: 1}} className="bg-black">
-        <HeaderTitle title={'Create Podcast'}/>
-        <CustomShadow>
-        <TextInput
-            value={''}
-            placeholder='Description'
-            textAlignVertical='top'
-            style={{backgroundColor:'white'}}
-            // onChangeText={text=>this.setState({value:text})}
-            multiline={true}
-            numberOfLines={5}
-            underlineColorAndroid='transparent'
-        />
-        </CustomShadow>
+import storage from '@react-native-firebase/storage';
+import firestore from '@react-native-firebase/firestore';
+import { launchImageLibrary } from 'react-native-image-picker';
+import { responsiveHeight, responsiveWidth } from 'react-native-responsive-dimensions';
+const CreatePodCast = () => {
+  const [search, setSearch] = useState('');
+  const [clicked, setClicked] = useState(false);
+  // const [data, setData] = useState(nicheItems);
+  const [image, setImage] = useState('')
+  const [imageLocalPath, setImageLocalPath] = useState('')
+  const [videoLocalPath, setVideoLocalPath] = useState('')
+  const uploadImage = async () => {
+    try {
+      const reference = storage().ref(`podcastimages/${Date.now()}.jpg`);
+      await reference.putFile(imageLocalPath);
 
-        <CustomShadow>
-          <TouchableOpacity
-          style={{
-            width: '100%',
-            height: 50,
-            borderRadius: 10,
-            alignSelf: 'center',
-            flexDirection: 'row',
-            justifyContent: 'space-between',
-            alignItems: 'center',
-            backgroundColor:'white'
-          }}
-          onPress={() => {
-            setClicked(!clicked);
-          }}>
-          <Text style={{fontWeight:'600'}}>
-            {selectedCountry == '' ? 'Select Category' : selectedCountry}
-          </Text>
-        </TouchableOpacity>
-        {clicked ? (
-          <View
-            style={{
-              elevation: 5,
-              marginTop: 20,
-              height: 300,
-              alignSelf: 'center',
-              width: '90%',
-              backgroundColor: '#fff',
-              borderRadius: 10,
-            }}>
-            <TextInput
-              placeholder="Search.."
-              value={search}
-              ref={searchRef}
-              onChangeText={txt => {
-                onSearch(txt);
-                setSearch(txt);
-              }}
-              style={{
-                width: '90%',
-                height: 50,
-                alignSelf: 'center',
-                borderWidth: 0.2,
-                borderColor: '#8e8e8e',
-                borderRadius: 7,
-                marginTop: 20,
-                paddingLeft: 20,
-              }}
-            />
-  
-            <FlatList
-              data={data}
-              renderItem={({item, index}) => {
-                return (
-                  <TouchableOpacity
-                    style={{
-                      width: '85%',
-                      alignSelf: 'center',
-                      height: 50,
-                      justifyContent: 'center',
-                      borderBottomWidth: 0.5,
-                      borderColor: '#8e8e8e',
-                    }}
-                    onPress={() => {
-                      setSelectedCountry(item?.title);
-                      setClicked(!clicked);
-                      onSearch('');
-                      setSearch('');
-                    }}>
-                    <Text style={{fontWeight: '600'}}>{item?.title}</Text>
-                  </TouchableOpacity>
-                );
-              }}
-            />
-          </View>
-        ) : null}
-        </CustomShadow>
-          <CustomButtons textColor={'white_color'}  color={'brown_darker'} title={'Create'}/>
-      </ScrollView>
-    );
+      const remoteUri = await reference.getDownloadURL();
+      setImage(remoteUri);
+
+      console.log('Image uploaded successfully!');
+    } catch (error) {
+      console.error('Error uploading image:', error.message);
+    }
   };
+  const openVideoPicker = () => {
+    const options = {
+      mediaType: 'video',
+      quality: 1,
+    };
+    launchImageLibrary(options, (response) => {
+      if(!response.didCancel){
+       setVideoLocalPath(response.assets[0].uri)
+      }
+    });
+  };
+  const openImagePicker = () => {
+    launchImageLibrary({}, (response) => {
+      if(!response.didCancel){
+        setImageLocalPath(response.assets[0].uri)
+      }
+    });
+  };
+  return (
+  <ScrollView style={{ flex: 1 }} className="bg-black">
+    <SafeAreaView>
+   
+      <HeaderTitle title={'Create Podcast'} />
+      <CustomShadow>
+        <TextInput
+          value={''}
+          placeholder='Description'
+          textAlignVertical='top'
+          style={{ backgroundColor: 'white' }}
+          // onChangeText={text=>this.setState({value:text})}
+          multiline={true}
+          numberOfLines={5}
+          underlineColorAndroid='transparent'
+        />
+      </CustomShadow>
+
+      <CustomShadow>
+      <SelectDropdown
+      searchPlaceHolder='Search...'
+      defaultButtonText='Select category'
+      buttonStyle={{
+        backgroundColor: '#ffffff',
+        borderRadius: 8,
+        borderColor: '#ccc',
+        width:'100%',
+      }}
+      dropdownStyle={{borderRadius: 8}}
+      search
+	data={nicheItems.map(item => item.title)}
+	onSelect={(selectedItem, index) => {
+		console.log(selectedItem, index)
+	}}
+	buttonTextAfterSelection={(selectedItem, index) => {
+		// text represented after item is selected
+		// if data array is an array of objects then return selectedItem.property to render after item is selected
+		return selectedItem
+	}}
+	rowTextForSelection={(item, index) => {
+		// text represented for each item in dropdown
+		// if data array is an array of objects then return item.property to represent item in dropdown
+		return item
+	}}
+/>
+      </CustomShadow>
+      <View className='flex-1 justify-center items-center'>
+        {imageLocalPath && <Image className='rounded-lg' source={{ uri: imageLocalPath }} width={responsiveWidth(15)} resizeMode='contain' height={responsiveHeight(15)} />}
+       
+      </View>
+      <CustomShadow>
+          <CustomButtons title={'Upload Image'} color={'white_color'} onClick={() => openImagePicker()} />
+        </CustomShadow>
+      <View className='flex-1 justify-center items-center'>
+        {videoLocalPath && <Image className='rounded-lg' source={{ uri: videoLocalPath }} width={responsiveWidth(15)} resizeMode='contain' height={responsiveHeight(15)} />}
+       
+      </View>
+      <CustomShadow>
+          <CustomButtons title={'Upload Video'} color={'white_color'} onClick={() => openVideoPicker()} />
+        </CustomShadow>
+      {/* <SelectList 
+        setSelected={handleSelect}
+        data={data} 
+        boxStyles={{backgroundColor:'white'}}
+        dropdownStyles={{
+          backgroundColor: "white",
+          position: "absolute",
+          top: 40,
+          width: "100%",
+          height:'600%',
+          zIndex: 999,
+        }}
+        
+    /> */}
+    
+      <View className='my-10'>
+      <CustomButtons textColor={'white_color'} color={'brown_darker'} title={'Create'} />
+      </View>
+    </SafeAreaView>
+
+    </ScrollView>
   
-  export default CreatePodCast;
+  );
+};
+
+export default CreatePodCast;

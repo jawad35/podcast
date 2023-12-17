@@ -7,18 +7,14 @@ import { responsiveHeight, responsiveWidth } from 'react-native-responsive-dimen
 import PodCastTitleLogo from '../../components/podcast/PodCastTitleLogo';
 import Auth from '@react-native-firebase/auth'
 import firestore from '@react-native-firebase/firestore';
-import storage from '@react-native-firebase/storage';
 import { ShadowCardStyle } from '../../styles/showcard';
-import { launchImageLibrary } from 'react-native-image-picker';
-import CustomButtons from '../../components/Items/CustomButtons';
 // subscribe for more videos like this :)
 export default function SignUpScreen() {
     const navigation = useNavigation();
     const [name, setName] = useState('')
     const [password, setPassword] = useState('')
     const [email, setEmail] = useState('')
-    const [image, setImage] = useState('')
-
+    const [imageLocalPath, setImageLocalPath] = useState('')
     const SignUpUser = async () => {
         try {
             if (!email) {
@@ -40,7 +36,7 @@ export default function SignUpScreen() {
                     email: email,
                     username: name,
                     followers: [],
-                    imageurl: image
+                    imageurl: null
                 });
                 Alert.alert('User Created', 'User created with this email address successfully.');
             }
@@ -55,25 +51,9 @@ export default function SignUpScreen() {
             }
         }
     }
-    const openImagePicker = () => {
-        launchImageLibrary({}, (response) => {
-            uploadImage(response.assets[0].uri);
-        });
-    };
 
-    const uploadImage = async (localImagePath) => {
-        try {
-            const reference = storage().ref(`podcastimages/${Date.now()}.jpg`);
-            await reference.putFile(localImagePath);
 
-            const remoteUri = await reference.getDownloadURL();
-            setImage(remoteUri);
-
-            console.log('Image uploaded successfully!');
-        } catch (error) {
-            console.error('Error uploading image:', error.message);
-        }
-    };
+   
     return (
         <ScrollView contentContainerStyle={{ flexGrow: 1, paddingBottom: responsiveHeight(6) }} className="flex-1 bg-black">
             <SafeAreaView className="flex">
@@ -112,12 +92,12 @@ export default function SignUpScreen() {
                             secureTextEntry={true}
                         />
                     </View>
-                    <View className='flex-1 justify-center items-center'>
-                        {image && <Image className='rounded-lg'  source={{ uri: image }} width={responsiveWidth(15)} resizeMode='contain' height={responsiveHeight(15)} />}
+                    {/* <View className='flex-1 justify-center items-center'>
+                        {imageLocalPath && <Image className='rounded-lg'  source={{ uri: imageLocalPath }} width={responsiveWidth(15)} resizeMode='contain' height={responsiveHeight(15)} />}
                         <View style={[ShadowCardStyle.card, ShadowCardStyle.elevation]}>
                             <CustomButtons title={'Upload'} color={'white_color'} onClick={() => openImagePicker()} />
                         </View>
-                    </View>
+                    </View> */}
 
                     <TouchableOpacity
                         style={{ marginTop: responsiveHeight(3) }}

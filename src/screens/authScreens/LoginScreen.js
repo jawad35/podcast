@@ -74,7 +74,7 @@ export default function LoginScreen() {
                             secureTextEntry={true}
                         />
                     </View>
-                    <TouchableOpacity onPress={() => LoginUser()}>
+                    <TouchableOpacity onPress={() => navigation.navigate('Parent')}>
                         <Text className='text-right text-white_color'>Forgot Password?</Text>
                     </TouchableOpacity>
 
