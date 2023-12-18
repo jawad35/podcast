@@ -1,11 +1,20 @@
 import { View, Text } from 'react-native'
 import React from 'react'
+import { useDispatch } from 'react-redux'
+import { getPodcastCategory } from '../../redux/SelectedCategorySlice'
+import { useNavigation } from '@react-navigation/native';
 
-const NicheItem = (item, category) => {
+const NicheItem = ({item, category}) => {
+  const dispatch = useDispatch()
+  const navigation = useNavigation();
+
   return (
     <View className='m-2'>
       {
-        category === false  ? <Text className={`${item['item'].value === false ? 'text-black':'text-white_color'} font-medium text-base`}>{item['item'].title}</Text> : <Text className={`text-black font-medium text-base`}>{item['item'].title}</Text>
+      category === false  ? <Text onPress={() => {
+        dispatch(getPodcastCategory(item.title.toLowerCase()))
+        navigation.navigate('PodHome')
+      }} className={`'text-black' font-medium text-base`}>{item.title}</Text> : <Text className={`text-black font-medium text-base`}>{item.title}</Text>
       }
     </View>
   )

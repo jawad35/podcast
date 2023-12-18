@@ -27,7 +27,7 @@ export default function PodHome({navigation}) {
           <Categories/>
         </View>
         <View>
-        <ScrollView contentContainerStyle={{ flexGrow: 1, paddingBottom: responsiveHeight(35), marginHorizontal:10}}>
+        <ScrollView contentContainerStyle={{ flexGrow: 1, paddingBottom: responsiveHeight(75), marginHorizontal:10}}>
             <TypeCard title={'Podcast Radio'} image={require('../../assets/images/podcast1.jpg')} />
             <TypeCard title={'Podcast Suggestions'} image={require('../../assets/images/podcast2.jpg')} />
             <TypeCard title={'Trendings Podcast'} image={require('../../assets/images/podcast3.jpg')} />

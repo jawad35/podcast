@@ -4,6 +4,7 @@ import {createDrawerNavigator} from '@react-navigation/drawer';
 import HomeScreen from '../screens/mainScreens/HomeScreen';
 import PodProfile from '../screens/podcaster/PodProfile';
 import CreatePodCast from '../screens/podcaster/CreatePodCast';
+import PodPosts from '../screens/podcaster/PodPosts';
 const Drawer = createDrawerNavigator();
 const DrawerNavigator = () => {
   return (
@@ -21,6 +22,11 @@ const DrawerNavigator = () => {
       <Drawer.Screen
         name="Create Podcast"
         component={CreatePodCast}
+        options={{headerShown: false}}
+      />
+        <Drawer.Screen
+        name="Podcast"
+        component={PodPosts}
         options={{headerShown: false}}
       />
     </Drawer.Navigator>

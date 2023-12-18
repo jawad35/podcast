@@ -2,6 +2,7 @@ import { View, Text, FlatList, TouchableOpacity, SafeAreaView, Button, StyleShee
 import React, { useState } from 'react'
 import NicheItem from '../../components/podcast/nicheItem'
 import nicheItems from '../../data/nicheItems'
+import { responsiveFontSize, responsiveHeight } from 'react-native-responsive-dimensions'
 const PodCategories = ({ navigation }) => {
     const [niche, setNiche] = useState(nicheItems)
     const onSelect = (index) => {
@@ -17,18 +18,19 @@ const PodCategories = ({ navigation }) => {
                 <Text className={`py-8 text-2xl font-bold text-white_color`}>Categories</Text>
                 <View>
                     <FlatList
+                    contentContainerStyle={{ flexGrow: 1, paddingBottom: responsiveFontSize(25), marginHorizontal:10}}
                         data={niche}
-                        numColumns={3}
+                        numColumns={2}
                         renderItem={({ item, index }) => {
                             return <TouchableOpacity
                                 key={index}
-                                className={`${item.value == false ? 'bg-white_color' : 'bg-brown_darker'}  m-2 rounded-lg drop-shadow-lg`}
+                                className={`bg-white_color m-2 rounded-lg drop-shadow-lg`}
                                 // style={{ backgroundColor: item.value == true ? 'red' : 'blue', margin:6, borderRadius:10 }}
                                 onPress={() => {
                                     onSelect(index)
                                 }}
                             >
-                                <NicheItem category={true} item={item} />
+                                <NicheItem category={false} item={item} />
                             </TouchableOpacity>
                         }
 
