@@ -4,7 +4,7 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import TrendingPosts from '../podcaster/TrendingPosts';
 import PodHome from '../podcaster/PodHome';
 import PodSuggestions from '../podcaster/PodSuggestions';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import PodProfile from '../podcaster/PodProfile';
 import LoginScreen from '../authScreens/LoginScreen';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
@@ -31,11 +31,14 @@ const screenOptions = {
 }
 const Stack = createNativeStackNavigator()
 const PodCastScreens = () => {
+
+
   return (
     <Stack.Navigator>
-      <Stack.Screen options={{headerShown:false}} name='PodProfile' component={PodProfile} />
+      <Stack.Screen options={{headerShown:false}} name='PodcastHome' component={PodHome} />
       <Stack.Screen options={{headerShown:false}} name='CreatePodcast' component={CreatePodCast} />
       <Stack.Screen options={{headerShown:false}} name='Podcast' component={PodPosts} />
+      <Stack.Screen options={{headerShown:false}} name='CategoryPodcasts' component={CategoryPodcasts} />
     </Stack.Navigator>
   )
 }
@@ -48,7 +51,7 @@ export default function HomeScreen() {
       initialRouteName='PodHome' screenOptions={screenOptions}>
       <Tab.Screen
         name="PodHome"
-        component={CategoryPodcasts}
+        component={PodCastScreens}
         options={{
           tabBarIcon: ({ focused }) => {
             return (

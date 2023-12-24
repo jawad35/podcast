@@ -1,22 +1,34 @@
-import { View, Text, TouchableOpacity, Image, TextInput, ScrollView, Alert} from 'react-native'
+import { View, Text, TouchableOpacity, Image, TextInput, ScrollView, Alert, Dimensions } from 'react-native'
 import React, { useState } from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context'
 // import {ArrowLeftIcon} from 'react-native-heroicons/solid';
 import { useNavigation } from '@react-navigation/native';
-import { responsiveHeight, responsiveWidth } from 'react-native-responsive-dimensions';
+import { responsiveHeight, responsiveScreenHeight, responsiveWidth } from 'react-native-responsive-dimensions';
 import PodCastTitleLogo from '../../components/podcast/PodCastTitleLogo';
-import Auth from '@react-native-firebase/auth'
-import firestore from '@react-native-firebase/firestore';
 import { ShadowCardStyle } from '../../styles/showcard';
+import CustomButtons from '../../components/Items/CustomButtons';
+import { launchImageLibrary } from 'react-native-image-picker';
+import uuidv4 from 'react-native-uuid';
+import axios from 'axios';
+import { ApiUrl } from '../../constants/globalUrl';
+
 // subscribe for more videos like this :)
 export default function SignUpScreen() {
     const navigation = useNavigation();
-    const [name, setName] = useState('')
+    const [fullname, setFullname] = useState('')
     const [password, setPassword] = useState('')
     const [email, setEmail] = useState('')
+    const [profileImage, setProfileImage] = useState('')
     const [imageLocalPath, setImageLocalPath] = useState('')
+    const windowHeight = Dimensions.get('window').height;
+
     const SignUpUser = async () => {
+
         try {
+            if (!fullname) {
+                Alert.alert('Error', 'Fullname field is required!');
+                return;
+            }
             if (!email) {
                 Alert.alert('Error', 'Email field is required!');
                 return;
@@ -25,35 +37,49 @@ export default function SignUpScreen() {
                 Alert.alert('Error', 'Password field is required!');
                 return;
             }
-            const signInMethods = await Auth().fetchSignInMethodsForEmail(email);
-            if (signInMethods.length > 0) {
-                // User exists
-                Alert.alert('User Found', 'This email is associated with an existing account.');
+            if (!profileImage) {
+                Alert.alert('Error', 'Profile image is required!');
+                return;
+            }
+            const formData = new FormData();
+            // Append the selected image to FormData
+            formData.append('avatar', {
+                uri: profileImage.uri,
+                type: profileImage.type,
+                name: profileImage.fileName || 'image.jpg',
+            });
+
+            const randomId = uuidv4.v4()
+            formData.append('fullname', fullname)
+            formData.append('password', password)
+            formData.append('email', email)
+
+            const response = await ApiUrl.post(`/api/user/create`, formData, {
+                params: { randomId: randomId },
+                headers: {
+                    'Content-Type': 'multipart/form-data',
+                },
+            });
+            if (response.data.success) {
+                const userData = response.data;
+                navigation.navigate('CodeVerification', { userData })
+                Alert.alert('Verification', 'Verification code Email sent successfully!');
             } else {
-                // User does not exist
-                const userCredential = await Auth().createUserWithEmailAndPassword(email, password);
-                await firestore().collection('users').doc(userCredential.user.uid).set({
-                    email: email,
-                    username: name,
-                    followers: [],
-                    imageurl: null
-                });
-                Alert.alert('User Created', 'User created with this email address successfully.');
+                Alert.alert('Error', response.data.message);
             }
         } catch (error) {
-            console.error('Error checking user existence:', error.message);
+            Alert.alert('Error', 'Something went wrong!');
 
-            if (error.code === 'auth/email-already-in-use') {
-                Alert.alert('User Existence', 'The email address is already in use by another account');
-            } else {
-                console.error('Error checking user existence:', error.code);
-                Alert.alert('Error', 'An error occurred while checking user existence.');
-            }
         }
     }
-
-
-   
+    const openProfilePicker = () => {
+        launchImageLibrary({}, (response) => {
+            if (!response.didCancel) {
+                setProfileImage(response.assets[0])
+                setImageLocalPath(response.assets[0].uri)
+            }
+        });
+    };
     return (
         <ScrollView contentContainerStyle={{ flexGrow: 1, paddingBottom: responsiveHeight(6) }} className="flex-1 bg-black">
             <SafeAreaView className="flex">
@@ -66,16 +92,16 @@ export default function SignUpScreen() {
                     <Text className='text-xl text-white_color font-bold'>
                         Create your Account
                     </Text>
-                    <View className='mt-7' style={[ShadowCardStyle.card, ShadowCardStyle.elevation]}>
+                    <View className='mt-7 bg-white_color' style={[ShadowCardStyle.card, ShadowCardStyle.elevation]}>
                         <TextInput
-                            value={name}
-                            onChangeText={(name) => setName(name)}
+                            value={fullname}
+                            onChangeText={(fullname) => setFullname(fullname)}
                             autoCapitalize='none'
-                            placeholder='Name'
+                            placeholder='Fullname'
                         />
                     </View>
 
-                    <View style={[ShadowCardStyle.card, ShadowCardStyle.elevation]}>
+                    <View style={[ShadowCardStyle.card, ShadowCardStyle.elevation]} className='bg-white_color'>
                         <TextInput
                             value={email}
                             onChangeText={(email) => setEmail(email)}
@@ -83,7 +109,7 @@ export default function SignUpScreen() {
                             placeholder='Email'
                         />
                     </View>
-                    <View style={[ShadowCardStyle.card, ShadowCardStyle.elevation]}>
+                    <View style={[ShadowCardStyle.card, ShadowCardStyle.elevation]} className='bg-white_color'>
                         <TextInput
                             value={password}
                             onChangeText={(password) => setPassword(password)}
@@ -92,22 +118,13 @@ export default function SignUpScreen() {
                             secureTextEntry={true}
                         />
                     </View>
-                    {/* <View className='flex-1 justify-center items-center'>
-                        {imageLocalPath && <Image className='rounded-lg'  source={{ uri: imageLocalPath }} width={responsiveWidth(15)} resizeMode='contain' height={responsiveHeight(15)} />}
-                        <View style={[ShadowCardStyle.card, ShadowCardStyle.elevation]}>
-                            <CustomButtons title={'Upload'} color={'white_color'} onClick={() => openImagePicker()} />
-                        </View>
-                    </View> */}
-
-                    <TouchableOpacity
-                        style={{ marginTop: responsiveHeight(3) }}
-                        className="py-3 bg-brown_darker rounded-md"
-                        onPress={() => SignUpUser()}
-                    >
-                        <Text className="text-lg font-bold text-center text-white_color">
-                            Sign Up
-                        </Text>
-                    </TouchableOpacity>
+                    <View className='flex-1 justify-center items-center'>
+                        {imageLocalPath && <Image className='rounded-lg' source={{ uri: imageLocalPath }} width={responsiveWidth(15)} resizeMode='contain' height={responsiveHeight(15)} />}
+                        <CustomButtons title={'Profile Image'} color={'white_color'} onClick={() => openProfilePicker()} />
+                    </View>
+                    <View className={`mt-8`}>
+                        <CustomButtons title={'Sign Up'} textColor={'white_color'} color={'brown_darker'} onClick={() => SignUpUser()} />
+                    </View>
                 </View>
                 <Text className="text-white_color text-xl font-bold text-center py-5">
                     Or

@@ -7,7 +7,6 @@ export const ShadowCardStyle = StyleSheet.create({
         marginBottom: 13,
     },
     card: {
-        backgroundColor: 'white',
         borderRadius: 8,
         width: '100%',
         paddingHorizontal: 10,

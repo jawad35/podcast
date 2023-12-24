@@ -5,6 +5,8 @@ import { ShadowCardStyle } from '../../styles/showcard'
 import Categories from '../../components/podcast/Categories'
 import { DummyPodcast } from '../../data/dummypodcasts'
 import { useSelector } from 'react-redux'
+import axios from 'axios'
+import { ApiUrl } from '../../constants/globalUrl'
 export default function CategoryPodcasts({ navigation }) {
     const [data, setData] = useState([]);
     const [filteredData, setFilteredData] = useState([]);
@@ -20,7 +22,15 @@ export default function CategoryPodcasts({ navigation }) {
         setData(filteredPodcasts);
         setFilteredData(filteredPodcasts);
     }, [scatgegory.category]);
-
+    const fetchData = async () => {
+        console.log('called')
+        try {
+        console.log('called2')
+          const response = await ApiUrl.get('/react');
+          console.log(response, 'hello')
+        } catch (error) {
+        }
+      };
     const handleSearch = (text) => {
         // Update the search query and filter the data
         setSearchQuery(text);
@@ -51,10 +61,10 @@ export default function CategoryPodcasts({ navigation }) {
                         {/* <MagnifyingGlassIcon size={'35'} color={'black'} /> */}
                     </View>
                 </View>
-                <View>
+                <View className='mb-4'>
                     <Categories />
                 </View>
-                <View>
+                <View className='m-3'>
                     {
                         filteredData.length !== 0 ? <FlatList
                             data={filteredData}
@@ -67,7 +77,7 @@ export default function CategoryPodcasts({ navigation }) {
                             )}
                             keyExtractor={(item) => item.id}
                         /> : <View className='flex justify-center items-center'>
-                            <Text className='text-white_color mt-14'>No data found</Text>
+                            <Text className='text-white_color mt-14' onPress={() => fetchData()}>No data found</Text>
                         </View>
                     }
                 </View>

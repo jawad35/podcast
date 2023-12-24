@@ -1,15 +1,41 @@
-import { View, Text, TouchableOpacity, TextInput, ScrollView } from 'react-native'
-import React from 'react'
+import { View, Text, TouchableOpacity, TextInput, ScrollView, Alert } from 'react-native'
+import React, { useState } from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context'
 // import {ArrowLeftIcon} from 'react-native-heroicons/solid';
-import { useNavigation } from '@react-navigation/native';
 import { responsiveHeight } from 'react-native-responsive-dimensions';
 import { ShadowCardStyle } from '../../styles/showcard';
 import PodCastTitleLogo from '../../components/podcast/PodCastTitleLogo';
+import { ApiUrl } from '../../constants/globalUrl';
+import CustomButtons from '../../components/Items/CustomButtons';
+import { useNavigation } from '@react-navigation/native';
 
 // subscribe for more videos like this :)
 export default function ForgetPassword() {
+    const [email, setEmail] = useState('')
     const navigation = useNavigation();
+    
+    const ForgetPassword = async () => {
+        try {
+            const data = {email:email}
+            const response = await ApiUrl.post(`/api/user/forget-password`, data, {
+                headers: {
+                    'Content-Type': 'application/json',
+                }
+            });
+            if (!response.data.success){
+            Alert.alert('Error', response.data.error);
+            }
+            if (response.data.success){
+                Alert.alert('Reset Password', response.data.message);
+                }
+            console.log('Upload response:', response.data);
+        } catch (error) {
+            Alert.alert('Error', 'Something went wrong!');
+            console.error('Upload error:', error);
+        }
+    };
+
+    // const navigation = useNavigation();
     return (
         <ScrollView className="flex-1 bg-black">
             <SafeAreaView className="flex">
@@ -27,20 +53,16 @@ export default function ForgetPassword() {
                         Enter your email and we will send you a verification
                         code to reset your password
                     </Text>
-                    <View className='mt-7' style={[ShadowCardStyle.card, ShadowCardStyle.elevation]}>
+                    <View className='mt-7 bg-white_color' style={[ShadowCardStyle.card, ShadowCardStyle.elevation]}>
                         <TextInput
-                            value="john@gmail.com"
-                            placeholder='Enter Name'
+                            value={email}
+                            onChangeText={(text) => setEmail(text)}
+                            placeholder='Enter Email'
                         />
                     </View>
-                    <TouchableOpacity
-                        style={{ marginTop: responsiveHeight(3) }}
-                        className="py-3 bg-red_darker rounded-md"
-                    >
-                        <Text onPress={() => navigation.navigate('CodeVerification')} className="text-lg font-bold text-center text-white_color">
-                            Send
-                        </Text>
-                    </TouchableOpacity>
+                    <View style={{ marginTop: responsiveHeight(3) }}>
+                        <CustomButtons title={'Send'} textColor={'white_color'} color={'brown_darker'} onClick={() => navigation.navigate('Parent')} />
+                    </View>
                 </View>
             </View>
         </ScrollView>

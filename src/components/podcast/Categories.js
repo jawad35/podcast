@@ -13,7 +13,7 @@ const Categories = ({ navigation }) => {
     }
     return (
         <SafeAreaView className='bg-black'>
-            <View className='px-4'>
+            <View className='px-3'>
            <FlatList
                 data={niche}
                 horizontal={true}
