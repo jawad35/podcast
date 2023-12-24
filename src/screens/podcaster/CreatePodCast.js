@@ -89,12 +89,12 @@ const CreatePodCast = () => {
       quality: 1,
     };
     launchImageLibrary(options, (response) => {
-      
+
       if (!response.didCancel) {
         setVideo(response.assets[0])
         setVideos(prevDataList => [...prevDataList, response.assets[0]])
         setVideoLocalPath(response.assets[0].uri)
-        
+
       }
     });
   };
@@ -170,6 +170,7 @@ const CreatePodCast = () => {
             placeholder='Description'
             textAlignVertical='top'
             style={{ backgroundColor: 'white' }}
+            className='rounded-lg'
             onChangeText={text => setDescription(text)}
             multiline={true}
             numberOfLines={5}
@@ -214,48 +215,32 @@ const CreatePodCast = () => {
           <CustomButtons title={'Upload Image'} color={'white_color'} onClick={() => openImagePicker()} />
         </CustomShadow>
         <View className='flex-1 justify-center items-center'>
-              <FlatList
-                  data={videos}
-                  horizontal={true}
-                  renderItem={({ item, index }) => {
-                      return <TouchableOpacity
-                          key={index}
-                          className={`m-2 rounded-lg drop-shadow-lg`}
-                          // style={{ backgroundColor: item.value == true ? 'red' : 'blue', margin:6, borderRadius:10 }}
-                        
-                      >
-                        <Text className='text-white_color my-1 bg-red_darker text-center rounded-sm' style={{fontSize:responsiveFontSize(1.3)}} onPress={() => removeLocalVideo(index)}>Remove</Text>
+          <FlatList
+            data={videos}
+            horizontal={true}
+            renderItem={({ item, index }) => {
+              return <TouchableOpacity
+                key={index}
+                className={`m-2 rounded-lg drop-shadow-lg`}
+              // style={{ backgroundColor: item.value == true ? 'red' : 'blue', margin:6, borderRadius:10 }}
+
+              >
+                <Text className='text-white_color my-1 bg-red_darker text-center rounded-sm' style={{ fontSize: responsiveFontSize(1.3) }} onPress={() => removeLocalVideo(index)}>Remove</Text>
                 <Image className='rounded-lg' source={{ uri: item.uri }} width={responsiveWidth(15)} resizeMode='contain' height={responsiveHeight(15)} />
 
-                      </TouchableOpacity>
-                  }
+              </TouchableOpacity>
+            }
 
-                  }
-              />
+            }
+          />
         </View>
         <CustomShadow>
           <CustomButtons title={'Upload Video'} color={'white_color'} onClick={() => openVideoPicker()} />
         </CustomShadow>
-        {/* <SelectList 
-        setSelected={handleSelect}
-        data={data} 
-        boxStyles={{backgroundColor:'white'}}
-        dropdownStyles={{
-          backgroundColor: "white",
-          position: "absolute",
-          top: 40,
-          width: "100%",
-          height:'600%',
-          zIndex: 999,
-        }}
-        
-    /> */}
-
-        <View className='my-10'>
+        <CustomShadow>
           <CustomButtons textColor={'white_color'} color={'brown_darker'} title={'Create'} onClick={handleUpload} />
-        </View>
+        </CustomShadow>
       </SafeAreaView>
-
     </ScrollView>
 
   );

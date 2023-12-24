@@ -5,6 +5,8 @@ import HomeScreen from '../screens/mainScreens/HomeScreen';
 import PodProfile from '../screens/podcaster/PodProfile';
 import CreatePodCast from '../screens/podcaster/CreatePodCast';
 import PodPosts from '../screens/podcaster/PodPosts';
+import UpdatePodCast from '../screens/podcaster/UpdatePodcast';
+import CreateShort from '../screens/podcaster/CreateShort';
 const Drawer = createDrawerNavigator();
 const DrawerNavigator = () => {
   return (
@@ -22,6 +24,16 @@ const DrawerNavigator = () => {
       <Drawer.Screen
         name="Create Podcast"
         component={CreatePodCast}
+        options={{headerShown: false}}
+      />
+       <Drawer.Screen
+        name="Update Podcast"
+        component={UpdatePodCast}
+        options={{headerShown: false}}
+      />
+       <Drawer.Screen
+        name="Upload Short"
+        component={CreateShort}
         options={{headerShown: false}}
       />
         <Drawer.Screen
