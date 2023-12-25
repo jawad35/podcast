@@ -9,38 +9,22 @@ import PodCastTitleLogo from '../../components/podcast/PodCastTitleLogo';
 import { ApiUrl } from '../../constants/globalUrl';
 
 // subscribe for more videos like this :)
-export default function CodeVerification({ route }) {
-    const { userData } = route.params
+export default function PasswordVerification({ route }) {
+    const { otp, id } = route.params
     const navigation = useNavigation();
     const [code, setCode] = useState('')
     const VerifyCode = async () => {
-        try {
-            const data = {
-                otp: code,
-                userid: userData?.user?._id
-            }
-            console.log(data)
-            const response = await ApiUrl.post(`/api/user/verify-email`, data, {
-                headers: {
-                    'Content-Type': 'application/json',
-                }
-            });
-            if (response.data.success) {
-                Alert.alert('Verified', response.data.message);
-                navigation.navigate('Login')
-            } else {
-                Alert.alert('Error', response.data.error);
-            }
-            console.log('Upload response:', response.data);
-        } catch (error) {
-            Alert.alert('Error', 'Something went wrong!');
-            console.error('Upload error:', error);
+        if (code === otp) {
+            navigation.navigate('ChangePassword', { userid: id })
+
+        } else {
+            Alert.alert("Error", "Please Enter a valid code")
         }
     };
     return (
         <ScrollView className="flex-1 bg-black">
             <SafeAreaView className="flex">
-                <View style={{ marginTop: responsiveHeight(10) }} className="flex-row justify-center">
+                <View className="flex-row justify-center">
                     <PodCastTitleLogo />
                 </View>
             </SafeAreaView>
@@ -50,9 +34,6 @@ export default function CodeVerification({ route }) {
                 <View className="form m-6">
                     <Text className='py-6 text-2xl font-bold text-center text-white_color'>Verification</Text>
                     <Text className='mt-6 text-lg font-semibold text-white_color'>
-                        {/* We sent you a code on that email which your provided
-                        for password recovery.{'\n'}
-                         */}
                         Please enter the verification code.
                     </Text>
                     <View className='mt-7 bg-white_color' style={[ShadowCardStyle.card, ShadowCardStyle.elevation]}>

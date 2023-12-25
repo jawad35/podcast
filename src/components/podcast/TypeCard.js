@@ -1,9 +1,10 @@
 import { View, Text, Image } from 'react-native'
 import React from 'react'
-import {responsiveHeight, responsiveWidth} from 'react-native-responsive-dimensions'
-const TypeCard = ({title, image}) => {
+import {responsiveHeight } from 'react-native-responsive-dimensions'
+import CustomButtons from '../Items/CustomButtons'
+const TypeCard = ({title, image, onClick}) => {
   return (
-    <View className=''>
+    <View>
       <Text className='font-bold text-3xl py-4 text-white_color'>
               {title}
             </Text>
@@ -13,6 +14,7 @@ const TypeCard = ({title, image}) => {
               resizeMode='cover'
               className='rounded-lg mb-9'
               />
+              {/* <CustomButtons color={'brown_darker'} textColor={'white_color'} title={'Open'} onClick={onClick}/> */}
            </View>
     </View>
   )

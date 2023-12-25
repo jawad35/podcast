@@ -3,6 +3,7 @@ import React, { useState } from 'react'
 import NicheItem from '../../components/podcast/nicheItem'
 import nicheItems from '../../data/nicheItems'
 import { responsiveFontSize, responsiveHeight } from 'react-native-responsive-dimensions'
+import HeaderTitle from '../../components/podcast/HeaderTitle'
 const PodCategories = ({ navigation }) => {
     const [niche, setNiche] = useState(nicheItems)
     const onSelect = (index) => {
@@ -14,11 +15,12 @@ const PodCategories = ({ navigation }) => {
     }
     return (
         <SafeAreaView className='bg-black'>
+            <HeaderTitle title={'Podcast Categories'} />
             <View className='h-full px-4'>
                 <Text className={`py-8 text-2xl font-bold text-white_color`}>Categories</Text>
-                <View>
+                <View style={{ marginBottom: 80 }}>
                     <FlatList
-                    contentContainerStyle={{ flexGrow: 1, paddingBottom: responsiveFontSize(25), marginHorizontal:10}}
+                        contentContainerStyle={{ flexGrow: 1, paddingBottom: responsiveFontSize(25), marginHorizontal: 10 }}
                         data={niche}
                         numColumns={2}
                         renderItem={({ item, index }) => {

@@ -3,18 +3,29 @@ import React, { useState } from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context'
 // import {ArrowLeftIcon} from 'react-native-heroicons/solid';
 import { useNavigation } from '@react-navigation/native';
-import { responsiveHeight, responsiveWidth } from 'react-native-responsive-dimensions';
+import { responsiveHeight } from 'react-native-responsive-dimensions';
 import PodCastTitleLogo from '../../components/podcast/PodCastTitleLogo';
 import { ShadowCardStyle } from '../../styles/showcard';
-import axios from 'axios';
 import CustomButtons from '../../components/Items/CustomButtons';
 import { ApiUrl } from '../../constants/globalUrl';
+import { SetUserData } from '../../redux/SelectedCategorySlice';
+import { useDispatch, useSelector } from 'react-redux';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 export default function LoginScreen() {
     const navigation = useNavigation();
     const [password, setPassword] = useState('')
     const [email, setEmail] = useState('')
-
+    const dispatch = useDispatch()
+    const scatgegory = useSelector(state => state.selectedCategory)
     const LoginUser = async () => {
+        if (!email) {
+            Alert.alert('Error', 'Email field is required!');
+            return;
+        }
+        if (!password) {
+            Alert.alert('Error', 'Password field is required!');
+            return;
+        }
         try {
             const data = {
                 email: email,
@@ -25,6 +36,21 @@ export default function LoginScreen() {
                     'Content-Type': 'application/json',
                 }
             });
+            if (!response.data.success) {
+                Alert.alert('Error', response.data.error);
+            } else {
+                dispatch(SetUserData(response.data.user))
+                // const storeData = async () => {
+                //     try {
+                //       await AsyncStorage.setItem('userData', JSON.stringify(response.data.user));
+                //       console.log('Data stored successfully');
+                //     } catch (error) {
+                //       console.error('Error storing data:', error);
+                //     }
+                //   };
+                //   storeData()
+                navigation.navigate('Parent')
+            }
             console.log('Upload response:', response.data);
         } catch (error) {
             Alert.alert('Error', 'Something went wrong!');

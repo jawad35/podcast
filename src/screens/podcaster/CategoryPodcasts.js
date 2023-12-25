@@ -1,18 +1,17 @@
-import { View, Text, TextInput, ScrollView, SafeAreaView, Image, FlatList } from 'react-native'
+import { View, Text, TextInput, SafeAreaView, Image, FlatList } from 'react-native'
 import React, { useEffect, useState } from 'react'
-import { responsiveHeight, responsiveWidth } from 'react-native-responsive-dimensions'
+import { responsiveHeight } from 'react-native-responsive-dimensions'
 import { ShadowCardStyle } from '../../styles/showcard'
 import Categories from '../../components/podcast/Categories'
 import { DummyPodcast } from '../../data/dummypodcasts'
 import { useSelector } from 'react-redux'
-import axios from 'axios'
-import { ApiUrl } from '../../constants/globalUrl'
+import UserProfile from '../../components/podcast/UserProfile'
+import HeaderTitle from '../../components/podcast/HeaderTitle'
 export default function CategoryPodcasts({ navigation }) {
     const [data, setData] = useState([]);
     const [filteredData, setFilteredData] = useState([]);
     const [searchQuery, setSearchQuery] = useState('');
     const scatgegory = useSelector(state => state.selectedCategory)
-    console.log(scatgegory.category)
     useEffect(() => {
         const filterPodcastsByCategory = (podcasts, category) => {
             return podcasts.filter(podcast => podcast.catgegory.includes(category));
@@ -22,15 +21,6 @@ export default function CategoryPodcasts({ navigation }) {
         setData(filteredPodcasts);
         setFilteredData(filteredPodcasts);
     }, [scatgegory.category]);
-    const fetchData = async () => {
-        console.log('called')
-        try {
-        console.log('called2')
-          const response = await ApiUrl.get('/react');
-          console.log(response, 'hello')
-        } catch (error) {
-        }
-      };
     const handleSearch = (text) => {
         // Update the search query and filter the data
         setSearchQuery(text);
@@ -42,9 +32,10 @@ export default function CategoryPodcasts({ navigation }) {
     return (
         <SafeAreaView className='flex-1 bg-black'>
             {/* top header */}
+            <HeaderTitle icon={true} title={'Podcast Categories'} />
             <View>
                 <View className='flex-row justify-items-center justify-center m-2 space-x-2'>
-                    <View className='rounded-lg flex-1 bg-white' style={[ShadowCardStyle.card, ShadowCardStyle.elevation]}>
+                    <View className='rounded-lg flex-1 bg-white_color' style={[ShadowCardStyle.card, ShadowCardStyle.elevation]}>
                         <TextInput
                             // style={styles.searchInput}
                             placeholder="Search..."
@@ -52,13 +43,9 @@ export default function CategoryPodcasts({ navigation }) {
                             onChangeText={handleSearch}
                         />
                     </View>
+
                     <View onTouchStart={() => navigation.openDrawer()} className='justify-items-center justify-center'>
-                        <Image source={require('../../assets/images/profile_test.png')}
-                            style={{ height: responsiveHeight(5.5), width: responsiveWidth(10.5) }}
-                            resizeMode='cover'
-                            className='rounded-full'
-                        />
-                        {/* <MagnifyingGlassIcon size={'35'} color={'black'} /> */}
+                        <UserProfile />
                     </View>
                 </View>
                 <View className='mb-4'>
@@ -77,7 +64,7 @@ export default function CategoryPodcasts({ navigation }) {
                             )}
                             keyExtractor={(item) => item.id}
                         /> : <View className='flex justify-center items-center'>
-                            <Text className='text-white_color mt-14' onPress={() => fetchData()}>No data found</Text>
+                            <Text className='text-white_color mt-14' >No data found</Text>
                         </View>
                     }
                 </View>

@@ -8,27 +8,29 @@ import PodCastTitleLogo from '../../components/podcast/PodCastTitleLogo';
 import { ApiUrl } from '../../constants/globalUrl';
 import CustomButtons from '../../components/Items/CustomButtons';
 import { useNavigation } from '@react-navigation/native';
+import HeaderTitle from '../../components/podcast/HeaderTitle';
+import GenerateOTP from '../../components/Helper/GenerateOTP';
 
 // subscribe for more videos like this :)
 export default function ForgetPassword() {
     const [email, setEmail] = useState('')
     const navigation = useNavigation();
-    
-    const ForgetPassword = async () => {
+    const handleEmailVerification = async () => {
+        const OTP = GenerateOTP()
         try {
-            const data = {email:email}
+            const data = { email: email, otp: OTP }
             const response = await ApiUrl.post(`/api/user/forget-password`, data, {
                 headers: {
                     'Content-Type': 'application/json',
                 }
             });
-            if (!response.data.success){
-            Alert.alert('Error', response.data.error);
+            if (!response.data.success) {
+                Alert.alert('Error', response.data.error);
             }
-            if (response.data.success){
+            if (response.data.success) {
+                navigation.navigate('PasswordVerifcationCode', { otp: OTP, id: response.data.id })
                 Alert.alert('Reset Password', response.data.message);
-                }
-            console.log('Upload response:', response.data);
+            }
         } catch (error) {
             Alert.alert('Error', 'Something went wrong!');
             console.error('Upload error:', error);
@@ -38,9 +40,10 @@ export default function ForgetPassword() {
     // const navigation = useNavigation();
     return (
         <ScrollView className="flex-1 bg-black">
+            <HeaderTitle icon={true} title={"Email Verification"} />
             <SafeAreaView className="flex">
-                <View style={{ marginTop: responsiveHeight(10) }} className="flex-row justify-center">
-                    <PodCastTitleLogo/>
+                <View className="flex-row justify-center">
+                    <PodCastTitleLogo />
                 </View>
             </SafeAreaView>
             <View className="flex-1"
@@ -48,7 +51,7 @@ export default function ForgetPassword() {
             >
                 <View className="form m-6">
                     <Text className='py-6 text-2xl font-bold text-center text-white_color'>Verification</Text>
-                    <Text className='mt-6 text-lg font-semibold text-white_color'>
+                    <Text className='mt-6 text-md text-white_color'>
                         Don't worry.{'\n'}
                         Enter your email and we will send you a verification
                         code to reset your password
@@ -61,7 +64,7 @@ export default function ForgetPassword() {
                         />
                     </View>
                     <View style={{ marginTop: responsiveHeight(3) }}>
-                        <CustomButtons title={'Send'} textColor={'white_color'} color={'brown_darker'} onClick={() => navigation.navigate('Parent')} />
+                        <CustomButtons title={'Send'} textColor={'white_color'} color={'brown_darker'} onClick={() => handleEmailVerification()} />
                     </View>
                 </View>
             </View>
