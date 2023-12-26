@@ -4,7 +4,7 @@ import { ShadowCardStyle } from '../../styles/showcard'
 
 const CustomShadow = ({children}) => {
   return (
-    <TouchableOpacity className="p-2 rounded-2xl">
+    <TouchableOpacity className="rounded-2xl">
                         <View style={[ShadowCardStyle.card, ShadowCardStyle.elevation]}>
                             {children}
                         </View>

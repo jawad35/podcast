@@ -6,8 +6,8 @@ import { useNavigation } from '@react-navigation/native'
 const HeaderTitle = ({ title, icon }) => {
   const navigation = useNavigation()
   return (
-    <View className='bg-white_color flex-row items-center'>
-      <Text className='ml-2' onPress={() => navigation.goBack()}>
+    <View className='bg-white_color flex-row items-center relative'>
+      <Text className='ml-2 absolute z-10' onPress={() => navigation.goBack()}>
         {
           icon && <ArrowLeftIcon color={'black'} />
         }

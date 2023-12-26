@@ -7,80 +7,27 @@ import {
   FlatList,
   ScrollView,
   SafeAreaView,
+  Alert,
 } from 'react-native';
 import SelectDropdown from 'react-native-select-dropdown'
-import { SelectList } from 'react-native-dropdown-select-list'
-import React, { useRef, useState } from 'react';
+import React, { useState } from 'react';
 import CustomShadow from '../../components/Items/CustomShadow';
 import CustomButtons from '../../components/Items/CustomButtons';
 import HeaderTitle from '../../components/podcast/HeaderTitle';
 import nicheItems from '../../data/nicheItems';
-import storage from '@react-native-firebase/storage';
-import firestore from '@react-native-firebase/firestore';
 import { launchImageLibrary } from 'react-native-image-picker';
 import { responsiveFontSize, responsiveHeight, responsiveWidth } from 'react-native-responsive-dimensions';
-import axios from 'axios';
 import { ApiUrl } from '../../constants/globalUrl';
 import uuidv4 from 'react-native-uuid';
 const CreatePodCast = () => {
-  const [search, setSearch] = useState('');
-  const [clicked, setClicked] = useState(false);
-  // const [data, setData] = useState(nicheItems);
   const [image, setImage] = useState('')
   const [video, setVideo] = useState('')
   const [videos, setVideos] = useState([])
-
   const [category, setCategory] = useState('')
   const [description, setDescription] = useState('')
   const [imageLocalPath, setImageLocalPath] = useState('')
   const [videoLocalPath, setVideoLocalPath] = useState('')
-  const [images, setImages] = useState([]);
-  const uploadImageFirebase = async () => {
-    try {
-      const reference = storage().ref(`podcastimages/${Date.now()}.jpg`);
-      await reference.putFile(imageLocalPath);
 
-      const remoteUri = await reference.getDownloadURL();
-      setImage(remoteUri);
-
-      console.log('Image uploaded successfully!');
-    } catch (error) {
-      console.error('Error uploading image:', error.message);
-    }
-  };
-  const pickImage = () => {
-    const options = {
-      title: 'Select Images',
-      mediaType: 'photo',
-      storageOptions: {
-        skipBackup: true,
-        path: 'images',
-      },
-    };
-    launchImageLibrary(options, async (response) => {
-      if (!response.didCancel && !response.error) {
-        const formData = new FormData();
-        formData.append('image', {
-          uri: response.uri,
-          type: response.type,
-          name: response.fileName,
-        });
-
-        try {
-          console.log(formData)
-          // await axios.post('http://10.0.2.2.:8000/images', formData, {
-          //   headers: { 'Content-Type': 'multipart/form-data' },
-          // });
-          // console.log('i')
-
-          // Refresh the images after uploading
-          // fetchImages();s
-        } catch (error) {
-          console.error(error);
-        }
-      }
-    });
-  };
   const openVideoPicker = () => {
     let videosArray = []
 
@@ -98,16 +45,7 @@ const CreatePodCast = () => {
       }
     });
   };
-  console.log(videos)
   const openImagePicker = () => {
-    // const options = {
-    //   title: 'Select Images',
-    //   mediaType: 'photo',
-    //   storageOptions: {
-    //     skipBackup: true,
-    //     path: 'images',
-    //   },
-    // };
     launchImageLibrary({}, (response) => {
       if (!response.didCancel) {
         setImage(response.assets[0])
@@ -118,6 +56,18 @@ const CreatePodCast = () => {
 
 
   const handleUpload = async () => {
+    if (!description) {
+      return Alert.alert("Error", "Description field is required!")
+    }
+    if (!category) {
+      return Alert.alert("Error", "Category field is required!")
+    }
+    if (!image) {
+      return Alert.alert("Error", "Image field is required!")
+    }
+    if (videos.length === 0) {
+      return Alert.alert("Error", "At least one Video is required!")
+    }
     try {
       const formData = new FormData();
       // Append the selected image to FormData
@@ -162,15 +112,14 @@ const CreatePodCast = () => {
   return (
     <ScrollView style={{ flex: 1 }} className="bg-black">
       <SafeAreaView>
-
-        <HeaderTitle title={'Create Podcast'} />
+        <HeaderTitle icon={true} title={'Create Podcast'} />
         <CustomShadow>
           <TextInput
             value={description}
             placeholder='Description'
             textAlignVertical='top'
             style={{ backgroundColor: 'white' }}
-            className='rounded-lg'
+            className='rounded-lg  mt-5'
             onChangeText={text => setDescription(text)}
             multiline={true}
             numberOfLines={5}

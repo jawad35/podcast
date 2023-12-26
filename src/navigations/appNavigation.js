@@ -20,6 +20,7 @@ import YourVideos from '../screens/podcaster/YourVideos.js';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import CustomLoader from '../components/Items/CustomLoader.js';
 import { SetUserData } from '../redux/SelectedCategorySlice.js';
+import UpdatePodProfile from '../screens/podcaster/UpdatePodProfile.js';
 const Stack = createNativeStackNavigator();
 
 export default function AppNavigation() {
@@ -62,6 +63,7 @@ export default function AppNavigation() {
       <Stack.Screen name="CategoryPodcasts" options={{ headerShown: false }} component={CategoryPodcasts} />
       <Stack.Screen name="PasswordVerifcationCode" options={{ headerShown: false }} component={PasswordVerification} />
       <Stack.Screen name="YourVideos" options={{ headerShown: false }} component={YourVideos} />
+      <Stack.Screen name="UpdatePodProfile" options={{ headerShown: false }} component={UpdatePodProfile} />
     </Stack.Navigator>
   )
 }
