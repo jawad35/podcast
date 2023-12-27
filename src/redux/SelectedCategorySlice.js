@@ -4,7 +4,8 @@ export const SelectedCategorySlice = createSlice({
     name:'selectedCategory',
     initialState:{
         category:'',
-        user:[]
+        user:[],
+        shorts:[]
     },
     reducers:{
         getPodcastCategory(state, action){
@@ -12,9 +13,12 @@ export const SelectedCategorySlice = createSlice({
         },
         SetUserData(state, action){
             state.user = action.payload
+        },
+        SetShorts(state, action){
+            state.shorts = action.payload
         }
     }
 })
 
-export const {getPodcastCategory, SetUserData} = SelectedCategorySlice.actions
+export const {getPodcastCategory, SetUserData, SetShorts} = SelectedCategorySlice.actions
 export default SelectedCategorySlice.reducer

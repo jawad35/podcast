@@ -1,6 +1,7 @@
 import React, { useRef, useState } from 'react';
 import { View, Dimensions, TouchableOpacity, Text } from 'react-native';
 import Video from 'react-native-video';
+import { ServerUrl } from '../../constants/globalUrl';
 
 
 const SingleReel = ({ item, index, currentIndex, setCurrentIndex }) => {
@@ -47,7 +48,7 @@ const SingleReel = ({ item, index, currentIndex, setCurrentIndex }) => {
                     //   paused={true}
                     // controls={true}
                     paused={currentIndex == index ? false : true}
-                    source={{ uri: item?.uri }}
+                    source={{ uri: `http://${ServerUrl}/uploads/${item?.video}` }}
                     // muted={mute}
                     style={{
                         width: '100%',

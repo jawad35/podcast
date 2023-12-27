@@ -14,9 +14,9 @@ const PodProfile = () => {
   const podcastData = useSelector(state => state.selectedCategory)
   const navigation = useNavigation()
   return (
-    <SafeAreaView className='bg-black h-full'>
-      <ScrollView>
+    <SafeAreaView className='bg-black flex-1'>
       <HeaderTitle icon={true} title={'Profile'} />
+      <ScrollView className='mx-2'>
       <Text className='text-3xl text-white_color font-bold text-center mt-20'>{podcastData.user.fullname.toUpperCase()}</Text>
       <View className='flex justify-center items-center mt-9'>
         <Image source={{ uri: `http://${ServerUrl}/uploads/${podcastData.user.avatar}`}}

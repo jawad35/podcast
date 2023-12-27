@@ -270,6 +270,7 @@ const UpdatePodCast = () => {
                                 <Text className='text-white_color my-1 bg-red_darker text-center rounded-sm' style={{ fontSize: responsiveFontSize(1.3) }} onPress={() => {
                                     handleDeleteVideo(item)
                                 }}>Delete</Text>
+                                {/* <Video className='rounded-lg' source={{ uri: podcastData.user ? item.uri : `http://${ServerUrl}/uploads/${item}` }} width={responsiveWidth(15)} resizeMode='contain' height={responsiveHeight(15)} /> */}
                                 <Video style={{ height: '100%' }} paused={false} className='rounded-lg' source={{ uri: `http://${ServerUrl}/uploads/${item}` }} width={responsiveWidth(15)} resizeMode='cover' height={responsiveHeight(15)} />
 
                             </TouchableOpacity>

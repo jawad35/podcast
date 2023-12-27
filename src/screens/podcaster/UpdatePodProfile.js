@@ -77,9 +77,9 @@ const UpdatePodProfile = () => {
     }
   };
   return (
-    <SafeAreaView className='bg-black h-full'>
-      <HeaderTitle icon={true} title={'Profile'} />
-      <ScrollView className='mx-3'>
+    <SafeAreaView className='bg-black flex-1'>
+      <HeaderTitle icon={true} title={'Update Profile'} />
+      <ScrollView className='mx-4'>
         <Text className='text-3xl text-white_color font-bold text-center mt-20'>{fullname.toUpperCase()}</Text>
         <View className='mt-7 bg-white_color' style={[ShadowCardStyle.card, ShadowCardStyle.elevation]}>
           <TextInput
@@ -98,15 +98,17 @@ const UpdatePodProfile = () => {
             className='rounded-full'
           />
         </View>
-          <View className='mt-4'>
-            <CustomButtons textColor={'white_color'} color={'brown_darker'} title={"New Image"} onClick={openImagePicker} />
+         <View className='my-10'>
+         <View>
+            <CustomButtons title={"New Image"} onClick={openImagePicker} />
           </View>
         {
           image && 
-          <View className='mt-4'>
+          <View>
             <CustomButtons textColor={'white_color'} color={'brown_darker'} title={"Update Image"} onClick={handleUpdatePodcastImage} />
           </View>
         }
+         </View>
       </ScrollView>
     </SafeAreaView>
   )

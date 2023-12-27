@@ -32,11 +32,11 @@ const DrawerNavigator = () => {
         component={UpdatePodCast}
         options={{ headerShown: false }}
       />
-      {/* <Drawer.Screen
+      <Drawer.Screen
         name="Upload Short"
         component={CreateShort}
         options={{ headerShown: false }}
-      /> */}
+      />
       <Drawer.Screen
         name="Podcast"
         component={PodPosts}
