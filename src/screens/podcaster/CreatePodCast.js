@@ -20,14 +20,18 @@ import { launchImageLibrary } from 'react-native-image-picker';
 import { responsiveFontSize, responsiveHeight, responsiveWidth } from 'react-native-responsive-dimensions';
 import { ApiUrl } from '../../constants/globalUrl';
 import uuidv4 from 'react-native-uuid';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useNavigation } from '@react-navigation/native';
+import { SetUserData } from '../../redux/SelectedCategorySlice';
 
 const CreatePodCast = () => {
   const navigation = useNavigation()
   const podcastData = useSelector(state => state.selectedCategory)
+  console.log(podcastData, 'hekk8')
   const [image, setImage] = useState('')
   const [video, setVideo] = useState('')
+  const [isPodcast, setIsPodcast] = useState(podcastData?.podcast)
+  const dispatch = useDispatch()
   const [videos, setVideos] = useState([])
   const [category, setCategory] = useState('')
   const [description, setDescription] = useState('')
@@ -89,12 +93,21 @@ const CreatePodCast = () => {
       const randomId = uuidv4.v4()
       formData.append('description', description)
       formData.append('category', category)
+      formData.append('userid', podcastData.user._id)
+
       const response = await ApiUrl.post(`/api/user/upload-podcast`, formData, {
         params: { randomId: randomId },
         headers: {
           'Content-Type': 'multipart/form-data',
         },
       });
+      if(response.data.success) {
+        setIsPodcast(true)
+        dispatch(SetUserData(response.data.user))
+        Alert.alert("Update", "Podcast created successfully!")
+    } else {
+        Alert.alert("Error", "Something went wrong!")
+    }
 
       console.log('Upload response:', response.data);
     } catch (error) {
@@ -118,7 +131,7 @@ const CreatePodCast = () => {
     },
   });
   return (
-      podcastData?.user ? <SafeAreaView className="bg-black" style={styles.container}>
+      isPodcast ? <SafeAreaView className="bg-black" style={styles.container}>
         
       <Text className='text-white_color font-bold text-lg'>You Already Created Podcast</Text>
       <View className='m-2'>
