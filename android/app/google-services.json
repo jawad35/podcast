@@ -1,6 +1,7 @@
 {
   "project_info": {
     "project_number": "614368503988",
+    "firebase_url": "https://podcast-4bedf-default-rtdb.asia-southeast1.firebasedatabase.app",
     "project_id": "podcast-4bedf",
     "storage_bucket": "podcast-4bedf.appspot.com"
   },
@@ -12,7 +13,20 @@
           "package_name": "com.podcasttonight"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "614368503988-09a6v1i285i3a7ul1regfvggfg95qrro.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.podcasttonight",
+            "certificate_hash": "5e8f16062ea3cd2c4a0d547876baa6f38cabf625"
+          }
+        },
+        {
+          "client_id": "614368503988-e1ehghb2klmjoshk3covrmdbibinttcf.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
           "current_key": "AIzaSyDpwTnrgI5CvPPVKx5nuXfRSJB_6ouYVWU"
@@ -20,7 +34,19 @@
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "614368503988-e1ehghb2klmjoshk3covrmdbibinttcf.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "614368503988-ja5j8m4dmlj2ubak81mutpd34nu6qoc1.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.podcasttonight"
+              }
+            }
+          ]
         }
       }
     }

@@ -1,5 +1,5 @@
 import { View, Text, TouchableOpacity, Image, TextInput, StyleSheet, ScrollView, Alert } from 'react-native'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context'
 // import {ArrowLeftIcon} from 'react-native-heroicons/solid';
 import { useNavigation } from '@react-navigation/native';
@@ -11,6 +11,10 @@ import { ApiUrl } from '../../constants/globalUrl';
 import { SetUserData } from '../../redux/SelectedCategorySlice';
 import { useDispatch, useSelector } from 'react-redux';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+// import {
+//     GoogleSignin,
+//     statusCodes,
+//   } from '@react-native-google-signin/google-signin';
 export default function LoginScreen() {
     const navigation = useNavigation();
     const [password, setPassword] = useState('')
@@ -58,6 +62,32 @@ export default function LoginScreen() {
         }
     };
 
+
+    // useEffect(() => {
+    //     GoogleSignin.configure({
+    //         offlineAccess:false,
+    //         webClientId:"614368503988-e1ehghb2klmjoshk3covrmdbibinttcf.apps.googleusercontent.com"
+    //     })
+    // }, [])
+    // const signIn = async () => {
+    //     try {
+    //       await GoogleSignin.hasPlayServices();
+    //       const userInfo = await GoogleSignin.signIn();
+    //       console.log(userInfo)
+    //     //   setState({ userInfo });
+    //     } catch (error) {
+    //       if (error.code === statusCodes.SIGN_IN_CANCELLED) {
+    //         // user cancelled the login flow
+    //       } else if (error.code === statusCodes.IN_PROGRESS) {
+    //         // operation (e.g. sign in) is in progress already
+    //       } else if (error.code === statusCodes.PLAY_SERVICES_NOT_AVAILABLE) {
+    //         // play services not available or outdated
+    //       } else {
+    //         // some other error happened
+    //       }
+    //     }
+    //   };
+
     return (
         <ScrollView className="flex-1 bg-black" contentContainerStyle={{ flexGrow: 1, paddingBottom: responsiveHeight(6) }}>
             <SafeAreaView className="flex">
@@ -99,7 +129,7 @@ export default function LoginScreen() {
                     Or
                 </Text>
                 <View className="flex-row justify-center space-x-12">
-                    <TouchableOpacity className="p-2 rounded-2xl">
+                    <TouchableOpacity  className="p-2 rounded-2xl">
                         <View style={[styles.card, styles.elevation]}>
                             <Image source={require('../../assets/icons/google.png')}
                                 className="w-10 h-10" />

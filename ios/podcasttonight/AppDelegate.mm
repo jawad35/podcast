@@ -2,6 +2,12 @@
 
 #import <React/RCTBundleURLProvider.h>
 #import <Firebase.h>
+// Facenook sdk
+#import <AuthenticationServices/AuthenticationServices.h>
+#import <SafariServices/SafariServices.h>
+#import <FBSDKCoreKit/FBSDKCoreKit-Swift.h>
+// Facenook sdk
+
 @implementation AppDelegate
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions

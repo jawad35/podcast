@@ -71,7 +71,7 @@ const UpdatePodCast = () => {
         });
     };
     const handleUpdateVideos = async () => {
-        if(!videos.length !==0 ) {
+        if(videos.length ===0 ) {
             return Alert.alert("Error", "Please choose at least one video to update")
         }
         try {
