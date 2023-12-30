@@ -11,10 +11,7 @@ import { ApiUrl } from '../../constants/globalUrl';
 import { SetUserData } from '../../redux/SelectedCategorySlice';
 import { useDispatch, useSelector } from 'react-redux';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-// import {
-//     GoogleSignin,
-//     statusCodes,
-//   } from '@react-native-google-signin/google-signin';
+import { GoogleSignin } from '@react-native-google-signin/google-signin';
 export default function LoginScreen() {
     const navigation = useNavigation();
     const [password, setPassword] = useState('')
@@ -63,12 +60,11 @@ export default function LoginScreen() {
     };
 
 
-    // useEffect(() => {
-    //     GoogleSignin.configure({
-    //         offlineAccess:false,
-    //         webClientId:"614368503988-e1ehghb2klmjoshk3covrmdbibinttcf.apps.googleusercontent.com"
-    //     })
-    // }, [])
+    useEffect(() => {
+        GoogleSignin.configure({
+            webClientId:"614368503988-e1ehghb2klmjoshk3covrmdbibinttcf.apps.googleusercontent.com"
+        })
+    }, [])
     // const signIn = async () => {
     //     try {
     //       await GoogleSignin.hasPlayServices();
