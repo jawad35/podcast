@@ -22,11 +22,11 @@ import { ApiUrl } from '../../constants/globalUrl';
 import uuidv4 from 'react-native-uuid';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigation } from '@react-navigation/native';
-import { SetUserData } from '../../redux/SelectedCategorySlice';
+import { SetUserData } from '../../redux/PodcastUsers';
 
 const CreatePodCast = () => {
   const navigation = useNavigation()
-  const podcastData = useSelector(state => state.selectedCategory)
+  const podcastData = useSelector(state => state.userData)
   console.log(podcastData, 'hekk8')
   const [image, setImage] = useState('')
   const [video, setVideo] = useState('')

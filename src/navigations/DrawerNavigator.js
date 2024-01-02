@@ -37,11 +37,11 @@ const DrawerNavigator = () => {
         component={CreateShort}
         options={{ headerShown: false }}
       />
-      {/* <Drawer.Screen
+      <Drawer.Screen
         name="Podcast"
         component={PodPosts}
         options={{ headerShown: false }}
-      /> */}
+      />
       <Drawer.Screen
         name="Logout"
         component={Logout}

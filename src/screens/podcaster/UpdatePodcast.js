@@ -23,9 +23,9 @@ import Video from 'react-native-video';
 import { ApiUrl, ServerUrl } from '../../constants/globalUrl';
 import uuidv4 from 'react-native-uuid';
 import { useDispatch, useSelector } from 'react-redux';
-import { SetUserData } from '../../redux/SelectedCategorySlice';
+import { SetUserData } from '../../redux/PodcastUsers';
 const UpdatePodCast = () => {
-    const podcastData = useSelector(state => state.selectedCategory)
+    const podcastData = useSelector(state => state.userData)
     const dispatch = useDispatch()
     const [image, setImage] = useState('')
     const [userid, setUserId] = useState('')

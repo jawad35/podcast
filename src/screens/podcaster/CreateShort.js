@@ -20,12 +20,12 @@ import uuidv4 from 'react-native-uuid';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigation } from '@react-navigation/native';
 import Video from 'react-native-video';
-import { SetShorts } from '../../redux/SelectedCategorySlice';
+import { SetShortsData } from '../../redux/PodcastUsers';
 
 const CreateShortVideos = () => {
   const navigation = useNavigation()
   const dispatch = useDispatch()
-  const podcastData = useSelector(state => state.selectedCategory)
+  const podcastData = useSelector(state => state.userData)
   const [video, setVideo] = useState('')
   const [videos, setVideos] = useState([])
   const [category, setCategory] = useState('')
@@ -71,7 +71,7 @@ const CreateShortVideos = () => {
         },
       });
       if (response.data.success){
-        dispatch(SetShorts(response.data.success))
+        dispatch(SetShortsData(response.data.success))
         Alert.alert("Short", "Short uploaded successfully!")
       } else {
         Alert.alert("Error", "Something went wrong!")

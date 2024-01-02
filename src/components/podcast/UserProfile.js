@@ -5,7 +5,7 @@ import { responsiveHeight, responsiveWidth } from 'react-native-responsive-dimen
 import { useSelector } from 'react-redux'
 
 const UserProfile = () => {
-    const podcastData = useSelector(state => state.selectedCategory)
+    const podcastData = useSelector(state => state.userData)
     return (
         <Image source={{ uri: `http://${ServerUrl}/uploads/${podcastData.user.avatar}` }}
             style={{ height: responsiveHeight(5.5), width: responsiveWidth(10.5) }}

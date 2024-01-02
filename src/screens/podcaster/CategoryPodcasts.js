@@ -11,7 +11,7 @@ export default function CategoryPodcasts({ navigation }) {
     const [data, setData] = useState([]);
     const [filteredData, setFilteredData] = useState([]);
     const [searchQuery, setSearchQuery] = useState('');
-    const scatgegory = useSelector(state => state.selectedCategory)
+    const scatgegory = useSelector(state => state.category)
     useEffect(() => {
         const filterPodcastsByCategory = (podcasts, category) => {
             return podcasts.filter(podcast => podcast.catgegory.includes(category));

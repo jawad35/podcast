@@ -10,6 +10,7 @@ import CustomButtons from '../../components/Items/CustomButtons';
 import { launchImageLibrary } from 'react-native-image-picker';
 import uuidv4 from 'react-native-uuid';
 import { ApiUrl } from '../../constants/globalUrl';
+import { SignUpController } from '../../components/Controllers/SignUpController';
 
 // subscribe for more videos like this :)
 export default function SignUpScreen() {
@@ -21,55 +22,8 @@ export default function SignUpScreen() {
     const [imageLocalPath, setImageLocalPath] = useState('')
     // const windowHeight = Dimensions.get('window').height;
 
-    const SignUpUser = async () => {
-
-        try {
-            if (!fullname) {
-                Alert.alert('Error', 'Fullname field is required!');
-                return;
-            }
-            if (!email) {
-                Alert.alert('Error', 'Email field is required!');
-                return;
-            }
-            if (!password) {
-                Alert.alert('Error', 'Password field is required!');
-                return;
-            }
-            if (!profileImage) {
-                Alert.alert('Error', 'Profile image is required!');
-                return;
-            }
-            const formData = new FormData();
-            // Append the selected image to FormData
-            formData.append('avatar', {
-                uri: profileImage.uri,
-                type: profileImage.type,
-                name: profileImage.fileName || 'image.jpg',
-            });
-
-            const randomId = uuidv4.v4()
-            formData.append('fullname', fullname)
-            formData.append('password', password)
-            formData.append('email', email)
-
-            const response = await ApiUrl.post(`/api/user/create`, formData, {
-                params: { randomId: randomId },
-                headers: {
-                    'Content-Type': 'multipart/form-data',
-                },
-            });
-            if (response.data.success) {
-                const userData = response.data;
-                navigation.navigate('CodeVerification', { userData })
-                Alert.alert('Verification', 'Verification code Email sent successfully!');
-            } else {
-                Alert.alert('Error', response.data.message);
-            }
-        } catch (error) {
-            Alert.alert('Error', 'Something went wrong!');
-
-        }
+    const SignUpUser = () => {
+        const res = SignUpController(fullname, email, password, null, navigation, false)
     }
     const openProfilePicker = () => {
         launchImageLibrary({}, (response) => {
@@ -115,10 +69,10 @@ export default function SignUpScreen() {
                         secureTextEntry={true}
                     />
                 </View>
-                <View className='flex-1 justify-center items-center'>
+                {/* <View className='flex-1 justify-center items-center'>
                     {imageLocalPath && <Image className='rounded-lg' source={{ uri: imageLocalPath }} width={responsiveWidth(15)} resizeMode='contain' height={responsiveHeight(15)} />}
                     <CustomButtons title={'Profile Image'} color={'white_color'} onClick={() => openProfilePicker()} />
-                </View>
+                </View> */}
                 <View className={`mt-8`}>
                     <CustomButtons title={'Sign Up'} textColor={'white_color'} color={'brown_darker'} onClick={() => SignUpUser()} />
                 </View>

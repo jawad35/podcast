@@ -19,15 +19,26 @@ import PasswordVerification from '../screens/authScreens/PasswordVerification.js
 import YourVideos from '../screens/podcaster/YourVideos.js';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import CustomLoader from '../components/Items/CustomLoader.js';
-import { SetUserData } from '../redux/SelectedCategorySlice.js';
 import UpdatePodProfile from '../screens/podcaster/UpdatePodProfile.js';
 import UpdatePodCast from '../screens/podcaster/UpdatePodcast.js';
+// import { io } from 'socket.io-client';
+// import socketServcies from '../socketClient.js';
+
 const Stack = createNativeStackNavigator();
 
 export default function AppNavigation() {
+//   const socket = io('http://172.20.10.3:8000', {
+//     transports: ['websocket']
+// })
+// socket.on("connect", () => {
+//   console.log("Socket Connected");
+// });
+// socket.on("connect_error", (error) => {
+//   console.log("Socket Error", error.message);
+// });
   const dispatch = useDispatch();
   const [isUser, setUser] = useState(false)
-  const podcastData = useSelector(state => state.selectedCategory)
+  const podcastData = useSelector(state => state.userData)
   // useEffect(() => {
   //   const checkUser = async () => {
   //     const data = await AsyncStorage.getItem('userData')
@@ -49,6 +60,12 @@ export default function AppNavigation() {
   //   </Stack.Navigator>
   //   )
   // }
+
+  // useEffect(() => {
+  //   console.log('k')
+  //   socketServcies.initializeSocket()
+  //   // socket.on('comment', 'hello')
+  // }, [])
 
   return (
     <Stack.Navigator screenOptions={{ headerShown: false }}>

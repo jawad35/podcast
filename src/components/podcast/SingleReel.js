@@ -2,6 +2,7 @@ import React, { useRef, useState } from 'react';
 import { View, Dimensions, TouchableOpacity, Text } from 'react-native';
 import Video from 'react-native-video';
 import { ServerUrl } from '../../constants/globalUrl';
+import { FilmIcon, UserCircleIcon } from 'react-native-heroicons/solid';
 
 
 const SingleReel = ({ item, index, currentIndex, setCurrentIndex }) => {
@@ -14,8 +15,8 @@ const SingleReel = ({ item, index, currentIndex, setCurrentIndex }) => {
         if (videoRef.current) {
             videoRef.current._onSeek(0);
             videoRef.current._onPlaybackResume();
-          }
-      };
+        }
+    };
     const onBuffer = buffer => {
         console.log('buffring', buffer);
     };
@@ -32,6 +33,7 @@ const SingleReel = ({ item, index, currentIndex, setCurrentIndex }) => {
                 justifyContent: 'center',
                 alignItems: 'center',
             }}>
+
             <TouchableOpacity
                 // onPress={() => handlePause()}
                 style={{
@@ -56,26 +58,27 @@ const SingleReel = ({ item, index, currentIndex, setCurrentIndex }) => {
                         position: 'absolute',
                     }}
                 />
-                  <TouchableOpacity
-            style={{
-                width: Dimensions.get('window').width,
-                height: Dimensions.get('window').height,
-                position:'absolute',
-                top:0,
+                <TouchableOpacity
+                    style={{
+                        width: Dimensions.get('window').width,
+                        height: Dimensions.get('window').height,
+                        position: 'absolute',
+                        top: 0,
 
-            }}
-            onPress={() => {
-                if(currentIndex === -1){
-                    setCurrentIndex(index)
-                } else {
-                    setCurrentIndex(-1)
-                }
-            }}
-            >
+                    }}
+                    onPress={() => {
+                        if (currentIndex === -1) {
+                            setCurrentIndex(index)
+                        } else {
+                            setCurrentIndex(-1)
+                        }
+                    }}
+                >
+                    <UserCircleIcon size={45} style={{ color: '#ccc', bottom: 120, position: 'absolute', right: 30 }} />
 
+                </TouchableOpacity>
             </TouchableOpacity>
-            </TouchableOpacity>
-          
+
             {/* <View>
                 <Text>{item.channelName}</Text>
             </View> */}

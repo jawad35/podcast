@@ -8,7 +8,7 @@ import UserProfile from '../../components/podcast/UserProfile'
 import { useSelector } from 'react-redux'
 
 export default function PodHome({ navigation }) {
-
+  const podcastData = useSelector(state => state.userData)
   return (
     <SafeAreaView className='bg-black'>
       {/* top header */}

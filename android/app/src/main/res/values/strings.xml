@@ -1,4 +1,5 @@
 <resources>
     <string name="app_name">podcasttonight</string>
     <string name="facebook_app_id">7611727002188584</string>
+    <string name="facebook_client_token">7c5c8553b7be51efc67f3e0a01ac804b</string>
 </resources>

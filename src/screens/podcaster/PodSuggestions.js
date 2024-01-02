@@ -6,7 +6,7 @@ import { ApiUrl } from '../../constants/globalUrl';
 import { useSelector } from 'react-redux';
 const ReelsScreen = () => {
  
-  const shortsData = useSelector(state => state.selectedCategory)
+  const shortsData = useSelector(state => state.userData)
   const [shorts, setShorts] = useState([])
   const [currentIndex, setCurrentIndex] = useState(0);
   const handleChangeIndexValue = ({ index }) => {

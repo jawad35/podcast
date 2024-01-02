@@ -1,5 +1,5 @@
 import { View, Text, Button, Image, ScrollView, SafeAreaView } from 'react-native'
-import React from 'react'
+import React, { useState } from 'react'
 // import trendingPodcasts from '../../data/podcastersimages'
 import { responsiveHeight, responsiveWidth} from 'react-native-responsive-dimensions'
 import HeaderTitle from '../../components/podcast/HeaderTitle'
@@ -7,9 +7,13 @@ import { ShadowCardStyle } from '../../styles/showcard'
 import VideoPlayer from 'react-native-video';
 import CustomButtons from '../../components/Items/CustomButtons'
 import { useNavigation } from '@react-navigation/native'
+import { useSelector } from 'react-redux'
 
 export default function PodPosts() {
   const navigation = useNavigation()
+  const podcastData = useSelector(state => state.userData)
+  const [podcast, setPodcast] = useState([])
+  console.log(podcastData.user.podcast, 'haan wai')
   const trendingPodcasts = [
     'https://img.freepik.com/free-vector/gradient-podcast-cover-template_23-2149449551.jpg',
     'https://www.searchenginejournal.com/wp-content/uploads/2020/02/7-tips-to-make-a-successful-podcast-5e3d9fa1ad735.png',

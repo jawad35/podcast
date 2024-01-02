@@ -2,9 +2,11 @@ import { View, SafeAreaView } from 'react-native'
 import React from 'react'
 import CustomButtons from '../../components/Items/CustomButtons'
 import { useDispatch } from 'react-redux'
-import { SetUserData } from '../../redux/SelectedCategorySlice'
 import { StackActions, useNavigation } from '@react-navigation/native'
 import HeaderTitle from '../../components/podcast/HeaderTitle'
+import { GoogleSignin } from '@react-native-google-signin/google-signin';
+import { SetUserData } from '../../redux/PodcastUsers'
+
 const Logout = () => {
     const navigation = useNavigation();
     const dispatch = useDispatch()
@@ -12,6 +14,7 @@ const Logout = () => {
         dispatch(SetUserData([]))
         navigation.dispatch(StackActions.popToTop())
         navigation.navigate('Login')
+        GoogleSignin.signOut()
     }
     return (
         <SafeAreaView className='flex-1'>

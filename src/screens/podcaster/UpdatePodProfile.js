@@ -9,11 +9,11 @@ import CustomButtons from '../../components/Items/CustomButtons'
 import uuidv4 from 'react-native-uuid';
 import { launchImageLibrary } from 'react-native-image-picker'
 import { ShadowCardStyle } from '../../styles/showcard'
-import { SetUserData } from '../../redux/SelectedCategorySlice'
+import { SetUserData } from '../../redux/PodcastUsers'
 
 
 const UpdatePodProfile = () => {
-  const podcastData = useSelector(state => state.selectedCategory)
+  const podcastData = useSelector(state => state.userData)
   const [image, setImage] = useState(``)
   const [fullname, setFullname] = useState(podcastData.user.fullname)
   const [imageLocalPath, setImageLocalPath] = useState(`http://${ServerUrl}/uploads/${podcastData.user.avatar}`)
@@ -80,7 +80,7 @@ const UpdatePodProfile = () => {
     <SafeAreaView className='bg-black flex-1'>
       <HeaderTitle icon={true} title={'Update Profile'} />
       <ScrollView className='mx-4'>
-        <Text className='text-3xl text-white_color font-bold text-center mt-20'>{fullname.toUpperCase()}</Text>
+        <Text className='text-3xl text-white_color font-bold text-center mt-20'>{fullname?.toUpperCase()}</Text>
         <View className='mt-7 bg-white_color' style={[ShadowCardStyle.card, ShadowCardStyle.elevation]}>
           <TextInput
             placeholder="Full name"
