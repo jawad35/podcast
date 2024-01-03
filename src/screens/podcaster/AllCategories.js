@@ -9,12 +9,12 @@ import CustomButtons from '../../components/Items/CustomButtons'
 import { PodCategoriesStyles } from '../../styles/podCategoriesStyle'
 import { LoginController } from '../../components/Controllers/LoginController'
 import { useNavigation } from '@react-navigation/native'
-import { useDispatch, useSelector } from 'react-redux'
+import { useDispatch } from 'react-redux'
 import { ApiUrl } from '../../constants/globalUrl'
 import { getPodcastCategory } from '../../redux/SelectedCategorySlice'
 const PodCategories = ({ route }) => {
-    const { userData, password, } = route?.params
-    const podcastData = useSelector(state => state.userData)
+    const { userData, password, isLogin } = route?.params
+    console.log(route.params)
     const navigation = useNavigation();
     const dispatch = useDispatch()
     const [niche, setNiche] = useState(nicheItems)
@@ -72,10 +72,8 @@ const PodCategories = ({ route }) => {
         <SafeAreaView className='bg-black flex-1'>
             <ScrollView className='px-4' >
                 <Text className={`font-bold text-white_color text-center`} style={{ fontSize: scale(20), marginVertical: scale(20) }}>Categories</Text>
-                {
-                    !podcastData?.user && <Text className={` text-white_color text-center`} style={{ marginVertical: scale(20) }}>Select up to three categories from the list</Text>
-                }
-                <View style={[PodCategoriesStyles.container, { marginBottom: podcastData?.user && scale(80) }]}>
+                <Text className={` text-white_color text-center`} style={{ marginVertical: scale(20) }}>Select up to three categories from the list</Text>
+                <View style={[PodCategoriesStyles.container, { marginBottom: isLogin && scale(80) }]}>
                     {
                         niche.map((item, index) => {
                             {
@@ -84,7 +82,7 @@ const PodCategories = ({ route }) => {
                                     className={`bg-white_color m-2 rounded-lg drop-shadow-lg`}
                                     style={[PodCategoriesStyles.box, { backgroundColor: item.value == true ? 'red' : 'white', margin: 6, borderRadius: 10 }]}
                                     onPress={() => {
-                                        if (podcastData?.user) {
+                                        if (isLogin) {
                                             dispatch(getPodcastCategory(item?.title?.toLowerCase()))
                                             navigation.navigate('CategoryPodcasts')
                                         } else {
@@ -99,7 +97,7 @@ const PodCategories = ({ route }) => {
                     }
                 </View>
                 {
-                    !podcastData?.user && <View style={{ marginVertical: scale(40) }}>
+                    !isLogin && <View style={{ marginVertical: scale(40) }}>
                         <CustomButtons disable={IsDisable} onClick={AddCategories} color={'brown_darker'} textColor={'white_color'} title={'Done!'} />
                     </View>
                 }

@@ -64,6 +64,7 @@ export default function HomeScreen() {
       <Tab.Screen
         name="PodCategories"
         component={PodCategories}
+        initialParams={{}}
         options={{
           tabBarIcon: ({ focused }) => {
             return (

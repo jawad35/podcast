@@ -1,35 +1,57 @@
-import { View, Text, Button, Image, ScrollView, SafeAreaView } from 'react-native'
-import React from 'react'
-// import trendingPodcasts from '../../data/podcastersimages'
-import {responsiveHeight, responsiveWidth} from 'react-native-responsive-dimensions'
+import { View, Text, Button, Image, ScrollView, SafeAreaView, TouchableOpacity } from 'react-native'
+import React, { useEffect, useState } from 'react'
 import HeaderTitle from '../../components/podcast/HeaderTitle'
+import { ApiUrl, ServerUrl } from '../../constants/globalUrl'
+import { CapitalizeString } from '../../components/Helper/CapitalizeString'
+import { scale } from 'react-native-size-matters'
+import { useNavigation } from '@react-navigation/native'
+import { useSelector } from 'react-redux'
+import { defaultProfile } from '../../utils/Constants'
 
 export default function TrendingPosts() {
-  const trendingPodcasts = [
-    'https://img.freepik.com/free-vector/gradient-podcast-cover-template_23-2149449551.jpg',
-  'https://www.searchenginejournal.com/wp-content/uploads/2020/02/7-tips-to-make-a-successful-podcast-5e3d9fa1ad735.png',
-  'https://img.freepik.com/vector-gratis/plantilla-plana-portada-podcast-dibujada-mano_23-2149429806.jpg?w=2000',
-  'https://img.freepik.com/vetores-gratis/capa-de-podcast-plana-desenhada-a-mao-de-musica_23-2149444190.jpg?size=338&ext=jpg&ga=GA1.1.1413502914.1696636800&semt=ais',
-  'https://assets-global.website-files.com/5fac161927bf86485ba43fd0/6470607db5ddc9c102ef4a14_How-to-Start-a-Podcast-(1).jpeg'
-]
+  const [TrendingPodcasts, setTrendingPodcast] = useState([])
+  const podcastData = useSelector(state => state.userData)
+
+  const navigation = useNavigation()
+  
+  const GetTrendingPodcast = async () => {
+    const response = await ApiUrl.get(`/api/user/trendings`);
+    if (response.data.success) {
+      setTrendingPodcast(response.data.trendings)
+    }
+  }
+  useEffect(() => {
+    GetTrendingPodcast()
+  }, [podcastData])
   return (
-    <SafeAreaView className='bg-black'>
+    <SafeAreaView className='bg-black flex-1'>
       <HeaderTitle title={'Podcast Trendings'} />
-      <View className='p-2'>
-      <ScrollView contentContainerStyle={{ flexGrow: 1, paddingBottom: responsiveHeight(20)}}>
-           {
-            trendingPodcasts?.map((image, index) => {
-              return <Image key={index} source={{uri:image}} 
-              style={{height: responsiveHeight(30), width:'100%'}}
-              resizeMode='cover'
-              className='rounded-lg my-2'
-              />
+      {
+        TrendingPodcasts.length !== 0 ?  <View className='p-2'>
+        <ScrollView  contentContainerStyle={{ flexGrow: 1, paddingBottom: scale(180) }}>
+          {
+            TrendingPodcasts?.map((item, index) => {
+              return <TouchableOpacity key={index} onPress={() => navigation.navigate("Profile", { userid: item?._id })} className='relative'>
+                <Text className='absolute z-10 bg-white_color' style={{ margin: scale(10), paddingHorizontal: scale(10), paddingVertical: scale(5), borderRadius: scale(6), bottom: scale(10) }}>
+                  {
+                    item?.fullname?.length > 20 ? CapitalizeString(item.fullname).substring(0, 20) + '...' : CapitalizeString(item.fullname)
+                  }
+                </Text>
+                <Image key={index} source={{ uri: item.avatar ? `http://${ServerUrl}/uploads/${item.avatar}` : defaultProfile }}
+                  style={{ height: scale(250), width: '100%' }}
+                  resizeMode='cover'
+                  className='rounded-lg my-2'
+                />
+              </TouchableOpacity>
             })
-           }
-            
-      </ScrollView>
+          }
+
+        </ScrollView>
+      </View> :  <View className='flex-1 justify-center items-center'>
+      <Text className='text-white_color'>No Podcast</Text>
       </View>
-     
+      }
+
     </SafeAreaView>
   )
 }

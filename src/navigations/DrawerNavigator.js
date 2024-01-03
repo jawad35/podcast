@@ -8,8 +8,12 @@ import PodPosts from '../screens/podcaster/PodPosts';
 import UpdatePodCast from '../screens/podcaster/UpdatePodcast';
 import CreateShort from '../screens/podcaster/CreateShort';
 import Logout from '../screens/authScreens/Logout';
+import { useSelector } from 'react-redux';
 const Drawer = createDrawerNavigator();
 const DrawerNavigator = () => {
+  const podcastData = useSelector(state => state.userData)
+  console.log(podcastData.user._id, 'je')
+
   return (
     <Drawer.Navigator>
       <Drawer.Screen
@@ -20,6 +24,7 @@ const DrawerNavigator = () => {
       <Drawer.Screen
         name="Profile"
         component={PodProfile}
+        initialParams={{userid:podcastData?.user?._id}}
         options={{ headerShown: false }}
       />
       <Drawer.Screen

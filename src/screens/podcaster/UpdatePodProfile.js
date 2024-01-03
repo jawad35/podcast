@@ -68,6 +68,7 @@ const UpdatePodProfile = () => {
       
       if (response.data.success) {
         dispatch(SetUserData(response.data.user))
+        console.log(response.data)
         Alert.alert("Success", response.data.message)
       } else {
         Alert.alert("Error", response.data.message)

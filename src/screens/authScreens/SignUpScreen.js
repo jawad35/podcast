@@ -11,6 +11,7 @@ import { launchImageLibrary } from 'react-native-image-picker';
 import uuidv4 from 'react-native-uuid';
 import { ApiUrl } from '../../constants/globalUrl';
 import { SignUpController } from '../../components/Controllers/SignUpController';
+import GoogleSignInButton from '../../components/socialLoginButtons/GoogleSignInButton';
 
 // subscribe for more videos like this :)
 export default function SignUpScreen() {
@@ -23,7 +24,9 @@ export default function SignUpScreen() {
     // const windowHeight = Dimensions.get('window').height;
 
     const SignUpUser = () => {
-        const res = SignUpController(fullname, email, password, null, navigation, false)
+        // navigation.navigate('PodCategories')
+
+        SignUpController(fullname, email, password, null, navigation, false)
     }
     const openProfilePicker = () => {
         launchImageLibrary({}, (response) => {
@@ -81,18 +84,7 @@ export default function SignUpScreen() {
                 Or
             </Text>
             <View className="flex-row justify-center space-x-12">
-                <TouchableOpacity className="p-2 rounded-2xl">
-                    <View style={[styles.card, styles.elevation]}>
-                        <Image source={require('../../assets/icons/google.png')}
-                            className="w-10 h-10" />
-                    </View>
-                </TouchableOpacity>
-                <TouchableOpacity className="p-2 rounded-2xl">
-                    <View style={[styles.card, styles.elevation]}>
-                        <Image source={require('../../assets/icons/facebook.png')}
-                            className="w-10 h-10" />
-                    </View>
-                </TouchableOpacity>
+                <GoogleSignInButton/>
             </View>
             <View className="flex-row justify-center mt-7">
                 <Text className="font-semibold text-white_color">Already have an account?</Text>

@@ -27,10 +27,10 @@ export default function PodHome({ navigation }) {
         </View>
         <View>
           <ScrollView contentContainerStyle={{ flexGrow: 1, paddingBottom: responsiveHeight(65), marginHorizontal: 10 }}>
-            <TypeCard title={'Podcast Radio'} image={require('../../assets/images/podcast1.jpg')} />
-            <TypeCard title={'Podcast Suggestions'} image={require('../../assets/images/podcast2.jpg')} />
-            <TypeCard title={'Trendings Podcast'} image={require('../../assets/images/podcast3.jpg')} />
-            <TypeCard onClick={() => navigation.navigate('PodCategories')} title={'Podcast Categories'} image={require('../../assets/images/podcast4.jpg')} />
+            <TypeCard title={'Podcast Radio'} image={'https://res.cloudinary.com/dqmoofr4j/image/upload/v1704196080/podcast/PODCAST_TONIGHT_radio_eina3f.jpg'} />
+            <TypeCard onClick={() => navigation.navigate('SuggestionPosts')} title={'Podcast Suggestions'} image={'https://res.cloudinary.com/dqmoofr4j/image/upload/v1704196049/podcast/PODCAST_TONIGHT_suggestions_kqecif.jpg'} />
+            <TypeCard onClick={() => navigation.navigate('TrendingPosts')} title={'Trendings Podcast'} image={'https://res.cloudinary.com/dqmoofr4j/image/upload/v1704196082/podcast/PODCAST_TONIGHT_trending_kdqtwp.jpg'} />
+            <TypeCard onClick={() => navigation.navigate('PodCategories')} title={'Podcast Categories'} image={'https://res.cloudinary.com/dqmoofr4j/image/upload/v1704196080/podcast/PODCAST_TONIGHT_Category_myohxr.jpg'} />
           </ScrollView>
         </View>
       </View>

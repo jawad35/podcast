@@ -1,7 +1,7 @@
 import { View, Image, TouchableOpacity } from 'react-native'
 import React, { useEffect } from 'react'
 import { ShadowCardStyle } from '../../styles/showcard';
-import { GoogleSignin } from '@react-native-google-signin/google-signin';
+import { GoogleSignin, statusCodes } from '@react-native-google-signin/google-signin';
 import { useDispatch } from 'react-redux';
 import { useNavigation } from '@react-navigation/native';
 import { SignUpController } from '../Controllers/SignUpController';
@@ -30,15 +30,7 @@ const GoogleSignInButton = () => {
         }
       }
     } catch (error) {
-      if (error.code === statusCodes.SIGN_IN_CANCELLED) {
-        // user cancelled the login flow
-      } else if (error.code === statusCodes.IN_PROGRESS) {
-        // operation (e.g. sign in) is in progress already
-      } else if (error.code === statusCodes.PLAY_SERVICES_NOT_AVAILABLE) {
-        // play services not available or outdated
-      } else {
-        // some other error happened
-      }
+     
     }
   };
   return (

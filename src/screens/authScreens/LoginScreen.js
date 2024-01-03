@@ -1,5 +1,5 @@
-import { View, Text, TouchableOpacity, Image, TextInput, StyleSheet, ScrollView, Alert } from 'react-native'
-import React, { useEffect, useState } from 'react'
+import { View, Text, TouchableOpacity, TextInput, ScrollView } from 'react-native'
+import React, { useState } from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context'
 // import {ArrowLeftIcon} from 'react-native-heroicons/solid';
 import { useNavigation } from '@react-navigation/native';
@@ -7,10 +7,8 @@ import { responsiveHeight } from 'react-native-responsive-dimensions';
 import PodCastTitleLogo from '../../components/podcast/PodCastTitleLogo';
 import { ShadowCardStyle } from '../../styles/showcard';
 import CustomButtons from '../../components/Items/CustomButtons';
-import { ApiUrl } from '../../constants/globalUrl';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import GoogleSignInButton from '../../components/socialLoginButtons/GoogleSignInButton';
-import FacebookSignInButton from '../../components/socialLoginButtons/FacebookSignInButton';
 import { LoginController } from '../../components/Controllers/LoginController';
 
 
@@ -20,9 +18,8 @@ export default function LoginScreen() {
     const [password, setPassword] = useState('')
     const [email, setEmail] = useState('')
     const dispatch = useDispatch()
-    const scatgegory = useSelector(state => state.userData)
-    const LoginUser =  () => {
-       LoginController(email, password, navigation, false, dispatch)
+    const LoginUser = () => {
+        LoginController(email, password, navigation, false, dispatch)
     };
 
     return (
@@ -66,7 +63,7 @@ export default function LoginScreen() {
                     Or
                 </Text>
                 <View className="flex-row justify-center space-x-12">
-                    <GoogleSignInButton/>
+                    <GoogleSignInButton />
                     {/* <FacebookSignInButton/> */}
                 </View>
                 <View className="flex-row justify-center mt-7">
@@ -79,23 +76,3 @@ export default function LoginScreen() {
         </ScrollView>
     )
 }
-
-const styles = StyleSheet.create({
-    heading: {
-        fontSize: 18,
-        fontWeight: '600',
-        marginBottom: 13,
-    },
-    card: {
-        backgroundColor: 'white',
-        borderRadius: 8,
-        width: '100%',
-        paddingHorizontal: 10,
-        paddingVertical: 5,
-        marginVertical: 10
-    },
-    elevation: {
-        elevation: 3,
-        shadowColor: '#52006A',
-    },
-});

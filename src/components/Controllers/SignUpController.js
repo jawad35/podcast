@@ -32,7 +32,7 @@ export const SignUpController = async (fullname, email, password, image_url, nav
                 return response.data
             } else {
                 const userData = response.data;
-                navigation.navigate('CodeVerification', { userData })
+                navigation.navigate('CodeVerification', { userData, password })
                 Alert.alert('Verification', 'Verification code Email sent successfully!');
             }
         } else {

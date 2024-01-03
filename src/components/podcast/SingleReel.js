@@ -2,13 +2,16 @@ import React, { useRef, useState } from 'react';
 import { View, Dimensions, TouchableOpacity, Text } from 'react-native';
 import Video from 'react-native-video';
 import { ServerUrl } from '../../constants/globalUrl';
-import { FilmIcon, UserCircleIcon } from 'react-native-heroicons/solid';
+import { FilmIcon, IdentificationIcon, UserCircleIcon } from 'react-native-heroicons/solid';
+import { useNavigation } from '@react-navigation/native';
 
 
 const SingleReel = ({ item, index, currentIndex, setCurrentIndex }) => {
     const windowWidth = Dimensions.get('window').width;
     const windowHeight = Dimensions.get('window').height;
     const videoRef = useRef(null);
+  const navigation = useNavigation()
+
     const handlePause = () => {
         console.log(videoRef.current)
 
@@ -74,7 +77,7 @@ const SingleReel = ({ item, index, currentIndex, setCurrentIndex }) => {
                         }
                     }}
                 >
-                    <UserCircleIcon size={45} style={{ color: '#ccc', bottom: 120, position: 'absolute', right: 30 }} />
+                    <IdentificationIcon onPress={() => navigation.navigate("Profile", {userid:item?.userid})} size={45} style={{ color: '#ccc', bottom: 120, position: 'absolute', right: 30 }} />
 
                 </TouchableOpacity>
             </TouchableOpacity>

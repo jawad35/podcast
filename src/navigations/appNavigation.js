@@ -21,6 +21,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import CustomLoader from '../components/Items/CustomLoader.js';
 import UpdatePodProfile from '../screens/podcaster/UpdatePodProfile.js';
 import UpdatePodCast from '../screens/podcaster/UpdatePodcast.js';
+import PodCategories from '../screens/podcaster/PodCategories.js';
 // import { io } from 'socket.io-client';
 // import socketServcies from '../socketClient.js';
 
@@ -79,6 +80,7 @@ export default function AppNavigation() {
       <Stack.Screen name="ChangePassword" options={{ headerShown: false }} component={ChangePassword} />
       <Stack.Screen name="PodProfile" options={{ headerShown: false }} component={PodProfile} />
       <Stack.Screen name="CategoryPodcasts" options={{ headerShown: false }} component={CategoryPodcasts} />
+      <Stack.Screen name="PodCategories" options={{ headerShown: false }} component={PodCategories} />
       <Stack.Screen name="PasswordVerifcationCode" options={{ headerShown: false }} component={PasswordVerification} />
       <Stack.Screen name="YourVideos" options={{ headerShown: false }} component={YourVideos} />
       <Stack.Screen name="UpdatePodProfile" options={{ headerShown: false }} component={UpdatePodProfile} />

@@ -10,7 +10,7 @@ import { ApiUrl } from '../../constants/globalUrl';
 
 // subscribe for more videos like this :)
 export default function CodeVerification({ route }) {
-    const { userData } = route.params
+    const { userData, password } = route?.params
     const navigation = useNavigation();
     const [code, setCode] = useState('')
     const VerifyCode = async () => {
@@ -27,7 +27,7 @@ export default function CodeVerification({ route }) {
             });
             if (response.data.success) {
                 Alert.alert('Verified', response.data.message);
-                navigation.navigate('Login')
+                navigation.navigate('PodCategories', {userData, password})
             } else {
                 Alert.alert('Error', response.data.error);
             }
