@@ -12,7 +12,7 @@ import { useSelector } from 'react-redux';
 const Drawer = createDrawerNavigator();
 const DrawerNavigator = () => {
   const podcastData = useSelector(state => state.userData)
-  console.log(podcastData.user._id, 'je')
+  console.log(podcastData, 'je')
 
   return (
     <Drawer.Navigator>
@@ -42,11 +42,11 @@ const DrawerNavigator = () => {
         component={CreateShort}
         options={{ headerShown: false }}
       />
-      <Drawer.Screen
+      {/* <Drawer.Screen
         name="Podcast"
         component={PodPosts}
         options={{ headerShown: false }}
-      />
+      /> */}
       <Drawer.Screen
         name="Logout"
         component={Logout}

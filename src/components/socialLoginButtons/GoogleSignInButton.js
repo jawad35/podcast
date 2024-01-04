@@ -1,5 +1,5 @@
 import { View, Image, TouchableOpacity } from 'react-native'
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { ShadowCardStyle } from '../../styles/showcard';
 import { GoogleSignin, statusCodes } from '@react-native-google-signin/google-signin';
 import { useDispatch } from 'react-redux';
@@ -10,6 +10,7 @@ import { LoginController } from '../Controllers/LoginController';
 const GoogleSignInButton = () => {
   const dispatch = useDispatch()
   const navigation = useNavigation();
+  const [isLoading, setIsLoading] = useState(false)
 
   useEffect(() => {
     GoogleSignin.configure({
@@ -21,9 +22,10 @@ const GoogleSignInButton = () => {
       await GoogleSignin.hasPlayServices();
       const userInfo = await GoogleSignin.signIn();
       const user = userInfo.user
-      const res = await SignUpController(user.name, user.email, userInfo.idToken, user.photo, navigation, true)
+      console.log(user, 'haa')
+      const res = await SignUpController(user.name, user.email, userInfo.idToken, user.photo, navigation, true, setIsLoading)
       if (res.isExist) {
-        await LoginController(user.email, userInfo.idToken, navigation, true, dispatch)
+        await LoginController(user.email, userInfo.idToken, navigation, true, dispatch, setIsLoading)
       } else {
         if(res.success) {
           navigation.navigate('Parent')

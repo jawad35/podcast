@@ -27,9 +27,10 @@ const CreateShortVideos = () => {
   const dispatch = useDispatch()
   const podcastData = useSelector(state => state.userData)
   const [video, setVideo] = useState('')
-  const [videos, setVideos] = useState([])
   const [category, setCategory] = useState('')
   const [caption, setCaption] = useState('')
+  const [isLoading, setIsLoading] = useState(false)
+
 
   const openVideoPicker = () => {
     const options = {
@@ -54,6 +55,7 @@ const CreateShortVideos = () => {
       return Alert.alert("Error", "At least one Video is required!")
     }
     try {
+      setIsLoading(true)
       const formData = new FormData();
       formData.append('short', {
         uri: video.uri,
@@ -70,13 +72,21 @@ const CreateShortVideos = () => {
           'Content-Type': 'multipart/form-data',
         },
       });
-      if (response.data.success){
+      if (response.data.success) {
+        setIsLoading(false)
         dispatch(SetShortsData(response.data.success))
+        setCaption('')
+        setCategory('')
+        setVideo('')
         Alert.alert("Short", "Short uploaded successfully!")
       } else {
+        setIsLoading(false)
+
         Alert.alert("Error", "Something went wrong!")
       }
     } catch (error) {
+      setIsLoading(false)
+
       console.error('Upload error:', error);
     }
   };
@@ -130,22 +140,22 @@ const CreateShortVideos = () => {
           />
         </CustomShadow>
         <View className='flex-1 justify-center items-center'>
-        {
-          video && <TouchableOpacity
-          className={`m-2 rounded-lg drop-shadow-lg`}
-          style={{ height: responsiveHeight(17), width: responsiveWidth(15) }}
-        >
-          {/* <Text className='text-white_color my-1 bg-red_darker text-center rounded-sm' style={{ fontSize: responsiveFontSize(1.3) }}>Remove</Text> */}
-            <Video style={{ height: '100%' }} paused={false} className='rounded-lg' source={{ uri: video.uri }} width={responsiveWidth(15)} resizeMode='cover' height={responsiveHeight(15)} />
-        </TouchableOpacity>
-        }
-          
+          {
+            video && <TouchableOpacity
+              className={`m-2 rounded-lg drop-shadow-lg`}
+              style={{ height: responsiveHeight(17), width: responsiveWidth(15) }}
+            >
+              {/* <Text className='text-white_color my-1 bg-red_darker text-center rounded-sm' style={{ fontSize: responsiveFontSize(1.3) }}>Remove</Text> */}
+              <Video style={{ height: '100%' }} paused={false} className='rounded-lg' source={{ uri: video.uri }} width={responsiveWidth(15)} resizeMode='cover' height={responsiveHeight(15)} />
+            </TouchableOpacity>
+          }
+
         </View>
         <CustomShadow>
           <CustomButtons title={'Upload Short'} color={'white_color'} onClick={() => openVideoPicker()} />
         </CustomShadow>
         <CustomShadow>
-          <CustomButtons textColor={'white_color'} color={'brown_darker'} title={'Create'} onClick={handleUpload} />
+          <CustomButtons isLoading={isLoading} disable={isLoading} textColor={'white_color'} color={'brown_darker'} title={'Create'} onClick={handleUpload} />
         </CustomShadow>
       </SafeAreaView>
     </ScrollView>

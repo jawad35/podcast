@@ -1,7 +1,6 @@
 import React, { useRef, useState } from 'react';
 import { View, Dimensions, TouchableOpacity, Text } from 'react-native';
 import Video from 'react-native-video';
-import { ServerUrl } from '../../constants/globalUrl';
 import { FilmIcon, IdentificationIcon, UserCircleIcon } from 'react-native-heroicons/solid';
 import { useNavigation } from '@react-navigation/native';
 
@@ -53,7 +52,7 @@ const SingleReel = ({ item, index, currentIndex, setCurrentIndex }) => {
                     //   paused={true}
                     // controls={true}
                     paused={currentIndex == index ? false : true}
-                    source={{ uri: `http://${ServerUrl}/uploads/${item?.video}` }}
+                    source={{ uri: item?.video }}
                     // muted={mute}
                     style={{
                         width: '100%',

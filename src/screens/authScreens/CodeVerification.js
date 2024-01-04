@@ -7,34 +7,42 @@ import { responsiveHeight } from 'react-native-responsive-dimensions';
 import { ShadowCardStyle } from '../../styles/showcard';
 import PodCastTitleLogo from '../../components/podcast/PodCastTitleLogo';
 import { ApiUrl } from '../../constants/globalUrl';
+import CustomButtons from '../../components/Items/CustomButtons';
+import { scale } from 'react-native-size-matters';
 
 // subscribe for more videos like this :)
 export default function CodeVerification({ route }) {
     const { userData, password } = route?.params
     const navigation = useNavigation();
     const [code, setCode] = useState('')
+    const [isLoading, setIsLoading] = useState(false)
     const VerifyCode = async () => {
         try {
             const data = {
                 otp: code,
                 userid: userData?.user?._id
             }
-            console.log(data)
+            setIsLoading(true)
             const response = await ApiUrl.post(`/api/user/verify-email`, data, {
                 headers: {
                     'Content-Type': 'application/json',
                 }
             });
             if (response.data.success) {
+            setIsLoading(false)
+
                 Alert.alert('Verified', response.data.message);
                 navigation.navigate('PodCategories', {userData, password})
             } else {
                 Alert.alert('Error', response.data.error);
+            setIsLoading(false)
+
             }
-            console.log('Upload response:', response.data);
         } catch (error) {
             Alert.alert('Error', 'Something went wrong!');
             console.error('Upload error:', error);
+            setIsLoading(false)
+
         }
     };
     return (
@@ -60,16 +68,12 @@ export default function CodeVerification({ route }) {
                             value={code}
                             onChangeText={(code) => setCode(code)}
                             placeholder='Enter Code'
+                            maxLength={4}
                         />
                     </View>
-                    <TouchableOpacity
-                        style={{ marginTop: responsiveHeight(3) }}
-                        className="py-3 bg-red_darker rounded-md"
-                    >
-                        <Text onPress={() => VerifyCode()} className="text-lg font-bold text-center text-white_color">
-                            Submit
-                        </Text>
-                    </TouchableOpacity>
+                    <View style={{ marginTop: scale(10) }}>
+                        <CustomButtons disable={isLoading} isLoading={isLoading} title={'Submit'} textColor={'white_color'} color={'brown_darker'} onClick={() => VerifyCode()} />
+                    </View>
                 </View>
             </View>
         </ScrollView>

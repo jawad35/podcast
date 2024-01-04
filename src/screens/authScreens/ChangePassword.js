@@ -14,8 +14,11 @@ export default function ChangePassword({ route }) {
     const { userid } = route?.params
     const navigation = useNavigation();
     const [password, setPassword] = useState()
+    const [isLoading, setIsLoading] = useState(false)
+
     const handleChangePassword = async () => {
         try {
+            setIsLoading(true)
             const data = {
                 password: password,
                 userid: userid
@@ -27,12 +30,16 @@ export default function ChangePassword({ route }) {
             });
 
             if (response.data.success) {
+                setIsLoading(false)
                 Alert.alert('Verified', response.data.message);
                 navigation.navigate('Login')
             } else {
+                setIsLoading(false)
                 Alert.alert('Error', response.data.error);
             }
+            setIsLoading(false)
         } catch (error) {
+            setIsLoading(false)
             Alert.alert('Error', 'Something went wrong!');
         }
     };
@@ -58,7 +65,7 @@ export default function ChangePassword({ route }) {
                         />
                     </View>
                     <View style={{ marginTop: responsiveHeight(5) }}>
-                        <CustomButtons textColor={'white_color'} color={'brown_darker'} title={"Change Password"} onClick={handleChangePassword} />
+                        <CustomButtons isLoading={isLoading} textColor={'white_color'} color={'brown_darker'} title={"Change Password"} onClick={handleChangePassword} />
                     </View>
 
                 </View>

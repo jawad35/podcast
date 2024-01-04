@@ -21,12 +21,12 @@ export default function SignUpScreen() {
     const [email, setEmail] = useState('')
     const [profileImage, setProfileImage] = useState('')
     const [imageLocalPath, setImageLocalPath] = useState('')
+    const [isLoading, setIsLoading] = useState(false)
     // const windowHeight = Dimensions.get('window').height;
-
     const SignUpUser = () => {
         // navigation.navigate('PodCategories')
+        SignUpController(fullname, email, password, null, navigation, false, setIsLoading)
 
-        SignUpController(fullname, email, password, null, navigation, false)
     }
     const openProfilePicker = () => {
         launchImageLibrary({}, (response) => {
@@ -77,7 +77,7 @@ export default function SignUpScreen() {
                     <CustomButtons title={'Profile Image'} color={'white_color'} onClick={() => openProfilePicker()} />
                 </View> */}
                 <View className={`mt-8`}>
-                    <CustomButtons title={'Sign Up'} textColor={'white_color'} color={'brown_darker'} onClick={() => SignUpUser()} />
+                    <CustomButtons disable={isLoading} isLoading={isLoading} title={'Sign Up'} textColor={'white_color'} color={'brown_darker'} onClick={() => SignUpUser()} />
                 </View>
             </View>
             <Text className="text-white_color text-xl font-bold text-center py-5">

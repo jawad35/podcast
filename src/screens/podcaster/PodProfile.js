@@ -18,6 +18,7 @@ const PodProfile = ({route}) => {
   const [following, setFollowing] = useState(0)
   const [followers, setFollowers] = useState(0)
   const [UserData, SetUserData] = useState({})
+  const [isLoading, setIsLoading] = useState(false)
 
   const GetUser = async() => {
     const response = await ApiUrl.post(`/api/user/getuser`, {userid:route?.params?.userid } ,{
@@ -43,6 +44,7 @@ const PodProfile = ({route}) => {
   }, [route?.params?.userid, podcastData])
   const FollowUser = async () => {
     try {
+      setIsLoading(true)
       const postData = {
         id:podcastData.user._id,
         userid:route?.params?.userid,
@@ -58,16 +60,19 @@ const PodProfile = ({route}) => {
       });
       if (response.data.success) {
         setIsFollow(true)
+      setIsLoading(false)
         setFollowers(response.data.followers)
         // setRefresh('1')
 
       } 
     } catch (error) {
+      setIsLoading(false)
       Alert.alert("Error", response.data.message)
     }
   }
   const UnFollowUser = async () => {
     try {
+      setIsLoading(true)
       const postData = {
         id:podcastData.user._id,
         userid:route?.params?.userid
@@ -79,11 +84,15 @@ const PodProfile = ({route}) => {
       });
       if (response.data.success) {
         setIsFollow(false)
+      setIsLoading(false)
+
         setFollowers(response.data.followers)
         // setFollowing(response.data.following)
         // setRefresh('2')
       }
     } catch (error) {
+      setIsLoading(false)
+
       // Alert.alert("Error", error)
       console.log(err)
     }
@@ -99,7 +108,7 @@ const PodProfile = ({route}) => {
         }
       <Text className={`text-white_color text-center`} style={{marginTop:moderateVerticalScale(20)}}>{UserData?.fullname?.toUpperCase()}</Text>
       <View style={podProfileStyles.profileImageWrapper} className='flex justify-center items-center'>
-        <Image source={{ uri: UserData?.avatar ? `http://${ServerUrl}/uploads/${UserData?.avatar}` : defaultProfile}}
+        <Image source={{ uri: UserData?.avatar ? `${UserData?.avatar}` : defaultProfile}}
           style={podProfileStyles.profileImage}
           resizeMode='cover'
           className='rounded-full'
@@ -111,9 +120,9 @@ const PodProfile = ({route}) => {
 
         {
           podcastData?.user?._id !== route?.params?.userid && <View style={{display:'flex', justifyContent:'space-around', flexDirection:'row', alignContent:'space-around', marginTop:scale(20)}}>
-          <TouchableOpacity style={podProfileStyles.FollowBtn} onPress={isFollow ? UnFollowUser : FollowUser}>
+          <TouchableOpacity disabled={isLoading} style={podProfileStyles.FollowBtn} onPress={isFollow ? UnFollowUser : FollowUser}>
             <Text className='font-semibold'>
-              {isFollow ? 'Unfollow' : "Follow"}
+              {isFollow ? isLoading ? 'Unfollowing...' : 'Unfollow' : isLoading ? 'Following...' : 'Follow'}
             </Text>
             </TouchableOpacity> 
       </View>

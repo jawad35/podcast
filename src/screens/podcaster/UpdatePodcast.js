@@ -24,6 +24,7 @@ import { ApiUrl, ServerUrl } from '../../constants/globalUrl';
 import uuidv4 from 'react-native-uuid';
 import { useDispatch, useSelector } from 'react-redux';
 import { SetUserData } from '../../redux/PodcastUsers';
+import { scale } from 'react-native-size-matters';
 const UpdatePodCast = () => {
     const podcastData = useSelector(state => state.userData)
     const dispatch = useDispatch()
@@ -34,10 +35,17 @@ const UpdatePodCast = () => {
     const [category, setCategory] = useState('')
     const [description, setDescription] = useState('')
     const [imageLocalPath, setImageLocalPath] = useState('')
+    const [isLoading, setIsLoading] = useState(false)
+    const [isLoadingImage, setIsLoadingImage] = useState(false)
+    const [isLoadingDelete, setIsLoadingDelete] = useState(false)
+    const [isLoadingDes, setIsLoadingDes] = useState(false)
+    const [isLoadingCat, setIsLoadingCat] = useState(false)
+
+
 
     useEffect(() => {
         setVideoArray(podcastData?.user?.podcast?.videos)
-        setImageLocalPath(`http://${ServerUrl}/uploads/${podcastData?.user?.podcast?.image}`)
+        setImageLocalPath(`${podcastData?.user?.podcast?.image}`)
         setDescription(podcastData?.user?.podcast?.description)
         setCategory(podcastData?.user?.podcast?.category)
         setUserId(podcastData?.user?._id)
@@ -71,10 +79,11 @@ const UpdatePodCast = () => {
         });
     };
     const handleUpdateVideos = async () => {
-        if(videos.length ===0 ) {
+        if (videos.length === 0) {
             return Alert.alert("Error", "Please choose at least one video to update")
         }
         try {
+            setIsLoading(true)
             const formData = new FormData();
             videos.forEach((video) => {
                 formData.append('videos[]', {
@@ -91,40 +100,49 @@ const UpdatePodCast = () => {
                     'Content-Type': 'multipart/form-data',
                 },
             });
-            if(response.data.success) {
+            if (response.data.success) {
+                setIsLoading(false)
                 setVideoArray(response.data?.user?.podcast?.videos)
                 setVideos([])
                 Alert.alert("Update", "Podcast videos updated successfully!")
             } else {
+                setIsLoading(false)
                 Alert.alert("Error", "Something went wrong!")
             }
 
             console.log('Upload response:', response.data);
         } catch (error) {
+            setIsLoading(false)
             console.error('Upload error:', error);
         }
     };
 
     const handleDeleteVideo = async (fileName) => {
         try {
+            setIsLoadingDelete(true)
             const data = {
                 userid,
-                filename:fileName
+                filename: fileName
             }
             const response = await ApiUrl.post(`/api/user/pvideo-delete`, data, {
                 headers: {
                     'Content-Type': 'application/json',
                 },
             });
-            if(response.data.success) {
+            if (response.data.success) {
+                setIsLoadingDelete(false)
                 dispatch(SetUserData(response?.data?.user))
                 setVideoArray(response?.data?.user.podcast.videos)
                 Alert.alert("Update", "Video Deleted successfully!")
             } else {
+                setIsLoadingDelete(false)
+
                 Alert.alert("Error", "Something went wrong!")
             }
 
         } catch (error) {
+            setIsLoadingDelete(false)
+
             console.error('Upload error:', error);
         }
     };
@@ -132,6 +150,7 @@ const UpdatePodCast = () => {
     const handleUpdatePodcastImage = async () => {
 
         try {
+            setIsLoadingImage(true)
             const formData = new FormData();
             // Append the selected image to FormData
             formData.append('avatar', {
@@ -149,50 +168,64 @@ const UpdatePodCast = () => {
                     'Content-Type': 'multipart/form-data',
                 },
             });
-            if(response.data.success) {
+            if (response.data.success) {
+                setIsLoadingImage(false)
                 Alert.alert("Update", "Image updated successfully!")
             } else {
+                setIsLoadingImage(false)
                 Alert.alert("Error", "Something went wrong!")
             }
 
         } catch (error) {
+            setIsLoadingImage(false)
+
             console.error('Upload error:', error);
         }
     };
 
     const handleUpdatePodcastDescription = async (fileName) => {
         try {
+            setIsLoadingDes(true)
             const formData = { description, userid }
             const response = await ApiUrl.post(`/api/user/pdesc-update`, formData, {
                 headers: {
                     'Content-Type': 'application/json',
                 },
             });
-            if(response.data.success) {
+            if (response.data.success) {
+                setIsLoadingDes(false)
                 Alert.alert("Update", "Description updated successfully!")
             } else {
+                setIsLoadingDes(false)
+
                 Alert.alert("Error", "Something went wrong!")
             }
         } catch (error) {
+            setIsLoadingDes(false)
+
             console.error('Upload error:', error);
         }
     };
 
     const handleUpdatePodcastCategory = async () => {
         try {
+            setIsLoadingCat(true)
             const formData = { category, userid }
             const response = await ApiUrl.post(`/api/user/pcategory-update`, formData, {
                 headers: {
                     'Content-Type': 'application/json',
                 },
             });
-            if(response.data.success) {
+            if (response.data.success) {
+                setIsLoadingCat(false)
                 Alert.alert("Update", "Category updated successfully!")
             } else {
+                setIsLoadingCat(false)
                 Alert.alert("Error", "Something went wrong!")
             }
 
         } catch (error) {
+            setIsLoadingCat(false)
             console.error('Upload error:', error);
         }
     };
@@ -208,7 +241,7 @@ const UpdatePodCast = () => {
     return (
         <ScrollView style={{ flex: 1 }} className="bg-black">
             <HeaderTitle icon={true} title={'Update Podcast'} />
-            <SafeAreaView className='p-3 mt-7'>
+            <SafeAreaView className='p-3 mt-7' style={{ marginBottom: scale(50) }}>
                 <TextInput
                     value={description}
                     placeholder='Description'
@@ -220,7 +253,9 @@ const UpdatePodCast = () => {
                     numberOfLines={5}
                     underlineColorAndroid='transparent'
                 />
-                <CustomButtons textColor={'white_color'} color={'brown_darker'} title={'Update Description'} onClick={() => handleUpdatePodcastDescription()} />
+                <View style={{ marginVertical: scale(15) }}>
+                    <CustomButtons isLoading={isLoadingDes} disable={isLoadingDes} textColor={'white_color'} color={'brown_darker'} title={'Update Description'} onClick={() => handleUpdatePodcastDescription()} />
+                </View>
                 <SelectDropdown
                     searchPlaceHolder='Search...'
                     defaultButtonText={category}
@@ -249,13 +284,18 @@ const UpdatePodCast = () => {
                         return item
                     }}
                 />
-                <CustomButtons textColor={'white_color'} color={'brown_darker'} title={'Update Category'} onClick={() => handleUpdatePodcastCategory()} />
+                <View style={{ marginVertical: scale(15) }}>
+                    <CustomButtons isLoading={isLoadingCat} disable={isLoadingCat} textColor={'white_color'} color={'brown_darker'} title={'Update Category'} onClick={() => handleUpdatePodcastCategory()} />
+                </View>
                 <View className='flex-1 justify-center items-center mt-4'>
                     {imageLocalPath && <Image className='rounded-lg' source={{ uri: imageLocalPath }} width={responsiveWidth(15)} resizeMode='contain' height={responsiveHeight(15)} />}
                 </View>
-                <CustomButtons color={'white_color'}  title={'Upload Image'} onClick={() => openImagePicker()} />
+                <View style={{ marginVertical: scale(15) }}>
+                    <CustomButtons color={'white_color'} title={'Upload Image'} onClick={() => openImagePicker()} />
+
+                </View>
                 {
-                    image && <CustomButtons textColor={'white_color'} color={'brown_darker'} title={'Update Image'}  onClick={() => handleUpdatePodcastImage()} />
+                    image && <CustomButtons isLoading={isLoadingImage} disable={isLoadingImage} textColor={'white_color'} color={'brown_darker'} title={'Update Image'} onClick={() => handleUpdatePodcastImage()} />
                 }
                 <View className='flex-1 justify-center items-center'>
                     <FlatList
@@ -265,13 +305,14 @@ const UpdatePodCast = () => {
                             return <TouchableOpacity
                                 key={index}
                                 className={`m-2 rounded-lg drop-shadow-lg`}
+                                disabled={isLoadingDelete}
                                 style={{ height: responsiveHeight(17), width: responsiveWidth(15) }}
                             >
                                 <Text className='text-white_color my-1 bg-red_darker text-center rounded-sm' style={{ fontSize: responsiveFontSize(1.3) }} onPress={() => {
                                     handleDeleteVideo(item)
-                                }}>Delete</Text>
-                                {/* <Video className='rounded-lg' source={{ uri: podcastData.user ? item.uri : `http://${ServerUrl}/uploads/${item}` }} width={responsiveWidth(15)} resizeMode='contain' height={responsiveHeight(15)} /> */}
-                                <Video style={{ height: '100%' }} paused={false} className='rounded-lg' source={{ uri: `http://${ServerUrl}/uploads/${item}` }} width={responsiveWidth(15)} resizeMode='cover' height={responsiveHeight(15)} />
+                                }}>{isLoadingDelete ? 'Deleting...' : 'Delete'}</Text>
+                                {/* <Video className='rounded-lg' source={{ uri: podcastData.user ? item.uri : `${item}` }} width={responsiveWidth(15)} resizeMode='contain' height={responsiveHeight(15)} /> */}
+                                <Video style={{ height: '100%' }} paused={false} className='rounded-lg' source={{ uri: `${item}` }} width={responsiveWidth(15)} resizeMode='cover' height={responsiveHeight(15)} />
 
                             </TouchableOpacity>
                         }
@@ -279,7 +320,9 @@ const UpdatePodCast = () => {
                         }
                     />
                 </View>
-                <CustomButtons title={'Add New Video'} color={'white_color'} onClick={() => openVideoPicker()} />
+                <View style={{ marginVertical: scale(15) }}>
+                    <CustomButtons title={'Add New Video'} color={'white_color'} onClick={() => openVideoPicker()} />
+                </View>
                 <View className='flex-1 justify-center items-center'>
                     <FlatList
                         data={videos}
@@ -293,7 +336,7 @@ const UpdatePodCast = () => {
                                 <Text className='text-white_color my-1 bg-red_darker text-center rounded-sm' style={{ fontSize: responsiveFontSize(1.3) }} onPress={() => {
                                     removeLocalVideo(index)
                                 }}>Remove</Text>
-                                <Video style={{ height: '100%' }} paused={false} className='rounded-lg' source={{ uri: `http://${ServerUrl}/uploads/${item}` }} width={responsiveWidth(15)} resizeMode='cover' height={responsiveHeight(15)} />
+                                <Video style={{ height: '100%' }} paused={false} className='rounded-lg' source={{ uri: `${item}` }} width={responsiveWidth(15)} resizeMode='cover' height={responsiveHeight(15)} />
 
                             </TouchableOpacity>
                         }
@@ -301,7 +344,10 @@ const UpdatePodCast = () => {
                         }
                     />
                 </View>
-                <CustomButtons textColor={'white_color'} color={'brown_darker'} title={'Upload Videos'} onClick={handleUpdateVideos} />
+                <View style={{ marginVertical: scale(15) }}>
+                    <CustomButtons isLoading={isLoading} disable={isLoading} textColor={'white_color'} color={'brown_darker'} title={'Upload Videos'} onClick={handleUpdateVideos} />
+                </View>
+
             </SafeAreaView>
         </ScrollView>
 

@@ -37,7 +37,7 @@ export default function TrendingPosts() {
                     item?.fullname?.length > 20 ? CapitalizeString(item.fullname).substring(0, 20) + '...' : CapitalizeString(item.fullname)
                   }
                 </Text>
-                <Image key={index} source={{ uri: item.avatar ? `http://${ServerUrl}/uploads/${item.avatar}` : defaultProfile }}
+                <Image key={index} source={{ uri: item.avatar ? `${item.avatar}` : defaultProfile }}
                   style={{ height: scale(250), width: '100%' }}
                   resizeMode='cover'
                   className='rounded-lg my-2'

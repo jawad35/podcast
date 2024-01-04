@@ -37,6 +37,7 @@ const CreatePodCast = () => {
   const [description, setDescription] = useState('')
   const [imageLocalPath, setImageLocalPath] = useState('')
   const [videoLocalPath, setVideoLocalPath] = useState('')
+  const [isLoading, setIsLoading] = useState(false)
 
   const openVideoPicker = () => {
     const options = {
@@ -75,6 +76,7 @@ const CreatePodCast = () => {
       return Alert.alert("Error", "At least one Video is required!")
     }
     try {
+      setIsLoading(true)
       const formData = new FormData();
       // Append the selected image to FormData
       formData.append('avatar', {
@@ -103,14 +105,19 @@ const CreatePodCast = () => {
       });
       if(response.data.success) {
         setIsPodcast(true)
+      setIsLoading(false)
         dispatch(SetUserData(response.data.user))
         Alert.alert("Update", "Podcast created successfully!")
     } else {
+      setIsLoading(false)
+
         Alert.alert("Error", "Something went wrong!")
     }
 
       console.log('Upload response:', response.data);
     } catch (error) {
+      setIsLoading(false)
+
       console.error('Upload error:', error);
     }
   };
@@ -131,9 +138,9 @@ const CreatePodCast = () => {
     },
   });
   return (
-      isPodcast ? <SafeAreaView className="bg-black" style={styles.container}>
+      isPodcast ? <SafeAreaView className="bg-black  flex-1 justify-center" >
         
-      <Text className='text-white_color font-bold text-lg'>You Already Created Podcast</Text>
+      <Text className='text-white_color font-bold text-lg text-center'>You Already Created Podcast</Text>
       <View className='m-2'>
         <CustomButtons title={"Edit"} onClick={() => navigation.navigate("UpdatePodcast")} />
       </View>
@@ -214,7 +221,7 @@ const CreatePodCast = () => {
             <CustomButtons title={'Upload Video'} color={'white_color'} onClick={() => openVideoPicker()} />
           </CustomShadow>
           <CustomShadow>
-            <CustomButtons textColor={'white_color'} color={'brown_darker'} title={'Create'} onClick={handleUpload} />
+            <CustomButtons isLoading={isLoading} textColor={'white_color'} color={'brown_darker'} title={'Create'} onClick={handleUpload} />
           </CustomShadow>
         </View>
       </SafeAreaView>

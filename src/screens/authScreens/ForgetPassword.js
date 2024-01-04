@@ -15,9 +15,12 @@ import GenerateOTP from '../../components/Helper/GenerateOTP';
 export default function ForgetPassword() {
     const [email, setEmail] = useState('')
     const navigation = useNavigation();
+    const [isLoading, setIsLoading] = useState(false)
+
     const handleEmailVerification = async () => {
         const OTP = GenerateOTP()
         try {
+            setIsLoading(true)
             const data = { email: email, otp: OTP }
             const response = await ApiUrl.post(`/api/user/forget-password`, data, {
                 headers: {
@@ -25,15 +28,17 @@ export default function ForgetPassword() {
                 }
             });
             if (!response.data.success) {
+                setIsLoading(false)
                 Alert.alert('Error', response.data.error);
             }
             if (response.data.success) {
+                setIsLoading(false)
                 navigation.navigate('PasswordVerifcationCode', { otp: OTP, id: response.data.id })
                 Alert.alert('Reset Password', response.data.message);
             }
         } catch (error) {
+            setIsLoading(false)
             Alert.alert('Error', 'Something went wrong!');
-            console.error('Upload error:', error);
         }
     };
 
@@ -64,7 +69,7 @@ export default function ForgetPassword() {
                         />
                     </View>
                     <View style={{ marginTop: responsiveHeight(3) }}>
-                        <CustomButtons title={'Send'} textColor={'white_color'} color={'brown_darker'} onClick={() => handleEmailVerification()} />
+                        <CustomButtons isLoading={isLoading} title={'Send'} textColor={'white_color'} color={'brown_darker'} onClick={() => handleEmailVerification()} />
                     </View>
                 </View>
             </View>

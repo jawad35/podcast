@@ -19,6 +19,7 @@ const PodCategories = ({ route }) => {
     const dispatch = useDispatch()
     const [niche, setNiche] = useState(nicheItems)
     const [IsDisable, setIsDisable] = useState(true)
+    const [isLoading, setIsLoading] = useState(false)
 
     const onSelect = (index) => {
         setNiche((prevNiche) => {
@@ -50,8 +51,9 @@ const PodCategories = ({ route }) => {
                 // setFollowers(response.data.followers)
                 // setFollowing(response.data.following)
                 // setRefresh('2')
-                LoginController(userData?.user?.email, password, navigation, false, dispatch)
-                console.log(response.data)
+        setIsLoading(true)
+                LoginController(userData?.user?.email, password, navigation, false, dispatch, setIsLoading)
+
             }
         } catch (error) {
             // Alert.alert("Error", error)
@@ -67,13 +69,12 @@ const PodCategories = ({ route }) => {
             setIsDisable(false)
         }
     }, [niche])
-
     return (
         <SafeAreaView className='bg-black flex-1'>
             <ScrollView className='px-4' >
                 <Text className={`font-bold text-white_color text-center`} style={{ fontSize: scale(20), marginVertical: scale(20) }}>Categories</Text>
                 {
-                    !podcastData?.user && <Text className={` text-white_color text-center`} style={{ marginVertical: scale(20) }}>Select up to three categories from the list</Text>
+                    !podcastData?.user?.email && <Text className={` text-white_color text-center`} style={{ marginVertical: scale(20) }}>Select up to three categories from the list</Text>
                 }
                 <View style={[PodCategoriesStyles.container, { marginBottom: podcastData?.user && scale(80) }]}>
                     {
@@ -84,7 +85,7 @@ const PodCategories = ({ route }) => {
                                     className={`bg-white_color m-2 rounded-lg drop-shadow-lg`}
                                     style={[PodCategoriesStyles.box, { backgroundColor: item.value == true ? 'red' : 'white', margin: 6, borderRadius: 10 }]}
                                     onPress={() => {
-                                        if (podcastData?.user) {
+                                        if (podcastData?.user?.email) {
                                             dispatch(getPodcastCategory(item?.title?.toLowerCase()))
                                             navigation.navigate('CategoryPodcasts')
                                         } else {
@@ -99,8 +100,8 @@ const PodCategories = ({ route }) => {
                     }
                 </View>
                 {
-                    !podcastData?.user && <View style={{ marginVertical: scale(40) }}>
-                        <CustomButtons disable={IsDisable} onClick={AddCategories} color={'brown_darker'} textColor={'white_color'} title={'Done!'} />
+                    !podcastData?.user?.email && <View style={{ marginVertical: scale(40) }}>
+                        <CustomButtons isLoading={isLoading} disable={IsDisable} onClick={AddCategories} color={'brown_darker'} textColor={'white_color'} title={'Done!'} />
                     </View>
                 }
             </ScrollView>

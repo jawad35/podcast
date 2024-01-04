@@ -1,7 +1,7 @@
 import { Alert } from "react-native";
 import { ApiUrl } from "../../constants/globalUrl";
 
-export const SignUpController = async (fullname, email, password, image_url, navigation, isSocailLogin) => {
+export const SignUpController = async (fullname, email, password, image_url, navigation, isSocailLogin, setIsLoading) => {
     try {
         if (!fullname) {
             Alert.alert('Error', 'Fullname field is required!');
@@ -22,12 +22,14 @@ export const SignUpController = async (fullname, email, password, image_url, nav
             image_url,
             isSocailLogin
         }
+        setIsLoading(true)
         const response = await ApiUrl.post(`/api/user/create`, postData, {
             headers: {
                 'Content-Type': 'application/json',
             },
         });
         if (response.data.success) {
+            setIsLoading(false)
             if(isSocailLogin) {
                 return response.data
             } else {

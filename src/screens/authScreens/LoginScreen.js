@@ -17,9 +17,10 @@ export default function LoginScreen() {
     const navigation = useNavigation();
     const [password, setPassword] = useState('')
     const [email, setEmail] = useState('')
+    const [isLoading, setIsLoading] = useState(false)
     const dispatch = useDispatch()
     const LoginUser = () => {
-        LoginController(email, password, navigation, false, dispatch)
+        LoginController(email, password, navigation, false, dispatch, setIsLoading)
     };
 
     return (
@@ -56,7 +57,7 @@ export default function LoginScreen() {
                     </TouchableOpacity>
 
                     <View style={{ marginTop: responsiveHeight(3) }}>
-                        <CustomButtons title={'Login'} textColor={'white_color'} color={'brown_darker'} onClick={() => LoginUser()} />
+                        <CustomButtons disable={isLoading} isLoading={isLoading} title={'Login'} textColor={'white_color'} color={'brown_darker'} onClick={() => LoginUser()} />
                     </View>
                 </View>
                 <Text className="text-white_color text-xl font-bold text-center py-5">

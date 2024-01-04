@@ -2,12 +2,12 @@ import { Alert } from "react-native";
 import { ApiUrl } from "../../constants/globalUrl";
 import { SetUserData } from "../../redux/PodcastUsers";
 
-export const LoginController = async (email, password, navigation, isSocailLogin, dispatch) => {
+export const LoginController = async (email, password, navigation, isSocailLogin, dispatch, setIsLoading) => {
     if (!email) {
         Alert.alert('Error', 'Email field is required!');
         return;
     }
-    if(!isSocailLogin) {
+    if (!isSocailLogin) {
         if (!password) {
             Alert.alert('Error', 'Password field is required!');
             return;
@@ -19,16 +19,21 @@ export const LoginController = async (email, password, navigation, isSocailLogin
             password,
             isSocailLogin
         }
+        setIsLoading(true)
         const response = await ApiUrl.post(`/api/user/login`, data, {
             headers: {
                 'Content-Type': 'application/json',
             }
         });
         if (!response.data.success) {
+            setIsLoading(false)
+
             Alert.alert('Error', response.data.error);
         } else {
-            navigation.navigate('Parent')
+            setIsLoading(false)
+
             dispatch(SetUserData(response.data.user))
+            navigation.navigate('Parent')
             return response.data
             // const storeData = async () => {
             //     try {
@@ -43,5 +48,7 @@ export const LoginController = async (email, password, navigation, isSocailLogin
     } catch (error) {
         Alert.alert('Error', 'Something went wrong!');
         console.error('Upload error:', error);
+        setIsLoading(false)
+
     }
 }

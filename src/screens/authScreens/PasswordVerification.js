@@ -1,18 +1,19 @@
-import { View, Text, TouchableOpacity, TextInput, ScrollView, Alert } from 'react-native'
+import { View, Text, TextInput, ScrollView, Alert } from 'react-native'
 import React, { useState } from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context'
 // import {ArrowLeftIcon} from 'react-native-heroicons/solid';
 import { useNavigation } from '@react-navigation/native';
-import { responsiveHeight } from 'react-native-responsive-dimensions';
 import { ShadowCardStyle } from '../../styles/showcard';
 import PodCastTitleLogo from '../../components/podcast/PodCastTitleLogo';
-import { ApiUrl } from '../../constants/globalUrl';
+import { scale } from 'react-native-size-matters';
+import CustomButtons from '../../components/Items/CustomButtons';
 
 // subscribe for more videos like this :)
 export default function PasswordVerification({ route }) {
     const { otp, id } = route.params
     const navigation = useNavigation();
     const [code, setCode] = useState('')
+
     const VerifyCode = async () => {
         if (code === otp) {
             navigation.navigate('ChangePassword', { userid: id })
@@ -43,14 +44,9 @@ export default function PasswordVerification({ route }) {
                             placeholder='Enter Code'
                         />
                     </View>
-                    <TouchableOpacity
-                        style={{ marginTop: responsiveHeight(3) }}
-                        className="py-3 bg-red_darker rounded-md"
-                    >
-                        <Text onPress={() => VerifyCode()} className="text-lg font-bold text-center text-white_color">
-                            Submit
-                        </Text>
-                    </TouchableOpacity>
+                    <View style={{ marginTop: scale(10) }}>
+                        <CustomButtons  title={'Submit'} textColor={'white_color'} color={'brown_darker'} onClick={() => VerifyCode()} />
+                    </View>
                 </View>
             </View>
         </ScrollView>

@@ -5,7 +5,8 @@ export const SelectedCategorySlice = createSlice({
     initialState:{
         user:[],
         shorts:[],
-        refresh:''
+        refresh:'',
+        userId:''
     },
     reducers:{
         SetUserData(state, action){
@@ -16,9 +17,12 @@ export const SelectedCategorySlice = createSlice({
         },
         setRefresh(state, payload) {
             state.refresh = action.payload
-        }
+        },
+        SetUserId(state, action){
+            state.userId = action.payload
+        },
     }
 })
 
-export const {SetUserData, SetShortsDatam, setRefresh} = SelectedCategorySlice.actions
+export const {SetUserData, SetShortsData, setRefresh, SetUserId} = SelectedCategorySlice.actions
 export default SelectedCategorySlice.reducer
