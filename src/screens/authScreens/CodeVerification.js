@@ -69,6 +69,9 @@ export default function CodeVerification({ route }) {
                             onChangeText={(code) => setCode(code)}
                             placeholder='Enter Code'
                             maxLength={4}
+                            keyboardType='numeric'
+                            placeholderTextColor={'black'}
+                            style={{color:'black', paddingHorizontal:scale(15)}}
                         />
                     </View>
                     <View style={{ marginTop: scale(10) }}>

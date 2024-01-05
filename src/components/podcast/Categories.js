@@ -20,7 +20,7 @@ const Categories = ({ navigation }) => {
                 renderItem={({ item, index }) => {
                     return <TouchableOpacity
                         key={index}
-                        className={`m-2 rounded-lg bg-white_color drop-shadow-lg`}
+                        className={`m-2 rounded-lg bg-white_color drop-shadow-lg text-black`}
                         // style={{ backgroundColor: item.value == true ? 'red' : 'blue', margin:6, borderRadius:10 }}
                         onPress={() => {
                             onSelect(index)

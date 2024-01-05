@@ -246,12 +246,13 @@ const UpdatePodCast = () => {
                     value={description}
                     placeholder='Description'
                     textAlignVertical='top'
-                    style={{ backgroundColor: 'white' }}
                     className='rounded-lg'
                     onChangeText={text => setDescription(text)}
                     multiline={true}
                     numberOfLines={5}
                     underlineColorAndroid='transparent'
+                    placeholderTextColor={'black'}
+                    style={{color:'black', paddingHorizontal:scale(15), backgroundColor: 'white'}}
                 />
                 <View style={{ marginVertical: scale(15) }}>
                     <CustomButtons isLoading={isLoadingDes} disable={isLoadingDes} textColor={'white_color'} color={'brown_darker'} title={'Update Description'} onClick={() => handleUpdatePodcastDescription()} />
@@ -291,7 +292,7 @@ const UpdatePodCast = () => {
                     {imageLocalPath && <Image className='rounded-lg' source={{ uri: imageLocalPath }} width={responsiveWidth(15)} resizeMode='contain' height={responsiveHeight(15)} />}
                 </View>
                 <View style={{ marginVertical: scale(15) }}>
-                    <CustomButtons color={'white_color'} title={'Upload Image'} onClick={() => openImagePicker()} />
+                    <CustomButtons color={'white_color'} textColor={'black'} title={'Upload Image'} onClick={() => openImagePicker()} />
 
                 </View>
                 {
@@ -321,7 +322,7 @@ const UpdatePodCast = () => {
                     />
                 </View>
                 <View style={{ marginVertical: scale(15) }}>
-                    <CustomButtons title={'Add New Video'} color={'white_color'} onClick={() => openVideoPicker()} />
+                    <CustomButtons title={'Add New Video'} textColor={'black'} color={'white_color'} onClick={() => openVideoPicker()} />
                 </View>
                 <View className='flex-1 justify-center items-center'>
                     <FlatList

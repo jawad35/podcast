@@ -7,6 +7,7 @@ import { DummyPodcast } from '../../data/dummypodcasts'
 import { useSelector } from 'react-redux'
 import UserProfile from '../../components/podcast/UserProfile'
 import HeaderTitle from '../../components/podcast/HeaderTitle'
+import { scale } from 'react-native-size-matters'
 export default function CategoryPodcasts({ navigation }) {
     const [data, setData] = useState([]);
     const [filteredData, setFilteredData] = useState([]);
@@ -41,6 +42,8 @@ export default function CategoryPodcasts({ navigation }) {
                             placeholder="Search..."
                             value={searchQuery}
                             onChangeText={handleSearch}
+                            placeholderTextColor={'black'}
+                            style={{color:'black', paddingHorizontal:scale(15)}}
                         />
                     </View>
 

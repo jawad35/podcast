@@ -23,6 +23,7 @@ import uuidv4 from 'react-native-uuid';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigation } from '@react-navigation/native';
 import { SetUserData } from '../../redux/PodcastUsers';
+import { scale } from 'react-native-size-matters';
 
 const CreatePodCast = () => {
   const navigation = useNavigation()
@@ -103,16 +104,16 @@ const CreatePodCast = () => {
           'Content-Type': 'multipart/form-data',
         },
       });
-      if(response.data.success) {
+      if (response.data.success) {
         setIsPodcast(true)
-      setIsLoading(false)
+        setIsLoading(false)
         dispatch(SetUserData(response.data.user))
         Alert.alert("Update", "Podcast created successfully!")
-    } else {
-      setIsLoading(false)
+      } else {
+        setIsLoading(false)
 
         Alert.alert("Error", "Something went wrong!")
-    }
+      }
 
       console.log('Upload response:', response.data);
     } catch (error) {
@@ -138,14 +139,14 @@ const CreatePodCast = () => {
     },
   });
   return (
-      isPodcast ? <SafeAreaView className="bg-black  flex-1 justify-center" >
-        
+    isPodcast ? <SafeAreaView className="bg-black  flex-1 justify-center" >
+
       <Text className='text-white_color font-bold text-lg text-center'>You Already Created Podcast</Text>
       <View className='m-2'>
-        <CustomButtons title={"Edit"} onClick={() => navigation.navigate("UpdatePodcast")} />
+        <CustomButtons textColor={'black'} color={'white_color'} title={"Edit"} onClick={() => navigation.navigate("UpdatePodcast")} />
       </View>
     </SafeAreaView> : <ScrollView className="bg-black">
-          <HeaderTitle icon={true} title={'Create Podcast'} />
+      <HeaderTitle icon={true} title={'Create Podcast'} />
       <SafeAreaView>
         <View>
           <CustomShadow>
@@ -153,11 +154,12 @@ const CreatePodCast = () => {
               value={description}
               placeholder='Description'
               textAlignVertical='top'
-              style={{ backgroundColor: 'white' }}
+              style={{ backgroundColor: 'white', color: 'black', paddingHorizontal: scale(15) }}
               className='rounded-lg  mt-5'
               onChangeText={text => setDescription(text)}
               multiline={true}
               numberOfLines={5}
+              placeholderTextColor={'black'}
               underlineColorAndroid='transparent'
             />
           </CustomShadow>
@@ -195,7 +197,7 @@ const CreatePodCast = () => {
 
           </View>
           <CustomShadow>
-            <CustomButtons title={'Upload Image'} color={'white_color'} onClick={() => openImagePicker()} />
+            <CustomButtons title={'Upload Image'} color={'white_color'} textColor={'black'} onClick={() => openImagePicker()} />
           </CustomShadow>
           <View className='flex-1 justify-center items-center'>
             <FlatList
@@ -218,10 +220,10 @@ const CreatePodCast = () => {
             />
           </View>
           <CustomShadow>
-            <CustomButtons title={'Upload Video'} color={'white_color'} onClick={() => openVideoPicker()} />
+            <CustomButtons title={'Upload Video'} color={'white_color'} textColor={'black'} onClick={() => openVideoPicker()} />
           </CustomShadow>
           <CustomShadow>
-            <CustomButtons isLoading={isLoading} textColor={'white_color'} color={'brown_darker'} title={'Create'} onClick={handleUpload} />
+            <CustomButtons isLoading={isLoading} disable={isLoading} textColor={'white_color'} color={'brown_darker'} title={'Create'} onClick={handleUpload} />
           </CustomShadow>
         </View>
       </SafeAreaView>

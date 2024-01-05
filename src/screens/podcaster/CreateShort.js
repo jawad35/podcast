@@ -21,6 +21,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useNavigation } from '@react-navigation/native';
 import Video from 'react-native-video';
 import { SetShortsData } from '../../redux/PodcastUsers';
+import { scale } from 'react-native-size-matters';
 
 const CreateShortVideos = () => {
   const navigation = useNavigation()
@@ -101,12 +102,13 @@ const CreateShortVideos = () => {
             value={caption}
             placeholder='Caption'
             textAlignVertical='top'
-            style={{ backgroundColor: 'white' }}
             className='rounded-lg  mt-5'
             onChangeText={text => setCaption(text)}
             multiline={true}
             numberOfLines={5}
             maxLength={10}
+            placeholderTextColor={'black'}
+            style={{color:'black', paddingHorizontal:scale(15), backgroundColor: 'white'}}
             underlineColorAndroid='transparent'
           />
         </CustomShadow>
@@ -152,7 +154,7 @@ const CreateShortVideos = () => {
 
         </View>
         <CustomShadow>
-          <CustomButtons title={'Upload Short'} color={'white_color'} onClick={() => openVideoPicker()} />
+          <CustomButtons title={'Upload Short'} color={'white_color'} textColor={'black'} onClick={() => openVideoPicker()} />
         </CustomShadow>
         <CustomShadow>
           <CustomButtons isLoading={isLoading} disable={isLoading} textColor={'white_color'} color={'brown_darker'} title={'Create'} onClick={handleUpload} />

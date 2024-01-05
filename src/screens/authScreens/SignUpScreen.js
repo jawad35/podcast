@@ -12,6 +12,7 @@ import uuidv4 from 'react-native-uuid';
 import { ApiUrl } from '../../constants/globalUrl';
 import { SignUpController } from '../../components/Controllers/SignUpController';
 import GoogleSignInButton from '../../components/socialLoginButtons/GoogleSignInButton';
+import { scale } from 'react-native-size-matters';
 
 // subscribe for more videos like this :)
 export default function SignUpScreen() {
@@ -46,30 +47,36 @@ export default function SignUpScreen() {
                 <Text className='text-xl text-white_color font-bold'>
                     Create your Account
                 </Text>
-                <View className='mt-7 bg-white_color' style={[ShadowCardStyle.card, ShadowCardStyle.elevation]}>
+                <View className='mt-7 bg-white_color rounded-md'>
                     <TextInput
                         value={fullname}
                         onChangeText={(fullname) => setFullname(fullname)}
                         autoCapitalize='none'
                         placeholder='Fullname'
+                        placeholderTextColor={'black'}
+                        style={{color:'black', paddingHorizontal:scale(15)}}
                     />
                 </View>
 
-                <View style={[ShadowCardStyle.card, ShadowCardStyle.elevation]} className='bg-white_color'>
+                <View className='bg-white_color rounded-md' style={{marginVertical:scale(20)}}>
                     <TextInput
                         value={email}
                         onChangeText={(email) => setEmail(email)}
                         autoCapitalize='none'
                         placeholder='Email'
+                        placeholderTextColor={'black'}
+                        style={{color:'black', paddingHorizontal:scale(15)}}
                     />
                 </View>
-                <View style={[ShadowCardStyle.card, ShadowCardStyle.elevation]} className='bg-white_color'>
+                <View className='bg-white_color rounded-md'>
                     <TextInput
                         value={password}
                         onChangeText={(password) => setPassword(password)}
                         autoCapitalize='none'
                         placeholder='Password'
                         secureTextEntry={true}
+                        placeholderTextColor={'black'}
+                        style={{color:'black', paddingHorizontal:scale(15)}}
                     />
                 </View>
                 {/* <View className='flex-1 justify-center items-center'>

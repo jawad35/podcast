@@ -1,9 +1,6 @@
 import { View, Text, FlatList, TouchableOpacity, SafeAreaView, Button, StyleSheet, ScrollView } from 'react-native'
 import React, { useEffect, useState } from 'react'
-import NicheItem from '../../components/podcast/nicheItem'
 import nicheItems from '../../data/nicheItems'
-import { responsiveFontSize, responsiveHeight } from 'react-native-responsive-dimensions'
-import HeaderTitle from '../../components/podcast/HeaderTitle'
 import { scale, verticalScale } from 'react-native-size-matters'
 import CustomButtons from '../../components/Items/CustomButtons'
 import { PodCategoriesStyles } from '../../styles/podCategoriesStyle'
@@ -76,7 +73,7 @@ const PodCategories = ({ route }) => {
                 {
                     !podcastData?.user?.email && <Text className={` text-white_color text-center`} style={{ marginVertical: scale(20) }}>Select up to three categories from the list</Text>
                 }
-                <View style={[PodCategoriesStyles.container, { marginBottom: podcastData?.user && scale(80) }]}>
+                <View style={[PodCategoriesStyles.container, { marginBottom: podcastData?.user?.email && scale(80) }]}>
                     {
                         niche.map((item, index) => {
                             {
@@ -100,7 +97,7 @@ const PodCategories = ({ route }) => {
                     }
                 </View>
                 {
-                    !podcastData?.user?.email && <View style={{ marginVertical: scale(40) }}>
+                    !podcastData?.user?.email && <View style={{ marginVertical: scale(90) }}>
                         <CustomButtons isLoading={isLoading} disable={IsDisable} onClick={AddCategories} color={'brown_darker'} textColor={'white_color'} title={'Done!'} />
                     </View>
                 }

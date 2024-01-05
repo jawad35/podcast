@@ -14,7 +14,7 @@ const NicheItem = ({item, category}) => {
       category === false  ? <Text onPress={() => {
         dispatch(getPodcastCategory(item.title.toLowerCase()))
         navigation.navigate('CategoryPodcasts')
-      }} className={`'text-black' font-medium text-base`}>{item.title}</Text> : <Text className={`text-black font-medium text-base`}>{item.title}</Text>
+      }} className={`text-black font-medium text-base`}>{item.title}</Text> : <Text className={`text-black font-medium text-base`}>{item.title}</Text>
       }
     </View>
   )

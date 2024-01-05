@@ -121,7 +121,7 @@ const PodProfile = ({route}) => {
         {
           podcastData?.user?._id !== route?.params?.userid && <View style={{display:'flex', justifyContent:'space-around', flexDirection:'row', alignContent:'space-around', marginTop:scale(20)}}>
           <TouchableOpacity disabled={isLoading} style={podProfileStyles.FollowBtn} onPress={isFollow ? UnFollowUser : FollowUser}>
-            <Text className='font-semibold'>
+            <Text className='font-semibold text-black'>
               {isFollow ? isLoading ? 'Unfollowing...' : 'Unfollow' : isLoading ? 'Following...' : 'Follow'}
             </Text>
             </TouchableOpacity> 

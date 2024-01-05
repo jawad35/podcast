@@ -14,8 +14,8 @@ export default function PodHome({ navigation }) {
       {/* top header */}
       <View>
         <View className='flex-row justify-items-center justify-center m-2 space-x-2'>
-          <View className='rounded-lg flex-1 bg-white_color' style={[ShadowCardStyle.card, ShadowCardStyle.elevation]}>
-            <TextInput placeholder='Search...' />
+          <View className='rounded-lg flex-1 bg-white_color text-black' style={[ShadowCardStyle.card, ShadowCardStyle.elevation]}>
+            <TextInput className='text-black' placeholderTextColor={'black'} placeholder='Search...' />
           </View>
           <View onTouchStart={() => navigation.openDrawer()} className='justify-items-center justify-center'>
             <UserProfile />

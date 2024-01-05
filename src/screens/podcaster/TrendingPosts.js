@@ -32,7 +32,7 @@ export default function TrendingPosts() {
           {
             TrendingPodcasts?.map((item, index) => {
               return <TouchableOpacity key={index} onPress={() => navigation.navigate("Profile", { userid: item?._id })} className='relative'>
-                <Text className='absolute z-10 bg-white_color' style={{ margin: scale(10), paddingHorizontal: scale(10), paddingVertical: scale(5), borderRadius: scale(6), bottom: scale(10) }}>
+                <Text className='absolute z-10 bg-white_color text-black' style={{ margin: scale(10), paddingHorizontal: scale(10), paddingVertical: scale(5), borderRadius: scale(6), bottom: scale(10) }}>
                   {
                     item?.fullname?.length > 20 ? CapitalizeString(item.fullname).substring(0, 20) + '...' : CapitalizeString(item.fullname)
                   }

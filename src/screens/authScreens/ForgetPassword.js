@@ -10,6 +10,7 @@ import CustomButtons from '../../components/Items/CustomButtons';
 import { useNavigation } from '@react-navigation/native';
 import HeaderTitle from '../../components/podcast/HeaderTitle';
 import GenerateOTP from '../../components/Helper/GenerateOTP';
+import { scale } from 'react-native-size-matters';
 
 // subscribe for more videos like this :)
 export default function ForgetPassword() {
@@ -61,11 +62,14 @@ export default function ForgetPassword() {
                         Enter your email and we will send you a verification
                         code to reset your password
                     </Text>
-                    <View className='mt-7 bg-white_color' style={[ShadowCardStyle.card, ShadowCardStyle.elevation]}>
+                    <View className='mt-7 bg-white_color rounded-md'>
                         <TextInput
                             value={email}
                             onChangeText={(text) => setEmail(text)}
+                            style={{color:'black', paddingHorizontal:scale(15)}}
                             placeholder='Enter Email'
+                            placeholderTextColor={'black'}
+
                         />
                     </View>
                     <View style={{ marginTop: responsiveHeight(3) }}>

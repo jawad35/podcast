@@ -37,14 +37,18 @@ export default function PasswordVerification({ route }) {
                     <Text className='mt-6 text-lg font-semibold text-white_color'>
                         Please enter the verification code.
                     </Text>
-                    <View className='mt-7 bg-white_color' style={[ShadowCardStyle.card, ShadowCardStyle.elevation]}>
+                    <View className='mt-7 bg-white_color rounded-md'>
                         <TextInput
                             value={code}
                             onChangeText={(code) => setCode(code)}
                             placeholder='Enter Code'
+                            placeholderTextColor={'black'}
+                            maxLength={4}
+                            keyboardType='numeric'
+                            style={{color:'black', paddingHorizontal:scale(15)}}
                         />
                     </View>
-                    <View style={{ marginTop: scale(10) }}>
+                    <View style={{ marginTop: scale(20) }}>
                         <CustomButtons  title={'Submit'} textColor={'white_color'} color={'brown_darker'} onClick={() => VerifyCode()} />
                     </View>
                 </View>

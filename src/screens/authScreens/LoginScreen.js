@@ -10,6 +10,7 @@ import CustomButtons from '../../components/Items/CustomButtons';
 import { useDispatch } from 'react-redux';
 import GoogleSignInButton from '../../components/socialLoginButtons/GoogleSignInButton';
 import { LoginController } from '../../components/Controllers/LoginController';
+import { scale } from 'react-native-size-matters';
 
 
 
@@ -35,18 +36,23 @@ export default function LoginScreen() {
                     <Text className='text-white_color text-xl font-bold'>
                         Login to Your Account
                     </Text>
-                    <View className='mt-7 bg-white_color' style={[ShadowCardStyle.card, ShadowCardStyle.elevation]}>
+                    <View className='mt-7 bg-white_color text-black rounded-md'>
                         <TextInput
                             value={email}
                             onChangeText={(email) => setEmail(email)}
                             autoCapitalize='none'
+                            placeholderTextColor={'black'}
+                            style={{color:'black', paddingHorizontal:scale(15)}}
                             placeholder='Email'
+
                         />
                     </View>
-                    <View style={[ShadowCardStyle.card, ShadowCardStyle.elevation]} className='bg-white_color'>
+                    <View className='bg-white_color text-black rounded-md' style={{marginVertical:scale(20)}}>
                         <TextInput
                             value={password}
                             onChangeText={(password) => setPassword(password)}
+                            placeholderTextColor={'black'}
+                            style={{color:'black', paddingHorizontal:scale(15)}}
                             autoCapitalize='none'
                             placeholder='Password'
                             secureTextEntry={true}

@@ -11,6 +11,7 @@ import { launchImageLibrary } from 'react-native-image-picker'
 import { ShadowCardStyle } from '../../styles/showcard'
 import { SetUserData } from '../../redux/PodcastUsers'
 import { defaultProfile } from '../../utils/Constants'
+import { scale } from 'react-native-size-matters'
 
 
 const UpdatePodProfile = () => {
@@ -20,6 +21,8 @@ const UpdatePodProfile = () => {
   const [imageLocalPath, setImageLocalPath] = useState(podcastData.user.avatar)
   const dispatch = useDispatch()
   const [isLoading, setIsLoading] = useState(false)
+  const [isLoadingname, setIsLoadingName] = useState(false)
+
 
   const openImagePicker = () => {
     launchImageLibrary({}, (response) => {
@@ -65,7 +68,7 @@ const UpdatePodProfile = () => {
 
   const handleUpdatePodcastFullname = async () => {
     try {
-      setIsLoading(true)
+      setIsLoadingName(true)
       const data = { fullname, userid: podcastData.user._id }
       const response = await ApiUrl.post(`/api/user/profile-fullname-update`, data, {
         headers: {
@@ -75,14 +78,17 @@ const UpdatePodProfile = () => {
 
       if (response.data.success) {
         dispatch(SetUserData(response.data.user))
-        setIsLoading(false)
+      setIsLoadingName(true)
+        setIsLoadingName(false)
         Alert.alert("Success", response.data.message)
       } else {
-        setIsLoading(false)
+      setIsLoadingName(true)
+        setIsLoadingName(false)
         Alert.alert("Error", response.data.message)
       }
     } catch (error) {
-      setIsLoading(false)
+      setIsLoadingName(true)
+      setIsLoadingName(false)
       console.error('Upload error:', error);
     }
   };
@@ -90,16 +96,18 @@ const UpdatePodProfile = () => {
     <SafeAreaView className='bg-black flex-1'>
       <HeaderTitle icon={true} title={'Update Profile'} />
       <ScrollView className='mx-4'>
-        <Text className='text-3xl text-white_color font-bold text-center mt-20'>{fullname?.toUpperCase()}</Text>
-        <View className='mt-7 bg-white_color' style={[ShadowCardStyle.card, ShadowCardStyle.elevation]}>
+        <Text className='text-white_color font-bold text-center mt-20' style={{fontSize:scale(15)}}>{fullname?.toUpperCase()}</Text>
+        <View className='mt-7 bg-white_color rounded-md' style={{marginVertical:scale(20)}}>
           <TextInput
             placeholder="Full name"
             value={fullname}
+            placeholderTextColor={'black'}
+            style={{color:'black', paddingHorizontal:scale(15)}}
             onChangeText={(name) => setFullname(name)}
           />
         </View>
         <View >
-          <CustomButtons textColor={'white_color'} color={'brown_darker'} title={"Update Fullname"} onClick={handleUpdatePodcastFullname} />
+          <CustomButtons isLoading={isLoadingname} disable={isLoadingname} textColor={'white_color'} color={'brown_darker'} title={"Update Fullname"} onClick={handleUpdatePodcastFullname} />
         </View>
         <View className='flex justify-center items-center mt-9'>
           <Image source={{ uri: imageLocalPath ? imageLocalPath : defaultProfile }}
@@ -110,12 +118,12 @@ const UpdatePodProfile = () => {
         </View>
         <View className='my-10'>
           <View>
-            <CustomButtons title={"New Image"} onClick={openImagePicker} />
+            <CustomButtons color={'white_color'} textColor={'black'} title={"New Image"} onClick={openImagePicker} />
           </View>
           {
             image &&
-            <View className='mt-3'>
-              <CustomButtons isLoading={isLoading} textColor={'white_color'} color={'brown_darker'} title={"Update Image"} onClick={handleUpdatePodcastImage} />
+            <View style={{marginBottom:scale(50), marginTop:scale(20)}}>
+              <CustomButtons isLoading={isLoading} disable={isLoading} textColor={'white_color'} color={'brown_darker'} title={"Update Image"} onClick={handleUpdatePodcastImage} />
             </View>
           }
         </View>

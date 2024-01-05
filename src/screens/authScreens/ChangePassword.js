@@ -8,6 +8,7 @@ import { ShadowCardStyle } from '../../styles/showcard';
 import PodCastTitleLogo from '../../components/podcast/PodCastTitleLogo';
 import CustomButtons from '../../components/Items/CustomButtons';
 import { ApiUrl } from '../../constants/globalUrl';
+import { scale } from 'react-native-size-matters';
 
 // subscribe for more videos like this :)
 export default function ChangePassword({ route }) {
@@ -62,6 +63,8 @@ export default function ChangePassword({ route }) {
                             secureTextEntry
                             onChangeText={(text) => setPassword(text)}
                             placeholder='Password'
+                            placeholderTextColor={'black'}
+                            style={{color:'black', paddingHorizontal:scale(15)}}
                         />
                     </View>
                     <View style={{ marginTop: responsiveHeight(5) }}>
