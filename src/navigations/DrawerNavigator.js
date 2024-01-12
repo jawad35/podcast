@@ -12,7 +12,6 @@ import { useSelector } from 'react-redux';
 const Drawer = createDrawerNavigator();
 const DrawerNavigator = () => {
   const podcastData = useSelector(state => state.userData)
-  console.log(podcastData, 'je')
 
   return (
     <Drawer.Navigator>
@@ -24,24 +23,33 @@ const DrawerNavigator = () => {
       <Drawer.Screen
         name="Profile"
         component={PodProfile}
-        initialParams={{userid:podcastData?.user?._id}}
+        initialParams={{ userid: podcastData?.user?._id }}
         options={{ headerShown: false }}
       />
-      <Drawer.Screen
-        name="Create Podcast"
-        component={CreatePodCast}
-        options={{ headerShown: false }}
-      />
-      <Drawer.Screen
-        name="Update Podcast"
-        component={UpdatePodCast}
-        options={{ headerShown: false }}
-      />
-      <Drawer.Screen
-        name="Upload Short"
-        component={CreateShort}
-        options={{ headerShown: false }}
-      />
+      {
+        podcastData?.user?.role === '2' && <Drawer.Screen
+          name="Create Podcast"
+          component={CreatePodCast}
+          options={{ headerShown: false }}
+        />
+      }
+      {
+        podcastData?.user?.role === '2' && <Drawer.Screen
+          name="Update Podcast"
+          component={UpdatePodCast}
+          options={{ headerShown: false }}
+        />
+      }
+      {
+        podcastData?.user?.role === '2' && <Drawer.Screen
+          name="Upload Short"
+          component={CreateShort}
+          options={{ headerShown: false }}
+        />
+      }
+
+
+
       {/* <Drawer.Screen
         name="Podcast"
         component={PodPosts}

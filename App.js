@@ -8,11 +8,8 @@ export default function App() {
     <NavigationContainer>
       {/* <Routes/> */}
       <Provider store={PodcastStore}>
-    
-        
           <AppNavigation />
       </Provider>
-
     </NavigationContainer>
   );
 }

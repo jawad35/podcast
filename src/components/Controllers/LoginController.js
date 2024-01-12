@@ -1,6 +1,7 @@
 import { Alert } from "react-native";
 import { ApiUrl } from "../../constants/globalUrl";
 import { SetUserData } from "../../redux/PodcastUsers";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export const LoginController = async (email, password, navigation, isSocailLogin, dispatch, setIsLoading) => {
     if (!email) {
@@ -33,6 +34,7 @@ export const LoginController = async (email, password, navigation, isSocailLogin
             setIsLoading(false)
 
             dispatch(SetUserData(response.data.user))
+            await AsyncStorage.setItem('isLogged', response?.data?.user._id)
             navigation.navigate('Parent')
             return response.data
             // const storeData = async () => {

@@ -13,20 +13,27 @@ import { ApiUrl } from '../../constants/globalUrl';
 import { SignUpController } from '../../components/Controllers/SignUpController';
 import GoogleSignInButton from '../../components/socialLoginButtons/GoogleSignInButton';
 import { scale } from 'react-native-size-matters';
+import SelectDropdown from 'react-native-select-dropdown'
+import userroles from '../../data/userroles';
+import PodcastRadio from '../../components/podcast/PodcastRadio';
+import OverlayLoading from '../../components/Items/OverlayLoading';
+import { useSelector } from 'react-redux';
 
 // subscribe for more videos like this :)
 export default function SignUpScreen() {
     const navigation = useNavigation();
+    const podcastData = useSelector(state => state.userData)
     const [fullname, setFullname] = useState('')
     const [password, setPassword] = useState('')
     const [email, setEmail] = useState('')
+    const [role, setRole] = useState(null)
     const [profileImage, setProfileImage] = useState('')
     const [imageLocalPath, setImageLocalPath] = useState('')
     const [isLoading, setIsLoading] = useState(false)
     // const windowHeight = Dimensions.get('window').height;
     const SignUpUser = () => {
         // navigation.navigate('PodCategories')
-        SignUpController(fullname, email, password, null, navigation, false, setIsLoading)
+        SignUpController(fullname, email, password, role, null, navigation, false, setIsLoading)
 
     }
     const openProfilePicker = () => {
@@ -42,11 +49,14 @@ export default function SignUpScreen() {
             <SafeAreaView className="flex">
                 <PodCastTitleLogo />
             </SafeAreaView>
-
+            {
+                podcastData?.isoverlay && <OverlayLoading />
+            }
             <View className="form m-6">
                 <Text className='text-xl text-white_color font-bold'>
                     Create your Account
                 </Text>
+
                 <View className='mt-7 bg-white_color rounded-md'>
                     <TextInput
                         value={fullname}
@@ -54,18 +64,18 @@ export default function SignUpScreen() {
                         autoCapitalize='none'
                         placeholder='Fullname'
                         placeholderTextColor={'black'}
-                        style={{color:'black', paddingHorizontal:scale(15)}}
+                        style={{ color: 'black', paddingHorizontal: scale(15) }}
                     />
                 </View>
 
-                <View className='bg-white_color rounded-md' style={{marginVertical:scale(20)}}>
+                <View className='bg-white_color rounded-md' style={{ marginVertical: scale(20) }}>
                     <TextInput
                         value={email}
                         onChangeText={(email) => setEmail(email)}
                         autoCapitalize='none'
                         placeholder='Email'
                         placeholderTextColor={'black'}
-                        style={{color:'black', paddingHorizontal:scale(15)}}
+                        style={{ color: 'black', paddingHorizontal: scale(15) }}
                     />
                 </View>
                 <View className='bg-white_color rounded-md'>
@@ -76,7 +86,35 @@ export default function SignUpScreen() {
                         placeholder='Password'
                         secureTextEntry={true}
                         placeholderTextColor={'black'}
-                        style={{color:'black', paddingHorizontal:scale(15)}}
+                        style={{ color: 'black', paddingHorizontal: scale(15) }}
+                    />
+                </View>
+                <View className='flex flex-row justify-around' style={{ marginTop: scale(20) }}>
+                    <SelectDropdown
+                        defaultButtonText='Select Role'
+                        buttonStyle={{
+                            backgroundColor: '#ffffff',
+                            borderRadius: 8,
+                            borderColor: '#ccc',
+                            width: '100%',
+                            height: scale(45)
+                        }}
+                        dropdownStyle={{ borderRadius: 8 }}
+                        data={userroles.map(item => item.title)}
+                        onSelect={(selectedItem, index) => {
+                            setRole(index+1)
+
+                        }}
+                        buttonTextAfterSelection={(selectedItem, index) => {
+                            // text represented after item is selected
+                            // if data array is an array of objects then return selectedItem.property to render after item is selected
+                            return selectedItem
+                        }}
+                        rowTextForSelection={(item, index) => {
+                            // text represented for each item in dropdown
+                            // if data array is an array of objects then return item.property to represent item in dropdown
+                            return item
+                        }}
                     />
                 </View>
                 {/* <View className='flex-1 justify-center items-center'>
@@ -91,7 +129,7 @@ export default function SignUpScreen() {
                 Or
             </Text>
             <View className="flex-row justify-center space-x-12">
-                <GoogleSignInButton/>
+                <GoogleSignInButton />
             </View>
             <View className="flex-row justify-center mt-7">
                 <Text className="font-semibold text-white_color">Already have an account?</Text>
@@ -102,23 +140,3 @@ export default function SignUpScreen() {
         </ScrollView>
     )
 }
-
-const styles = StyleSheet.create({
-    heading: {
-        fontSize: 18,
-        fontWeight: '600',
-        marginBottom: 13,
-    },
-    card: {
-        backgroundColor: 'white',
-        borderRadius: 8,
-        width: '100%',
-        paddingHorizontal: 10,
-        paddingVertical: 5,
-        marginVertical: 10
-    },
-    elevation: {
-        elevation: 3,
-        shadowColor: '#52006A',
-    },
-});

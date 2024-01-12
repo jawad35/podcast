@@ -6,15 +6,18 @@ import { StackActions, useNavigation } from '@react-navigation/native'
 import HeaderTitle from '../../components/podcast/HeaderTitle'
 import { GoogleSignin } from '@react-native-google-signin/google-signin';
 import { SetUserData } from '../../redux/PodcastUsers'
+import AsyncStorage from '@react-native-async-storage/async-storage'
 
 const Logout = () => {
     const navigation = useNavigation();
     const dispatch = useDispatch()
-    const handleLogout = () => {
+    const handleLogout = async () => {
+        console.log(await GoogleSignin.isSignedIn().then((res) => console.log).catch(err => console.log(err)))
+        await GoogleSignin.signOut().then((res) => console.log).catch(err => console.log(err))
+        await AsyncStorage.removeItem('isLogged')
         dispatch(SetUserData([]))
         navigation.dispatch(StackActions.popToTop())
         navigation.navigate('Login')
-        GoogleSignin.signOut()
     }
     return (
         <SafeAreaView className='flex-1'>

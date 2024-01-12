@@ -63,6 +63,7 @@ const StripeProducts = () => {
                 ))}
               </View>
             }
+
         </View>
     )
 }

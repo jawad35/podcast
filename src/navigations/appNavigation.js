@@ -23,6 +23,7 @@ import UpdatePodProfile from '../screens/podcaster/UpdatePodProfile.js';
 import UpdatePodCast from '../screens/podcaster/UpdatePodcast.js';
 import PodCategories from '../screens/podcaster/PodCategories.js';
 import stripeProducts from '../screens/stripe/stripeProducts.js';
+import SelectUserRole from '../screens/podcaster/SelectUserRole.js';
 // import { io } from 'socket.io-client';
 // import socketServcies from '../socketClient.js';
 
@@ -71,7 +72,8 @@ export default function AppNavigation() {
 
   return (
     <Stack.Navigator screenOptions={{ headerShown: false }}>
-      <Stack.Screen name="StripeProducts" options={{ headerShown: false }} component={stripeProducts} /> 
+      {/* <Stack.Screen name="StripeProducts" options={{ headerShown: false }} component={stripeProducts} />  */}
+      {/* <Stack.Screen name="UserRole" options={{ headerShown: false }} component={SelectUserRole} />  */}
       <Stack.Screen name="Welcome" options={{ headerShown: false }} component={WelcomeScreen} /> 
       <Stack.Screen name="Parent" options={{ headerShown: false }} component={Parent} />
       <Stack.Screen name="Login" options={{ headerShown: false }} component={LoginScreen} />

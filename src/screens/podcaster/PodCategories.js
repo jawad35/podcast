@@ -56,7 +56,6 @@ const PodCategories = ({ route }) => {
             // Alert.alert("Error", error)
             console.log(error)
         }
-        console.log(titlesWithTrueValue)
     }
     useEffect(() => {
         const countOfTrueValues = niche.filter(item => item.value === true).length;

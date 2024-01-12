@@ -6,7 +6,8 @@ export const SelectedCategorySlice = createSlice({
         user:[],
         shorts:[],
         refresh:'',
-        userId:''
+        userId:'',
+        isoverlay:false
     },
     reducers:{
         SetUserData(state, action){
@@ -21,8 +22,11 @@ export const SelectedCategorySlice = createSlice({
         SetUserId(state, action){
             state.userId = action.payload
         },
+        SetOverlay(state, action){
+            state.isoverlay = action.payload
+        }
     }
 })
 
-export const {SetUserData, SetShortsData, setRefresh, SetUserId} = SelectedCategorySlice.actions
+export const {SetUserData, SetShortsData, setRefresh, SetUserId, SetOverlay} = SelectedCategorySlice.actions
 export default SelectedCategorySlice.reducer

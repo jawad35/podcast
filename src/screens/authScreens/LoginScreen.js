@@ -7,10 +7,11 @@ import { responsiveHeight } from 'react-native-responsive-dimensions';
 import PodCastTitleLogo from '../../components/podcast/PodCastTitleLogo';
 import { ShadowCardStyle } from '../../styles/showcard';
 import CustomButtons from '../../components/Items/CustomButtons';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import GoogleSignInButton from '../../components/socialLoginButtons/GoogleSignInButton';
 import { LoginController } from '../../components/Controllers/LoginController';
 import { scale } from 'react-native-size-matters';
+import OverlayLoading from '../../components/Items/OverlayLoading';
 
 
 
@@ -19,6 +20,7 @@ export default function LoginScreen() {
     const [password, setPassword] = useState('')
     const [email, setEmail] = useState('')
     const [isLoading, setIsLoading] = useState(false)
+    const podcastData = useSelector(state => state.userData)
     const dispatch = useDispatch()
     const LoginUser = () => {
         LoginController(email, password, navigation, false, dispatch, setIsLoading)
@@ -29,6 +31,9 @@ export default function LoginScreen() {
             <SafeAreaView className="flex">
                 <PodCastTitleLogo />
             </SafeAreaView>
+            {
+                podcastData?.isoverlay && <OverlayLoading />
+            }
             <View className="flex-1"
                 style={{ borderTopLeftRadius: 50, borderTopRightRadius: 50 }}
             >
