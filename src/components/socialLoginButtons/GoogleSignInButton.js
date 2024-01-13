@@ -6,7 +6,7 @@ import { useDispatch } from 'react-redux';
 import { useNavigation } from '@react-navigation/native';
 import { SignUpController } from '../Controllers/SignUpController';
 import { LoginController } from '../Controllers/LoginController';
-import { SetOverlay } from '../../redux/PodcastUsers';
+import { SetOverlay, SetUserData } from '../../redux/PodcastUsers';
 
 const GoogleSignInButton = () => {
   const dispatch = useDispatch()
@@ -19,22 +19,19 @@ const GoogleSignInButton = () => {
     })
   }, [])
   const signIn = async () => {
+
     try {
       await GoogleSignin.hasPlayServices();
       const userInfo = await GoogleSignin.signIn();
       const user = userInfo.user
       dispatch(SetOverlay(true))
-      const res = await SignUpController(user.name, user.email, userInfo.idToken, '1', user.photo, navigation, true, setIsLoading)
+      const res = await SignUpController(user.name, user.email, userInfo.idToken, '1', user.photo, navigation, true, setIsLoading, dispatch)
       if (res.isExist) {
         await LoginController(user.email, userInfo.idToken, navigation, true, dispatch, setIsLoading)
-        dispatch(SetOverlay(false))
-      } else {
-        if (res.success) {
-          dispatch(SetOverlay(false))
-          navigation.navigate('Parent')
-        }
+        return dispatch(SetOverlay(false))
       }
-      dispatch(SetOverlay(false))
+      
+      // dispatch(SetOverlay(false))
     } catch (error) {
       dispatch(SetOverlay(false))
     }

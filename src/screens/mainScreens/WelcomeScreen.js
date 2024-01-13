@@ -16,21 +16,25 @@ export default function WelcomeScreen() {
     const dispatch = useDispatch()
     const [isLoading, setIsLoading] = useState(false)
     const GetUser = async () => {
-        const userid = await AsyncStorage.getItem('isLogged')
-        console.log(userid)
-        if (userid) {
-            const response = await ApiUrl.post(`/api/user/getuser`, { userid: userid }, {
-                headers: {
-                    'Content-Type': 'application/json',
+        try {
+            const userid = await AsyncStorage.getItem('isLogged')
+            if (userid) {
+                const response = await ApiUrl.post(`/api/user/getuser`, { userid: userid }, {
+                    headers: {
+                        'Content-Type': 'application/json',
+                    }
+                });
+                if (response.data.success) {
+                    dispatch(SetUserData(response.data.user))
+                    navigation.navigate('Parent')
                 }
-            });
-            if (response.data.success) {
-                dispatch(SetUserData(response.data.user))
-                navigation.navigate('Parent')
+            } else {
+                setIsLoading(true)
             }
-        } else {
+        } catch (error) {
             setIsLoading(true)
         }
+       
     }
     useEffect(() => {
         GetUser()

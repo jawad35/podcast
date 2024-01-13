@@ -17,7 +17,7 @@ const ReelsScreen = () => {
   const GetShorts = async() => {
     const response = await ApiUrl.get(`/api/user/get-short-videos`, {
       headers: {
-        'Content-Type': 'multipart/form-data',
+        'Content-Type': 'application/json',
       },
     });
     if(response.data.success) {

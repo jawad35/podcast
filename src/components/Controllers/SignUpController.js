@@ -1,7 +1,9 @@
 import { Alert } from "react-native";
 import { ApiUrl } from "../../constants/globalUrl";
+import { SetUserData } from "../../redux/PodcastUsers";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
-export const SignUpController = async (fullname, email, password, role, image_url, navigation, isSocailLogin, setIsLoading) => {
+export const SignUpController = async (fullname, email, password, role, image_url, navigation, isSocailLogin, setIsLoading, dispatch) => {
     try {
         if (!fullname) {
             Alert.alert('Error', 'Fullname field is required!');
@@ -37,11 +39,16 @@ export const SignUpController = async (fullname, email, password, role, image_ur
         if (response.data.success) {
             setIsLoading(false)
             if(isSocailLogin) {
-                return response.data
+                dispatch(SetUserData(response.data?.user))
+                        await AsyncStorage.setItem('isLogged', response.data?.user._id)
+                        navigation.navigate('Parent')
+                        return response.data
+                
             } else {
                 const userData = response.data;
                 navigation.navigate('CodeVerification', { userData, password })
                 Alert.alert('Verification', 'Verification code Email sent successfully!');
+                return response.data
             }
         } else {
             setIsLoading(false)

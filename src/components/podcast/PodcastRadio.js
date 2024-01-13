@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, Button } from 'react-native';
+import { View, Button, TouchableOpacity, Text } from 'react-native';
 import Sound from 'react-native-sound';
 
 const App = () => {
@@ -8,15 +8,21 @@ const App = () => {
 
 
   useEffect(() => {
+    try {
+      const audioURL = 'https://streaming.radio.co/s82eae5d4a/listen';
+      const soundObj = new Sound(audioURL, null, (error) => {
+        if (error) {
+          setIsPlaying(false)
+          console.error('Error loading sound', error);
+        } else {
+          setSound(soundObj);
+        }
+      });
+    } catch (error) {
+      
+    }
     // Load the sound file from the URL
-    const audioURL = 'https://streaming.radio.co/s82eae5d4a/listen';
-    const soundObj = new Sound(audioURL, null, (error) => {
-      if (error) {
-        console.error('Error loading sound', error);
-      } else {
-        setSound(soundObj);
-      }
-    });
+   
 
     // Cleanup function to release the sound when the component unmounts
     return () => {
@@ -27,22 +33,27 @@ const App = () => {
   }, []);
 
   const playSound = () => {
-    setIsPlaying(true)
-
-    if (sound) {
-      // Play the loaded sound
-      sound.play((success) => {
-        if (success) {
-          console.log('Sound played successfully');
-        } else {
-          console.error('Error playing sound');
-        }
-      });
+    
+    try {
+      if (sound) {
+        // Play the loaded sound
+        sound.play((success) => {
+          if (success) {
+            setIsPlaying(true)
+            console.log('Sound played successfully');
+          } else {
+            console.error('Error playing sound');
+            setIsPlaying(false)
+          }
+        });
+      }
+    } catch (error) {
+      
     }
+    
   };
 
   const pauseSound = () => {
-
     if (sound) {
       sound.pause();
       setIsPlaying(false)
@@ -52,10 +63,14 @@ const App = () => {
 
 
   return (
-    <View>
-      {
-        isPlaying ?  <Button title="Stop" onPress={pauseSound} /> : <Button title="Play" onPress={playSound} />
-      }
+    <View className='rounded-md m-3'>
+      <TouchableOpacity className='bg-gray_light p-5 rounded-xl'>
+        <Text className='text-white_color text-center font-bold text-lg' onPress={isPlaying ? pauseSound : playSound}>
+        {
+          isPlaying ? "Stop Radio" : "Play Radio"
+        }
+        </Text>
+      </TouchableOpacity>
     </View>
   );
 };

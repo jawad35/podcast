@@ -7,6 +7,8 @@ import { scale } from 'react-native-size-matters'
 import { useNavigation } from '@react-navigation/native'
 import { useSelector } from 'react-redux'
 import { defaultProfile } from '../../utils/Constants'
+import { StripeProvider } from '@stripe/stripe-react-native';
+
 
 export default function TrendingPosts() {
   const [TrendingPodcasts, setTrendingPodcast] = useState([])
@@ -24,7 +26,12 @@ export default function TrendingPosts() {
     GetTrendingPodcast()
   }, [podcastData])
   return (
-    <SafeAreaView className='bg-black flex-1'>
+    <StripeProvider
+      publishableKey="pk_test_51MslBhAeOlKaLrSISkg3FHP8WAkD6kMSK4sthpUs5Bha1H1u4Cs29X7EucKZXjRITKypWk7cY0SpQpvxffR0OiAF00c0q8fYOi"
+      merchantIdentifier="merchant.com.podcast" // required for Apple Pay
+    >
+      // Your app code here
+      <SafeAreaView className='bg-black flex-1'>
       <HeaderTitle title={'Podcast Trendings'} />
       {
         TrendingPodcasts.length !== 0 ?  <View className='p-2'>
@@ -53,5 +60,7 @@ export default function TrendingPosts() {
       }
 
     </SafeAreaView>
+    </StripeProvider>
+    
   )
 }
