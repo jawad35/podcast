@@ -1,7 +1,7 @@
 import { Alert } from "react-native";
 import { ApiUrl } from "../../constants/globalUrl";
 
-export const SignUpController = async (fullname, email, password, role, image_url, navigation, isSocailLogin, setIsLoading) => {
+export const SignUpController = async (fullname, email, password, role, categories, image_url, navigation, isSocailLogin, setIsLoading) => {
     try {
         if (!fullname) {
             Alert.alert('Error', 'Fullname field is required!');
@@ -25,6 +25,7 @@ export const SignUpController = async (fullname, email, password, role, image_ur
             password,
             image_url,
             role,
+            categories,
             isSocailLogin
         }
         setIsLoading(true)

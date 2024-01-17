@@ -3,9 +3,9 @@ import React from 'react'
 import customButtonsStyles from '../../styles/customButtonsStyle'
 import { scale } from 'react-native-size-matters'
 
-const CustomButtons = ({ title, onClick, color, textColor, disable, isLoading }) => {
+const CustomButtons = ({ title, onClick, color, textColor, disable, isLoading, styling }) => {
     return (
-        <View style={customButtonsStyles.buttonWrapper} className={`bg-${color ? color : 'white_color'}`}>
+        <View style={customButtonsStyles.buttonWrapper} className={`bg-${color ? color : 'white_color'} ${styling}`}>
             <TouchableOpacity
                 disabled={disable}
                 className={`bg-${color} rounded-md w-full h-full flex justify-center items-center`}

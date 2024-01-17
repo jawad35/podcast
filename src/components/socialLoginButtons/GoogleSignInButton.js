@@ -7,6 +7,7 @@ import { useNavigation } from '@react-navigation/native';
 import { SignUpController } from '../Controllers/SignUpController';
 import { LoginController } from '../Controllers/LoginController';
 import { SetOverlay } from '../../redux/PodcastUsers';
+import { IsUserExistController } from '../Controllers/IsUserExistController';
 
 const GoogleSignInButton = () => {
   const dispatch = useDispatch()
@@ -18,21 +19,26 @@ const GoogleSignInButton = () => {
       webClientId: "614368503988-e1ehghb2klmjoshk3covrmdbibinttcf.apps.googleusercontent.com"
     })
   }, [])
+
   const signIn = async () => {
     try {
+
       await GoogleSignin.hasPlayServices();
       const userInfo = await GoogleSignin.signIn();
       const user = userInfo.user
       dispatch(SetOverlay(true))
-      const res = await SignUpController(user.name, user.email, userInfo.idToken, '1', user.photo, navigation, true, setIsLoading)
-      if (res.isExist) {
+      console.log(user.email)
+      const res = await IsUserExistController(user.email, setIsLoading)
+      console.log(res, 'janh')
+      // const res = await SignUpController(user.name, user.email, userInfo.idToken, '1', user.photo, navigation, true, setIsLoading)
+      if (res) {
         await LoginController(user.email, userInfo.idToken, navigation, true, dispatch, setIsLoading)
         dispatch(SetOverlay(false))
       } else {
-        if (res.success) {
-          dispatch(SetOverlay(false))
-          navigation.navigate('Parent')
+        const UserData = {
+          fullname: user.name, email: user.email, password: userInfo.idToken, isSocailLogin: true
         }
+        navigation.navigate('AtStartSelectRole', UserData)
       }
       dispatch(SetOverlay(false))
     } catch (error) {

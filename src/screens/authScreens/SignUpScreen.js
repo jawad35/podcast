@@ -18,6 +18,7 @@ import userroles from '../../data/userroles';
 import PodcastRadio from '../../components/podcast/PodcastRadio';
 import OverlayLoading from '../../components/Items/OverlayLoading';
 import { useSelector } from 'react-redux';
+import { UserFormValidation } from '../../components/Helper/FormValidation';
 
 // subscribe for more videos like this :)
 export default function SignUpScreen() {
@@ -26,14 +27,21 @@ export default function SignUpScreen() {
     const [fullname, setFullname] = useState('')
     const [password, setPassword] = useState('')
     const [email, setEmail] = useState('')
-    const [role, setRole] = useState(null)
+    // const [role, setRole] = useState(null)
     const [profileImage, setProfileImage] = useState('')
     const [imageLocalPath, setImageLocalPath] = useState('')
     const [isLoading, setIsLoading] = useState(false)
     // const windowHeight = Dimensions.get('window').height;
     const SignUpUser = () => {
-        // navigation.navigate('PodCategories')
-        SignUpController(fullname, email, password, role, null, navigation, false, setIsLoading)
+        const areValidInputs = UserFormValidation(fullname, email, password)
+        if (areValidInputs) {
+            const UserData = {
+                fullname, email, password, isSocailLogin:false
+            }
+            navigation.navigate('AtStartSelectRole', UserData)
+        }
+       
+        // SignUpController(fullname, email, password, role, null, navigation, false, setIsLoading)
 
     }
     const openProfilePicker = () => {
@@ -89,7 +97,7 @@ export default function SignUpScreen() {
                         style={{ color: 'black', paddingHorizontal: scale(15) }}
                     />
                 </View>
-                <View className='flex flex-row justify-around' style={{ marginTop: scale(20) }}>
+                {/* <View className='flex flex-row justify-around' style={{ marginTop: scale(20) }}>
                     <SelectDropdown
                         defaultButtonText='Select Role'
                         buttonStyle={{
@@ -116,7 +124,7 @@ export default function SignUpScreen() {
                             return item
                         }}
                     />
-                </View>
+                </View> */}
                 {/* <View className='flex-1 justify-center items-center'>
                     {imageLocalPath && <Image className='rounded-lg' source={{ uri: imageLocalPath }} width={responsiveWidth(15)} resizeMode='contain' height={responsiveHeight(15)} />}
                     <CustomButtons title={'Profile Image'} color={'white_color'} onClick={() => openProfilePicker()} />

@@ -9,8 +9,12 @@ import { useNavigation } from '@react-navigation/native'
 import { useDispatch, useSelector } from 'react-redux'
 import { ApiUrl } from '../../constants/globalUrl'
 import { getPodcastCategory } from '../../redux/SelectedCategorySlice'
+import { SignUpController } from '../../components/Controllers/SignUpController'
+import { SetOverlay } from '../../redux/PodcastUsers'
+import AsyncStorage from '@react-native-async-storage/async-storage'
 const PodCategories = ({ route }) => {
-    const { userData, password, } = route?.params
+    console.log(route.params, 'je')
+    const { email, password, fullname, role, isSocailLogin } = route?.params
     const podcastData = useSelector(state => state.userData)
     const navigation = useNavigation();
     const dispatch = useDispatch()
@@ -30,33 +34,33 @@ const PodCategories = ({ route }) => {
 
     }
     // console.log(selectCatgories)
-    const AddCategories = async () => {
-        const trueValues = niche.filter(item => item.value === true);
-        const titlesWithTrueValue = trueValues.map(item => item.title)
-        try {
-            const postData = {
-                categories: titlesWithTrueValue,
-                id: userData?.user?._id
-            }
-            const response = await ApiUrl.post(`/api/user/add-categories`, postData, {
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-            });
-            if (response.data.success) {
-                // setIsFollow(false)
-                // setFollowers(response.data.followers)
-                // setFollowing(response.data.following)
-                // setRefresh('2')
-        setIsLoading(true)
-                LoginController(userData?.user?.email, password, navigation, false, dispatch, setIsLoading)
+    // const AddCategories = async () => {
+    //     const trueValues = niche.filter(item => item.value === true);
+    //     const titlesWithTrueValue = trueValues.map(item => item.title)
+    //     try {
+    //         const postData = {
+    //             categories: titlesWithTrueValue,
+    //             id: userData?.user?._id
+    //         }
+    //         const response = await ApiUrl.post(`/api/user/add-categories`, postData, {
+    //             headers: {
+    //                 'Content-Type': 'application/json',
+    //             },
+    //         });
+    //         if (response.data.success) {
+    //             // setIsFollow(false)
+    //             // setFollowers(response.data.followers)
+    //             // setFollowing(response.data.following)
+    //             // setRefresh('2')
+    //     setIsLoading(true)
+    //             LoginController(userData?.user?.email, password, navigation, false, dispatch, setIsLoading)
 
-            }
-        } catch (error) {
-            // Alert.alert("Error", error)
-            console.log(error)
-        }
-    }
+    //         }
+    //     } catch (error) {
+    //         // Alert.alert("Error", error)
+    //         console.log(error)
+    //     }
+    // }
     useEffect(() => {
         const countOfTrueValues = niche.filter(item => item.value === true).length;
         if (countOfTrueValues > 3 || countOfTrueValues === 0) {
@@ -65,6 +69,22 @@ const PodCategories = ({ route }) => {
             setIsDisable(false)
         }
     }, [niche])
+
+    const CreatUser = async() => {
+        const trueValues = niche.filter(item => item.value === true);
+        const titlesWithTrueValue = trueValues.map(item => item.title)
+        const res = await SignUpController(fullname, email, password, role, titlesWithTrueValue, null, navigation, isSocailLogin, setIsLoading)
+        if (res.isExist) {
+            await LoginController(email, password, navigation, isSocailLogin, dispatch, setIsLoading)
+            dispatch(SetOverlay(false))
+          } else {
+            if (res.success) {
+                await AsyncStorage.setItem('isLogged', res?.data?.user._id)
+              dispatch(SetOverlay(false))
+              navigation.navigate('Parent')
+            }
+          }
+    }
     return (
         <SafeAreaView className='bg-black flex-1'>
             <ScrollView className='px-4' >
@@ -96,8 +116,8 @@ const PodCategories = ({ route }) => {
                     }
                 </View>
                 {
-                    !podcastData?.user?.email && <View style={{ marginVertical: scale(90) }}>
-                        <CustomButtons isLoading={isLoading} disable={IsDisable} onClick={AddCategories} color={'brown_darker'} textColor={'white_color'} title={'Done!'} />
+                    !podcastData?.user?.email && <View style={{ marginVertical: scale(40) }}>
+                        <CustomButtons isLoading={isLoading} disable={IsDisable} onClick={CreatUser} color={'brown_darker'} textColor={'white_color'} title={'Done!'} />
                     </View>
                 }
             </ScrollView>
