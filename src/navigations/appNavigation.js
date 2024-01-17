@@ -72,7 +72,7 @@ export default function AppNavigation() {
 
   return (
     <Stack.Navigator screenOptions={{ headerShown: false }}>
-      {/* <Stack.Screen name="StripeProducts" options={{ headerShown: false }} component={stripeProducts} />  */}
+      <Stack.Screen name="StripeProducts" options={{ headerShown: false }} component={stripeProducts} /> 
       {/* <Stack.Screen name="UserRole" options={{ headerShown: false }} component={SelectUserRole} />  */}
       <Stack.Screen name="Welcome" options={{ headerShown: false }} component={WelcomeScreen} /> 
       <Stack.Screen name="Parent" options={{ headerShown: false }} component={Parent} />
