@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from 'react';
-import { View, Dimensions} from 'react-native';
+import { View, Dimensions, Text } from 'react-native';
 import { SwiperFlatList } from 'react-native-swiper-flatlist'
 import SingleReel from '../../components/podcast/SingleReel';
 import { ApiUrl } from '../../constants/globalUrl';
 import { useSelector } from 'react-redux';
 const ReelsScreen = () => {
- 
+
   const shortsData = useSelector(state => state.userData)
   const [shorts, setShorts] = useState([])
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -14,13 +14,13 @@ const ReelsScreen = () => {
   };
   const windowWidth = Dimensions.get('window').width;
   const windowHeight = Dimensions.get('window').height;
-  const GetShorts = async() => {
+  const GetShorts = async () => {
     const response = await ApiUrl.get(`/api/user/get-short-videos`, {
       headers: {
         'Content-Type': 'multipart/form-data',
       },
     });
-    if(response.data.success) {
+    if (response.data.success) {
       setShorts(response.data.shorts)
     }
   }
@@ -35,17 +35,20 @@ const ReelsScreen = () => {
       position: 'relative',
       backgroundColor: 'black',
     }}>
-      <SwiperFlatList
-        vertical={true}
-        onChangeIndex={handleChangeIndexValue}
-        data={shorts}
-        pagingEnabled
-        showsVerticalScrollIndicator={false}
-        renderItem={({ item, index }) => (
-          <SingleReel item={item} index={index} currentIndex={currentIndex} setCurrentIndex={setCurrentIndex} />
-        )}
-        keyExtractor={(item, index) => index}
-      />
+      {
+        shorts.length === 0 ? <View className='flex-1 justify-center items-center'><Text className='text-white_color'>No Videos</Text></View> : <SwiperFlatList
+          vertical={true}
+          onChangeIndex={handleChangeIndexValue}
+          data={shorts}
+          pagingEnabled
+          showsVerticalScrollIndicator={false}
+          renderItem={({ item, index }) => (
+            <SingleReel item={item} index={index} currentIndex={currentIndex} setCurrentIndex={setCurrentIndex} />
+          )}
+          keyExtractor={(item, index) => index}
+        />
+      }
+
     </View>
   );
 };

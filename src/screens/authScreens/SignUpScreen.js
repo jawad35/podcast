@@ -19,6 +19,7 @@ import PodcastRadio from '../../components/podcast/PodcastRadio';
 import OverlayLoading from '../../components/Items/OverlayLoading';
 import { useSelector } from 'react-redux';
 import { UserFormValidation } from '../../components/Helper/FormValidation';
+import { IsUserExistController } from '../../components/Controllers/IsUserExistController';
 
 // subscribe for more videos like this :)
 export default function SignUpScreen() {
@@ -32,26 +33,32 @@ export default function SignUpScreen() {
     const [imageLocalPath, setImageLocalPath] = useState('')
     const [isLoading, setIsLoading] = useState(false)
     // const windowHeight = Dimensions.get('window').height;
-    const SignUpUser = () => {
-        const areValidInputs = UserFormValidation(fullname, email, password)
-        if (areValidInputs) {
-            const UserData = {
-                fullname, email, password, isSocailLogin:false
+    const SignUpUser = async () => {
+        const areValidInputs = UserFormValidation(fullname?.replace(/\s/g, ''), email?.replace(/\s/g, ''), password?.replace(/\s/g, ''))
+        const isUserExist = await IsUserExistController(email, setIsLoading)
+        console.log(isUserExist)
+        if (isUserExist) {
+            return Alert.alert("Exist", 'This email user already exist!')
+        } else {
+            if (areValidInputs) {
+                const UserData = {
+                    fullname, email, password, isSocailLogin:false
+                }
+                setIsLoading(false)
+                navigation.navigate('AtStartSelectRole', UserData)
             }
-            navigation.navigate('AtStartSelectRole', UserData)
         }
-       
         // SignUpController(fullname, email, password, role, null, navigation, false, setIsLoading)
 
     }
-    const openProfilePicker = () => {
-        launchImageLibrary({}, (response) => {
-            if (!response.didCancel) {
-                setProfileImage(response.assets[0])
-                setImageLocalPath(response.assets[0].uri)
-            }
-        });
-    };
+    // const openProfilePicker = () => {
+    //     launchImageLibrary({}, (response) => {
+    //         if (!response.didCancel) {
+    //             setProfileImage(response.assets[0])
+    //             setImageLocalPath(response.assets[0].uri)
+    //         }
+    //     });
+    // };
     return (
         <ScrollView contentContainerStyle={{ flexGrow: 1, paddingBottom: responsiveHeight(6) }} className="flex-1 bg-black">
             <SafeAreaView className="flex">

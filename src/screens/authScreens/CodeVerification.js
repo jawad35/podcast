@@ -9,11 +9,15 @@ import PodCastTitleLogo from '../../components/podcast/PodCastTitleLogo';
 import { ApiUrl } from '../../constants/globalUrl';
 import CustomButtons from '../../components/Items/CustomButtons';
 import { scale } from 'react-native-size-matters';
+import { SetUserData } from '../../redux/PodcastUsers';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useDispatch } from 'react-redux';
 
 // subscribe for more videos like this :)
 export default function CodeVerification({ route }) {
-    const { userData, password } = route?.params
+    const { userData } = route?.params
     const navigation = useNavigation();
+    const dispatch = useDispatch();
     const [code, setCode] = useState('')
     const [isLoading, setIsLoading] = useState(false)
     const VerifyCode = async () => {
@@ -29,13 +33,13 @@ export default function CodeVerification({ route }) {
                 }
             });
             if (response.data.success) {
-            setIsLoading(false)
-
-                Alert.alert('Verified', response.data.message);
-                navigation.navigate('PodCategories', {userData, password})
+                setIsLoading(false)
+                dispatch(SetUserData(response.data.user))
+                await AsyncStorage.setItem('isLogged', response?.data?.user._id)
+                navigation.navigate('Parent')
             } else {
                 Alert.alert('Error', response.data.error);
-            setIsLoading(false)
+                setIsLoading(false)
 
             }
         } catch (error) {
@@ -71,7 +75,7 @@ export default function CodeVerification({ route }) {
                             maxLength={4}
                             keyboardType='numeric'
                             placeholderTextColor={'black'}
-                            style={{color:'black', paddingHorizontal:scale(15)}}
+                            style={{ color: 'black', paddingHorizontal: scale(15) }}
                         />
                     </View>
                     <View style={{ marginTop: scale(10) }}>

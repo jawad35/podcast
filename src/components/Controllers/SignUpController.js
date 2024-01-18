@@ -53,7 +53,6 @@ export const SignUpController = async (fullname, email, password, role, categori
         }
     } catch (error) {
         setIsLoading(false)
-
         Alert.alert('Error', 'Something went wrong!');
 
     }

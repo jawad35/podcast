@@ -29,7 +29,6 @@ const GoogleSignInButton = () => {
       dispatch(SetOverlay(true))
       console.log(user.email)
       const res = await IsUserExistController(user.email, setIsLoading)
-      console.log(res, 'janh')
       // const res = await SignUpController(user.name, user.email, userInfo.idToken, '1', user.photo, navigation, true, setIsLoading)
       if (res) {
         await LoginController(user.email, userInfo.idToken, navigation, true, dispatch, setIsLoading)

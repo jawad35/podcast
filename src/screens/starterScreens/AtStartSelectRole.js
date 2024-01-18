@@ -11,13 +11,11 @@ const AtStartSelectRole = ({ route }) => {
   const [active, setActive] = useState(0)
 
   const OnSubmit = () => {
-    if (active === 1) {
       const UserData = {
         ...route.params,
         role:active
       }
       navigation.navigate("PodCategories", UserData)
-    }
   }
 
   return (

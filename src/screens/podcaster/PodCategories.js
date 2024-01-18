@@ -1,27 +1,18 @@
-import { View, Text, FlatList, TouchableOpacity, SafeAreaView, Button, StyleSheet, ScrollView } from 'react-native'
-import React, { useEffect, useState } from 'react'
+import { View, Text,  TouchableOpacity, SafeAreaView, Button, StyleSheet, ScrollView, Alert } from 'react-native'
+import React, {  useState } from 'react'
 import nicheItems from '../../data/nicheItems'
-import { scale, verticalScale } from 'react-native-size-matters'
+import { scale } from 'react-native-size-matters'
 import CustomButtons from '../../components/Items/CustomButtons'
 import { PodCategoriesStyles } from '../../styles/podCategoriesStyle'
-import { LoginController } from '../../components/Controllers/LoginController'
 import { useNavigation } from '@react-navigation/native'
 import { useDispatch, useSelector } from 'react-redux'
-import { ApiUrl } from '../../constants/globalUrl'
 import { getPodcastCategory } from '../../redux/SelectedCategorySlice'
-import { SignUpController } from '../../components/Controllers/SignUpController'
-import { SetOverlay } from '../../redux/PodcastUsers'
-import AsyncStorage from '@react-native-async-storage/async-storage'
 const PodCategories = ({ route }) => {
-    console.log(route.params, 'je')
-    const { email, password, fullname, role, isSocailLogin } = route?.params
+    const { role } = route?.params
     const podcastData = useSelector(state => state.userData)
     const navigation = useNavigation();
     const dispatch = useDispatch()
     const [niche, setNiche] = useState(nicheItems)
-    const [IsDisable, setIsDisable] = useState(true)
-    const [isLoading, setIsLoading] = useState(false)
-
     const onSelect = (index) => {
         setNiche((prevNiche) => {
             return prevNiche.map((item, i) => {
@@ -30,60 +21,27 @@ const PodCategories = ({ route }) => {
             )
         }
         );
-        // console.log(count)
-
     }
-    // console.log(selectCatgories)
-    // const AddCategories = async () => {
-    //     const trueValues = niche.filter(item => item.value === true);
-    //     const titlesWithTrueValue = trueValues.map(item => item.title)
-    //     try {
-    //         const postData = {
-    //             categories: titlesWithTrueValue,
-    //             id: userData?.user?._id
-    //         }
-    //         const response = await ApiUrl.post(`/api/user/add-categories`, postData, {
-    //             headers: {
-    //                 'Content-Type': 'application/json',
-    //             },
-    //         });
-    //         if (response.data.success) {
-    //             // setIsFollow(false)
-    //             // setFollowers(response.data.followers)
-    //             // setFollowing(response.data.following)
-    //             // setRefresh('2')
-    //     setIsLoading(true)
-    //             LoginController(userData?.user?.email, password, navigation, false, dispatch, setIsLoading)
 
-    //         }
-    //     } catch (error) {
-    //         // Alert.alert("Error", error)
-    //         console.log(error)
-    //     }
-    // }
-    useEffect(() => {
+    const CreatUser = async () => {
         const countOfTrueValues = niche.filter(item => item.value === true).length;
-        if (countOfTrueValues > 3 || countOfTrueValues === 0) {
-            setIsDisable(true)
+        if (role === 2) {
+            if (countOfTrueValues > 5 || countOfTrueValues === 0) {
+                return Alert.alert("Categories", "Categories should be between 1-5")
+            }
         } else {
-            setIsDisable(false)
+            if (countOfTrueValues > 3 || countOfTrueValues === 0) {
+                return Alert.alert("Categories", "Categories should be between 1-3")
+            }
         }
-    }, [niche])
-
-    const CreatUser = async() => {
+       
         const trueValues = niche.filter(item => item.value === true);
         const titlesWithTrueValue = trueValues.map(item => item.title)
-        const res = await SignUpController(fullname, email, password, role, titlesWithTrueValue, null, navigation, isSocailLogin, setIsLoading)
-        if (res.isExist) {
-            await LoginController(email, password, navigation, isSocailLogin, dispatch, setIsLoading)
-            dispatch(SetOverlay(false))
-          } else {
-            if (res.success) {
-                await AsyncStorage.setItem('isLogged', res?.data?.user._id)
-              dispatch(SetOverlay(false))
-              navigation.navigate('Parent')
-            }
-          }
+        const UserData = {
+            ...route.params,
+            categories:titlesWithTrueValue
+        }
+        navigation.navigate('StartTrial', UserData)
     }
     return (
         <SafeAreaView className='bg-black flex-1'>
@@ -117,7 +75,7 @@ const PodCategories = ({ route }) => {
                 </View>
                 {
                     !podcastData?.user?.email && <View style={{ marginVertical: scale(40) }}>
-                        <CustomButtons isLoading={isLoading} disable={IsDisable} onClick={CreatUser} color={'brown_darker'} textColor={'white_color'} title={'Done!'} />
+                        <CustomButtons onClick={CreatUser} color={'brown_darker'} textColor={'white_color'} title={'Done!'} />
                     </View>
                 }
             </ScrollView>

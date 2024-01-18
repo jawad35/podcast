@@ -26,6 +26,7 @@ import stripeProducts from '../screens/stripe/stripeProducts.js';
 import SelectUserRole from '../screens/podcaster/SelectUserRole.js';
 import PackageDetails from '../screens/stripe/PackageDetails.js';
 import AtStartSelectRole from '../screens/starterScreens/AtStartSelectRole.js';
+import StartTrial from '../screens/starterScreens/StartTrial.js';
 // import { io } from 'socket.io-client';
 // import socketServcies from '../socketClient.js';
 
@@ -74,7 +75,6 @@ export default function AppNavigation() {
 
   return (
     <Stack.Navigator screenOptions={{ headerShown: false }}>
-
       {/* <Stack.Screen name="UserRole" options={{ headerShown: false }} component={SelectUserRole} />  */}
       <Stack.Screen name="Welcome" options={{ headerShown: false }} component={WelcomeScreen} /> 
       <Stack.Screen name="Parent" options={{ headerShown: false }} component={Parent} />
@@ -93,8 +93,8 @@ export default function AppNavigation() {
       <Stack.Screen name="UpdatePodcast" options={{ headerShown: false }} component={UpdatePodCast} />
       <Stack.Screen name="PackageDetails" options={{ headerShown: false }} component={PackageDetails} /> 
       <Stack.Screen name="AtStartSelectRole" options={{ headerShown: false }} component={AtStartSelectRole} /> 
+      <Stack.Screen name="StartTrial" options={{ headerShown: false }} component={StartTrial} /> 
       <Stack.Screen name="StripeProducts" options={{ headerShown: false }} component={stripeProducts} /> 
-
     </Stack.Navigator>
   )
 }

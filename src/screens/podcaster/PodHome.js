@@ -9,9 +9,6 @@ import { useSelector } from 'react-redux'
 import PodcastRadio from '../../components/podcast/PodcastRadio'
 
 export default function PodHome({ navigation }) {
-  const podcastData = useSelector(state => state.userData)
-  const [isPlay, setIsPlay] = useState(true);
-
   return (
     <SafeAreaView className='bg-black'>
       {/* top header */}

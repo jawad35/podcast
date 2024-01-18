@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { View, Button } from 'react-native';
+import { View, Button, TouchableOpacity, Text } from 'react-native';
+import { scale } from 'react-native-size-matters';
 import Sound from 'react-native-sound';
 
 const App = () => {
@@ -53,8 +54,14 @@ const App = () => {
 
   return (
     <View>
+      <Text style={{fontSize:scale(20), marginVertical:scale(15)}} className='text-white_color text-center font-bold'>Podcat Radio</Text>
+      
       {
-        isPlaying ?  <Button title="Stop" onPress={pauseSound} /> : <Button title="Play" onPress={playSound} />
+        isPlaying ?  <TouchableOpacity onPress={() => pauseSound()} className='bg-brown_darker flex items-center justify-center rounded-md' style={{height:scale(60)}}>
+        <Text className='text-white_color text-center' style={{fontSize:scale(23)}}>Stop</Text>
+      </TouchableOpacity> : <TouchableOpacity onPress={() => playSound()} className='bg-brown_darker flex items-center justify-center rounded-md' style={{height:scale(60)}}>
+        <Text className='text-white_color text-center' style={{fontSize:scale(20)}}>Play</Text>
+      </TouchableOpacity>
       }
     </View>
   );

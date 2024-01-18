@@ -12,7 +12,8 @@ module.exports = {
       silver:'#C0C0C0',
       black:'#000000',
       gray_light:'#2876A8',
-      yellow_light:'#F3F17C'
+      yellow_light:'#F3F17C',
+      text_gray:'#808080'
     },
     extend: {},
   },
