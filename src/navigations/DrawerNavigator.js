@@ -9,12 +9,15 @@ import UpdatePodCast from '../screens/podcaster/UpdatePodcast';
 import CreateShort from '../screens/podcaster/CreateShort';
 import Logout from '../screens/authScreens/Logout';
 import { useSelector } from 'react-redux';
+import CustomDrawerContent from '../components/Items/CustomDrawerContent';
 const Drawer = createDrawerNavigator();
 const DrawerNavigator = () => {
   const podcastData = useSelector(state => state.userData)
 
   return (
-    <Drawer.Navigator>
+    <Drawer.Navigator
+    drawerContent={(props) => <CustomDrawerContent {...props} />}
+    >
       <Drawer.Screen
         name="Home"
         component={HomeScreen}

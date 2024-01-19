@@ -27,6 +27,7 @@ import SelectUserRole from '../screens/podcaster/SelectUserRole.js';
 import PackageDetails from '../screens/stripe/PackageDetails.js';
 import AtStartSelectRole from '../screens/starterScreens/AtStartSelectRole.js';
 import StartTrial from '../screens/starterScreens/StartTrial.js';
+import StripeCheckout from '../screens/stripe/StripeCheckout.js';
 // import { io } from 'socket.io-client';
 // import socketServcies from '../socketClient.js';
 
@@ -94,7 +95,8 @@ export default function AppNavigation() {
       <Stack.Screen name="PackageDetails" options={{ headerShown: false }} component={PackageDetails} /> 
       <Stack.Screen name="AtStartSelectRole" options={{ headerShown: false }} component={AtStartSelectRole} /> 
       <Stack.Screen name="StartTrial" options={{ headerShown: false }} component={StartTrial} /> 
-      <Stack.Screen name="StripeProducts" options={{ headerShown: false }} component={stripeProducts} /> 
+      <Stack.Screen name="StripeProducts" options={{ headerShown: false }} component={stripeProducts} />
+      <Stack.Screen name="Checkout" options={{ headerShown: false }} component={StripeCheckout} /> 
     </Stack.Navigator>
   )
 }

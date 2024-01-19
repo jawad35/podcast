@@ -4,9 +4,12 @@ import HeaderTitle from '../../components/podcast/HeaderTitle'
 import CustomButtons from '../../components/Items/CustomButtons'
 import { scale } from 'react-native-size-matters'
 import { GetPackageName } from '../../components/Helper/GetPackageName'
+import { useNavigation } from '@react-navigation/native'
 
 const PackageDetails = ({ route }) => {
     const [Details, setDetails] = useState()
+    const navigation = useNavigation();
+
     const Basic = {
         TopText: `Full registration on Android and iOS app 1 Podcast Category Suggestions feature Trending`,
         facebookLink: 'https://www.facebook.com/groups/849570469228088',
@@ -35,13 +38,13 @@ const PackageDetails = ({ route }) => {
         bottomText: 'Podcast Review 700/1000 Words Published On www.podcasttonight.com Podcast Radio 3 Times Weekly Direct Link On Article To Your Podcast Featured In Top 3 Of A Top 10 Article In Your Niche (Drives More Traffic) Be Featured In Our Newsletter To 30.000+ Weekly TikTok Video To Our 76.000+ Followers Weekly YouTube Shorts Posted On Our Channel Social Media Posts On Insta/Twitter/Pinterest/FB For Every Latest Episode Linking To Your Podcast Discord Community Access Facebook Group Access. Self Promo 5x A Week'
     }
     useEffect(() => {
-        if (route.params?.item?.unit_amount === 1900) {
+        if (route.params?.item?.Price === 19) {
             setDetails(Basic)
         }
-        if (route.params?.item?.unit_amount === 5900) {
+        if (route.params?.item?.Price === 59) {
             setDetails(Top10)
         }
-        if (route.params?.item?.unit_amount === 9900) {
+        if (route.params?.item?.Price === 99) {
             setDetails(Pro)
         }
     }, [])
@@ -63,11 +66,10 @@ const PackageDetails = ({ route }) => {
             <HeaderTitle title={"Package Details"} icon={true} />
             <ScrollView>
                 <View >
-                    <Text className='bg-brown_darker text-white_color text-center p-2 m-2 text-lg rounded-lg font-bold'>{GetPackageName(route.params?.item?.unit_amount)}</Text>
+                    <Text className='bg-brown_darker text-white_color text-center p-2 m-2 text-lg rounded-lg font-bold'>{route.params?.item?.name}</Text>
                     <View className='p-2 m-2'>
                         <Text className='p-2 bg-white_color text-black rounded-md'>{Details?.TopText}</Text>
                         <Text className='p-2 mt-2 font-bold text-lg text-white_color inline-block text-center rounded-md'>Social Links</Text>
-
                         <CustomButtons styling="my-2" color={'white_color'} textColor={'black'} onClick={() => openExternalLink(Details.facebookLink)} title={"Facebook"} />
                         <CustomButtons styling="my-2" color={'white_color'} textColor={'black'} onClick={() => openExternalLink(Details.tiktokLink)} title={"TikTok"} />
                         <CustomButtons styling="my-2" color={'white_color'} textColor={'black'} onClick={() => openExternalLink(Details.twitterLink)} title={"Twitter"} />
@@ -76,8 +78,7 @@ const PackageDetails = ({ route }) => {
                         {
                             Details?.bottomText && <Text className='p-2 bg-white_color text-black rounded-md'>{Details?.bottomText}</Text>
                         }
-                        <CustomButtons styling="my-2" color={'brown_darker'} textColor={'white_color'} onClick={() => openExternalLink(Details.instaLink)} title={"Subscribe"} />
-
+                        <CustomButtons styling="my-2" color={'brown_darker'} textColor={'white_color'} onClick={() => navigation.navigate('Checkout', {price:route.params?.item?.Price})} title={"Subscribe"} />
                     </View>
                 </View>
             </ScrollView>

@@ -6,45 +6,24 @@ import { useNavigation } from '@react-navigation/native';
 import { GetPackageName } from '../../components/Helper/GetPackageName';
 
 const StripeProducts = () => {
-  const [prices, setPrices] = useState([])
-  // const { confirmPayment } = useStripe();
-  const [paymentMethod, setPaymentMethod] = useState(null);
   const navigation = useNavigation()
-
-  const GetProductsPrices = async () => {
-    const prices = await ApiUrl.get('api/subs/prices', {
-      headers: {
-        'Content-Type': 'application/json',
-      }
-    })
-    const pricesArray = prices.data.prices.data
-    pricesArray?.shift()
-    setPrices(pricesArray)
-  }
-  const createSubscription = async (paymentMethodId) => {
-    try {
-      const response = await fetch('http://your-backend-url/create-subscription', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ paymentMethodId, priceId: 'your_price_id_here' }),
-      });
-
-      if (response.ok) {
-        const subscription = await response.json();
-        console.log('Subscription created:', subscription);
-      } else {
-        console.error('Subscription failed');
-      }
-    } catch (error) {
-      console.error(error);
+  const prices = [
+    {
+      id:'1',
+      name:"Basic",
+      Price:19
+    },
+    {
+      id:'2',
+      name:"Top10",
+      Price:59
+    },
+    {
+      id:'3',
+      name:"Pro",
+      Price:99
     }
-  };
-
-  useEffect(() => {
-    GetProductsPrices()
-  }, [])
+  ]
  
   return (
     <SafeAreaView className="flex-1 bg-black">
@@ -55,12 +34,11 @@ const StripeProducts = () => {
         {prices.map((item) => (
           <TouchableOpacity onPress={() => navigation.navigate("PackageDetails", { item })} className='flex-1 items-center w-full bg-white_color m-3 p-3 rounded-md' key={item.id}>
             {
-              item.unit_amount === 5900 && <Text style={{ fontSize: scale(10) }} className='text-start bg-red_darker px-1 absolute left-1 top-1 rounded-sm text-white_color'>Recommended</Text>
+              item.Price === 59 && <Text style={{ fontSize: scale(10) }} className='text-start bg-red_darker px-1 absolute left-1 top-1 rounded-sm text-white_color'>Recommended</Text>
             }
-            <Text className='font-bold text-text_gray'>{GetPackageName(item.unit_amount)}</Text>
-            <Text style={{ fontSize: scale(40), marginVertical: scale(10) }} className='font-bold text-text_gray'>${item.unit_amount / 100}.00</Text>
-            <Text className='text-text_gray'>Per {item?.recurring?.interval}</Text>
-            <Text style={{ fontSize: scale(10) }} className='text-start bg-indigo px-1 absolute left-1 bottom-1 rounded-sm text-white_color'>3 month free trail</Text>
+            <Text className='font-bold text-text_gray'>{item.name}</Text>
+            <Text style={{ fontSize: scale(40), marginVertical: scale(10) }} className='font-bold text-text_gray'>${item.Price}.00</Text>
+            <Text className='text-text_gray'>Per Month</Text>
           </TouchableOpacity>
         ))}
       </View>
