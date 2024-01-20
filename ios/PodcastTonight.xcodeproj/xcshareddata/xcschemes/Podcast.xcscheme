@@ -15,9 +15,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "13B07F861A680F5B00A75B9A"
-               BuildableName = "Podcast.app"
-               BlueprintName = "Podcast"
-               ReferencedContainer = "container:Podcast.xcodeproj">
+               BuildableName = "PodcastTonight.app"
+               BlueprintName = "PodcastTonight"
+               ReferencedContainer = "container:PodcastTonight.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -33,9 +33,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "00E356ED1AD99517003FC87E"
-               BuildableName = "PodcastTests.xctest"
-               BlueprintName = "PodcastTests"
-               ReferencedContainer = "container:Podcast.xcodeproj">
+               BuildableName = "PodcastTonightTests.xctest"
+               BlueprintName = "PodcastTonightTests"
+               ReferencedContainer = "container:PodcastTonight.xcodeproj">
             </BuildableReference>
          </TestableReference>
       </Testables>
@@ -55,9 +55,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "13B07F861A680F5B00A75B9A"
-            BuildableName = "Podcast.app"
-            BlueprintName = "Podcast"
-            ReferencedContainer = "container:Podcast.xcodeproj">
+            BuildableName = "PodcastTonight.app"
+            BlueprintName = "PodcastTonight"
+            ReferencedContainer = "container:PodcastTonight.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </LaunchAction>
@@ -72,9 +72,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "13B07F861A680F5B00A75B9A"
-            BuildableName = "Podcast.app"
-            BlueprintName = "Podcast"
-            ReferencedContainer = "container:Podcast.xcodeproj">
+            BuildableName = "PodcastTonight.app"
+            BlueprintName = "PodcastTonight"
+            ReferencedContainer = "container:PodcastTonight.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </ProfileAction>
