@@ -14,6 +14,25 @@ const ReelsScreen = () => {
   };
   const windowWidth = Dimensions.get('window').width;
   const windowHeight = Dimensions.get('window').height;
+
+  const GetSuggestVidoes = (category) => {
+    category?.sort((a, b) => {
+      console.log(a, b)
+      // Check if category is "Comedy"
+      const isComedyA = a.category === "Comedy";
+      const isComedyB = b.category === "Comedy";
+    
+      // Sort by category, with "Comedy" videos coming first
+      if (isComedyA && !isComedyB) {
+        return -1; // A comes before B
+      } else if (!isComedyA && isComedyB) {
+        return 1; // B comes before A
+      } else {
+        return 0; // Keep the order unchanged
+      }
+    });
+  }
+
   const GetShorts = async () => {
     const response = await ApiUrl.get(`/api/user/get-short-videos`, {
       headers: {
@@ -21,9 +40,11 @@ const ReelsScreen = () => {
       },
     });
     if (response.data.success) {
-      setShorts(response.data.shorts)
+      // GetSuggestVidoes(response.data.shorts)
+      setShorts(response.data.shorts.sort( () => Math.random() - 0.5), 'radnom')
     }
   }
+  console.log(shorts)
   useEffect(() => {
     GetShorts()
   }, [shortsData.shorts])
