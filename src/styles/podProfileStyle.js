@@ -6,18 +6,15 @@ const podProfileStyles = StyleSheet.create({
         flex: 1,
         justifyContent:'space-between'
     },
-    profileImageWrapper:{
-        marginTop:scale(15)
-    },
     profileImage:{
-        width:scale(150),
-        height:scale(150)
+        width:scale(100),
+        height:scale(100)
     },
     emailText:{
         fontSize:scale(10),
         color:'white',
         textAlign:'center',
-        marginTop:verticalScale(10)
+        marginVertical:verticalScale(10)
     },
     bottomView: {
         flexDirection: 'row',

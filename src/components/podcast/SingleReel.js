@@ -3,13 +3,14 @@ import { View, Dimensions, TouchableOpacity, Text } from 'react-native';
 import Video from 'react-native-video';
 import { FilmIcon, IdentificationIcon, UserCircleIcon } from 'react-native-heroicons/solid';
 import { useNavigation } from '@react-navigation/native';
+import { ActivityIndicator } from 'react-native';
 
 
 const SingleReel = ({ item, index, currentIndex, setCurrentIndex }) => {
     const windowWidth = Dimensions.get('window').width;
     const windowHeight = Dimensions.get('window').height;
     const videoRef = useRef(null);
-  const navigation = useNavigation()
+    const navigation = useNavigation()
 
     const handlePause = () => {
         console.log(videoRef.current)
@@ -25,7 +26,6 @@ const SingleReel = ({ item, index, currentIndex, setCurrentIndex }) => {
     const onError = error => {
         console.log('error', error);
     };
-    const [mute, setMute] = useState(false);
     return (
         <View
             style={{
@@ -35,7 +35,7 @@ const SingleReel = ({ item, index, currentIndex, setCurrentIndex }) => {
                 justifyContent: 'center',
                 alignItems: 'center',
             }}>
-
+            <ActivityIndicator color={'white'} size={'large'}/>
             <TouchableOpacity
                 // onPress={() => handlePause()}
                 style={{
@@ -76,14 +76,9 @@ const SingleReel = ({ item, index, currentIndex, setCurrentIndex }) => {
                         }
                     }}
                 >
-                    <IdentificationIcon onPress={() => navigation.navigate("Profile", {userid:item?.userid})} size={45} style={{ color: '#ccc', bottom: 120, position: 'absolute', right: 30 }} />
-
+                    <IdentificationIcon onPress={() => navigation.navigate("Profile", { userid: item?.userid })} size={45} style={{ color: '#ccc', bottom: 120, position: 'absolute', right: 30 }} />
                 </TouchableOpacity>
             </TouchableOpacity>
-
-            {/* <View>
-                <Text>{item.channelName}</Text>
-            </View> */}
         </View>
     );
 };

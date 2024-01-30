@@ -12,12 +12,13 @@ const Logout = () => {
     const navigation = useNavigation();
     const dispatch = useDispatch()
     const handleLogout = async () => {
-        console.log(await GoogleSignin.isSignedIn().then((res) => console.log).catch(err => console.log(err)))
-        await GoogleSignin.signOut().then((res) => console.log).catch(err => console.log(err))
-        await AsyncStorage.removeItem('isLogged')
-        dispatch(SetUserData([]))
-        navigation.dispatch(StackActions.popToTop())
-        navigation.navigate('Login')
+        if (GoogleSignin.isSignedIn) {
+            await AsyncStorage.removeItem('isLogged')
+            await GoogleSignin.signOut()
+            dispatch(SetUserData([]))
+            navigation.dispatch(StackActions.popToTop())
+            navigation.navigate('Login')
+        }
     }
     return (
         <SafeAreaView className='flex-1'>

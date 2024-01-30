@@ -61,7 +61,7 @@ const PodCategories = ({ route }) => {
                                     onPress={() => {
                                         if (podcastData?.user?.email) {
                                             dispatch(getPodcastCategory(item?.title?.toLowerCase()))
-                                            navigation.navigate('CategoryPodcasts')
+                                            navigation.navigate('CategoryPodcasts', {category: item?.title})
                                         } else {
                                             onSelect(index)
                                         }

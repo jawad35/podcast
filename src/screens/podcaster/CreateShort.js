@@ -6,6 +6,7 @@ import {
   ScrollView,
   SafeAreaView,
   Alert,
+  Image,
 } from 'react-native';
 import SelectDropdown from 'react-native-select-dropdown'
 import React, { useState } from 'react';
@@ -31,7 +32,18 @@ const CreateShortVideos = () => {
   const [category, setCategory] = useState('')
   const [caption, setCaption] = useState('')
   const [isLoading, setIsLoading] = useState(false)
+  const [image, setImage] = useState('')
+  const [imageLocalPath, setImageLocalPath] = useState('')
 
+
+  const openImagePicker = () => {
+    launchImageLibrary({}, (response) => {
+      if (!response.didCancel) {
+        setImage(response.assets[0])
+        setImageLocalPath(response.assets[0].uri)
+      }
+    });
+  };
 
   const openVideoPicker = () => {
     const options = {
@@ -45,6 +57,7 @@ const CreateShortVideos = () => {
     });
   };
 
+
   const handleUpload = async () => {
     if (!caption) {
       return Alert.alert("Error", "Description field is required!")
@@ -52,12 +65,21 @@ const CreateShortVideos = () => {
     if (!category) {
       return Alert.alert("Error", "Category field is required!")
     }
+    if (!image) {
+      return Alert.alert("Error", "Thumbnail field is required!")
+    }
     if (video.length === 0) {
       return Alert.alert("Error", "At least one Video is required!")
     }
     try {
       setIsLoading(true)
       const formData = new FormData();
+      formData.append('thumbnail', {
+        uri: image.uri,
+        type: image.type,
+        name: image.fileName || 'image.jpg',
+      });
+
       formData.append('short', {
         uri: video.uri,
         type: video.type,
@@ -79,6 +101,8 @@ const CreateShortVideos = () => {
         setCaption('')
         setCategory('')
         setVideo('')
+        setImage('')
+        setImageLocalPath('')
         Alert.alert("Short", "Short uploaded successfully!")
       } else {
         setIsLoading(false)
@@ -108,7 +132,7 @@ const CreateShortVideos = () => {
             numberOfLines={5}
             maxLength={10}
             placeholderTextColor={'black'}
-            style={{color:'black', paddingHorizontal:scale(15), backgroundColor: 'white'}}
+            style={{ color: 'black', paddingHorizontal: scale(15), backgroundColor: 'white' }}
             underlineColorAndroid='transparent'
           />
         </CustomShadow>
@@ -140,6 +164,12 @@ const CreateShortVideos = () => {
               return item
             }}
           />
+        </CustomShadow>
+        <View className='flex-1 justify-center items-center'>
+          {imageLocalPath && <Image className='rounded-lg' source={{ uri: imageLocalPath }} width={scale(150)} resizeMode='contain' height={scale(150)} />}
+        </View>
+        <CustomShadow>
+          <CustomButtons title={'Upload Video Thumbnail'} color={'white_color'} textColor={'black'} onClick={() => openImagePicker()} />
         </CustomShadow>
         <View className='flex-1 justify-center items-center'>
           {

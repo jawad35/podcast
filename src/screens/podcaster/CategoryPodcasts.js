@@ -1,4 +1,4 @@
-import { View, Text, TextInput, SafeAreaView, Image, FlatList } from 'react-native'
+import { View, Text, TextInput, SafeAreaView, Image, FlatList, ScrollView, ActivityIndicator } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import { responsiveHeight } from 'react-native-responsive-dimensions'
 import { ShadowCardStyle } from '../../styles/showcard'
@@ -8,10 +8,13 @@ import { useSelector } from 'react-redux'
 import UserProfile from '../../components/podcast/UserProfile'
 import HeaderTitle from '../../components/podcast/HeaderTitle'
 import { scale } from 'react-native-size-matters'
-export default function CategoryPodcasts({ navigation }) {
+import { ApiUrl } from '../../constants/globalUrl'
+import TypeCard from '../../components/podcast/TypeCard'
+export default function CategoryPodcasts({ navigation, route }) {
     const [data, setData] = useState([]);
     const [filteredData, setFilteredData] = useState([]);
     const [searchQuery, setSearchQuery] = useState('');
+    const [isLoading, setIsLoading] = useState(false);
     const scatgegory = useSelector(state => state.category)
     useEffect(() => {
         const filterPodcastsByCategory = (podcasts, category) => {
@@ -20,8 +23,10 @@ export default function CategoryPodcasts({ navigation }) {
         const filteredPodcasts = filterPodcastsByCategory(DummyPodcast, scatgegory.category);
         //   console.log(filteredPodcasts);
         setData(filteredPodcasts);
-        setFilteredData(filteredPodcasts);
+        // setFilteredData(filteredPodcasts);
     }, [scatgegory.category]);
+
+
     const handleSearch = (text) => {
         // Update the search query and filter the data
         setSearchQuery(text);
@@ -30,23 +35,32 @@ export default function CategoryPodcasts({ navigation }) {
         );
         setFilteredData(filtered);
     };
+
+    const GetCategoryPodcast = async () => {
+        setIsLoading(true)
+        const response = await ApiUrl.post(`/api/user/get-podcast-category`, { category: route?.params?.category }, {
+            headers: {
+                'Content-Type': 'application/json',
+            }
+        });
+        if (response.data.success) {
+            setIsLoading(false)
+            setFilteredData(response.data?.podcasts)
+        }
+        setIsLoading(false)
+
+    }
+    useEffect(() => {
+        GetCategoryPodcast()
+    }, [route.params?.category])
     return (
-        <SafeAreaView className='flex-1 bg-black'>
+        <SafeAreaView className=' bg-black flex-1'>
             {/* top header */}
-            <HeaderTitle icon={true} title={'Podcast Categories'} />
             <View>
                 <View className='flex-row justify-items-center justify-center m-2 space-x-2'>
-                    <View className='rounded-lg flex-1 bg-white_color' style={[ShadowCardStyle.card, ShadowCardStyle.elevation]}>
-                        <TextInput
-                            // style={styles.searchInput}
-                            placeholder="Search..."
-                            value={searchQuery}
-                            onChangeText={handleSearch}
-                            placeholderTextColor={'black'}
-                            style={{color:'black', paddingHorizontal:scale(15)}}
-                        />
+                    <View className='rounded-lg flex-1 bg-white_color text-black' style={[ShadowCardStyle.card, ShadowCardStyle.elevation]}>
+                        <TextInput className='text-black' placeholderTextColor={'black'} placeholder='Search...' />
                     </View>
-
                     <View onTouchStart={() => navigation.openDrawer()} className='justify-items-center justify-center'>
                         <UserProfile />
                     </View>
@@ -54,21 +68,28 @@ export default function CategoryPodcasts({ navigation }) {
                 <View className='mb-4'>
                     <Categories />
                 </View>
-                <View className='m-3'>
+                <View>
                     {
-                        filteredData.length !== 0 ? <FlatList
-                            data={filteredData}
-                            renderItem={({ item, index }) => (
-                                <Image key={item.id} source={{ uri: item?.image }}
-                                    style={{ height: responsiveHeight(40), width: '100%' }}
-                                    resizeMode='cover'
-                                    className='rounded-lg mb-9'
-                                />
-                            )}
-                            keyExtractor={(item) => item.id}
-                        /> : <View className='flex justify-center items-center'>
-                            <Text className='text-white_color mt-14' >No data found</Text>
-                        </View>
+                        isLoading ?
+                        <View className='flex justify-center items-center'>
+                        <Text className='text-white_color mt-14' >
+                            <ActivityIndicator size={"large"} color={'white'} />
+                        </Text>
+                    </View> : <ScrollView style={{ marginBottom: scale(300) }}>
+                                {
+                                    filteredData?.length !== 0 ? <View>
+                                        {
+                                            filteredData?.map((item, index) => <Image key={index} source={{ uri: item?.podcast?.image }}
+                                                style={{ height: scale(300), width: '100%' }}
+                                                resizeMode='cover'
+                                                className='rounded-lg mb-9'
+                                            />)
+                                        }
+                                    </View> : <View className='flex justify-center items-center'>
+                                        <Text className='text-white_color mt-14' >No data found</Text>
+                                    </View>
+                                }
+                            </ScrollView>
                     }
                 </View>
             </View>

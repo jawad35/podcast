@@ -17,7 +17,6 @@ export default function WelcomeScreen() {
     const [isLoading, setIsLoading] = useState(false)
     const GetUser = async () => {
         const userid = await AsyncStorage.getItem('isLogged')
-        console.log(userid)
         if (userid) {
             const response = await ApiUrl.post(`/api/user/getuser`, { userid: userid }, {
                 headers: {
@@ -25,7 +24,7 @@ export default function WelcomeScreen() {
                 }
             });
             if (response.data.success) {
-                dispatch(SetUserData(response.data.user))
+                dispatch(SetUserData(response.data.user[0]))
                 navigation.navigate('Parent')
             }
         } else {
@@ -35,12 +34,12 @@ export default function WelcomeScreen() {
     useEffect(() => {
         GetUser()
     }, []);
-    if (!isLoading) {
-        return <SafeAreaView className='flex-1 bg-black justify-center items-center'>
-            <Text className='text-white_color'><ActivityIndicator color={'white'} size={40}/></Text>
-            {/* <LottieView source={require('../../assets/lottiefiles/dots.json')} autoPlay loop /> */}
-        </SafeAreaView>
-    }
+    // if (!isLoading) {
+    //     return <SafeAreaView className='flex-1 bg-black justify-center items-center'>
+    //         <Text className='text-white_color'><ActivityIndicator color={'white'} size={40}/></Text>
+    //         {/* <LottieView source={require('../../assets/lottiefiles/dots.json')} autoPlay loop /> */}
+    //     </SafeAreaView>
+    // }
     return (
         <SafeAreaView className="flex-1 bg-black">
             <View className="flex-1 flex justify-around my-4">
