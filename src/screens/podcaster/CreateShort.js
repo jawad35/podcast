@@ -118,7 +118,7 @@ const CreateShortVideos = () => {
   console.log(video.uri)
   return (
     <ScrollView style={{ flex: 1 }} className="bg-black">
-      <HeaderTitle icon={true} title={'Create Podcast'} />
+      <HeaderTitle icon={true} title={'Create Short'} />
 
       <SafeAreaView>
         <CustomShadow>
@@ -166,7 +166,7 @@ const CreateShortVideos = () => {
           />
         </CustomShadow>
         <View className='flex-1 justify-center items-center'>
-          {imageLocalPath && <Image className='rounded-lg' source={{ uri: imageLocalPath }} width={scale(150)} resizeMode='contain' height={scale(150)} />}
+          {imageLocalPath && <Image className='rounded-lg' source={{ uri: imageLocalPath }} width={scale(100)} resizeMode='contain' height={scale(100)} />}
         </View>
         <CustomShadow>
           <CustomButtons title={'Upload Video Thumbnail'} color={'white_color'} textColor={'black'} onClick={() => openImagePicker()} />

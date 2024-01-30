@@ -56,7 +56,7 @@ const ReelsScreen = () => {
           pagingEnabled
           showsVerticalScrollIndicator={false}
           renderItem={({ item, index }) => (
-            <SingleReel item={item} index={index} currentIndex={currentIndex} setCurrentIndex={setCurrentIndex} />
+            <SingleReel icon={true} item={item} index={index} currentIndex={currentIndex} setCurrentIndex={setCurrentIndex} />
           )}
           keyExtractor={(item, index) => index}
         />

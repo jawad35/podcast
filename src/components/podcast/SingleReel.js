@@ -1,12 +1,14 @@
 import React, { useRef, useState } from 'react';
 import { View, Dimensions, TouchableOpacity, Text } from 'react-native';
 import Video from 'react-native-video';
-import { FilmIcon, IdentificationIcon, UserCircleIcon } from 'react-native-heroicons/solid';
+import { ArrowLeftIcon, FilmIcon, IdentificationIcon, UserCircleIcon } from 'react-native-heroicons/solid';
 import { useNavigation } from '@react-navigation/native';
 import { ActivityIndicator } from 'react-native';
+import { MakeCompleteUrl } from '../Helper/MakeCompleteUrl';
+import { scale } from 'react-native-size-matters';
 
-
-const SingleReel = ({ item, index, currentIndex, setCurrentIndex }) => {
+const SingleReel = ({ item, index, currentIndex, setCurrentIndex, icon }) => {
+    console.log(item.video)
     const windowWidth = Dimensions.get('window').width;
     const windowHeight = Dimensions.get('window').height;
     const videoRef = useRef(null);
@@ -35,7 +37,7 @@ const SingleReel = ({ item, index, currentIndex, setCurrentIndex }) => {
                 justifyContent: 'center',
                 alignItems: 'center',
             }}>
-            <ActivityIndicator color={'white'} size={'large'}/>
+            <ActivityIndicator color={'white'} size={'large'} />
             <TouchableOpacity
                 // onPress={() => handlePause()}
                 style={{
@@ -52,7 +54,7 @@ const SingleReel = ({ item, index, currentIndex, setCurrentIndex }) => {
                     //   paused={true}
                     // controls={true}
                     paused={currentIndex == index ? false : true}
-                    source={{ uri: item?.video }}
+                    source={{ uri: MakeCompleteUrl(item?.video) }}
                     // muted={mute}
                     style={{
                         width: '100%',
@@ -76,7 +78,10 @@ const SingleReel = ({ item, index, currentIndex, setCurrentIndex }) => {
                         }
                     }}
                 >
-                    <IdentificationIcon onPress={() => navigation.navigate("Profile", { userid: item?.userid })} size={45} style={{ color: '#ccc', bottom: 120, position: 'absolute', right: 30 }} />
+                    {
+                        icon ? <IdentificationIcon onPress={() => navigation.navigate("Profile", { userid: item?.userid })} size={45} style={{ color: '#ccc', bottom: scale(110), position: 'absolute', right: scale(25) }} /> :
+                            <ArrowLeftIcon onPress={() => navigation.goBack()} size={35} style={{ color: '#F40000', position: 'absolute', left: scale(25), top: scale(15) }} />
+                    }
                 </TouchableOpacity>
             </TouchableOpacity>
         </View>

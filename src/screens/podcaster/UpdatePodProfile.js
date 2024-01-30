@@ -12,13 +12,14 @@ import { ShadowCardStyle } from '../../styles/showcard'
 import { SetUserData } from '../../redux/PodcastUsers'
 import { defaultProfile } from '../../utils/Constants'
 import { scale } from 'react-native-size-matters'
+import { MakeCompleteUrl } from '../../components/Helper/MakeCompleteUrl'
 
 
 const UpdatePodProfile = () => {
   const podcastData = useSelector(state => state.userData)
   const [image, setImage] = useState(``)
   const [fullname, setFullname] = useState(podcastData.user.fullname)
-  const [imageLocalPath, setImageLocalPath] = useState(podcastData.user.avatar)
+  const [imageLocalPath, setImageLocalPath] = useState(MakeCompleteUrl(podcastData.user.avatar))
   const dispatch = useDispatch()
   const [isLoading, setIsLoading] = useState(false)
   const [isLoadingname, setIsLoadingName] = useState(false)

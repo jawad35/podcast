@@ -34,12 +34,12 @@ export default function WelcomeScreen() {
     useEffect(() => {
         GetUser()
     }, []);
-    // if (!isLoading) {
-    //     return <SafeAreaView className='flex-1 bg-black justify-center items-center'>
-    //         <Text className='text-white_color'><ActivityIndicator color={'white'} size={40}/></Text>
-    //         {/* <LottieView source={require('../../assets/lottiefiles/dots.json')} autoPlay loop /> */}
-    //     </SafeAreaView>
-    // }
+    if (!isLoading) {
+        return <SafeAreaView className='flex-1 bg-black justify-center items-center'>
+            <Text className='text-white_color'><ActivityIndicator color={'white'} size={40}/></Text>
+            {/* <LottieView source={require('../../assets/lottiefiles/dots.json')} autoPlay loop /> */}
+        </SafeAreaView>
+    }
     return (
         <SafeAreaView className="flex-1 bg-black">
             <View className="flex-1 flex justify-around my-4">

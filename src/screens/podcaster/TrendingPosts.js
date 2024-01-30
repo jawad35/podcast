@@ -7,6 +7,7 @@ import { scale } from 'react-native-size-matters'
 import { useNavigation } from '@react-navigation/native'
 import { useSelector } from 'react-redux'
 import { defaultProfile } from '../../utils/Constants'
+import { MakeCompleteUrl } from '../../components/Helper/MakeCompleteUrl'
 
 export default function TrendingPosts() {
   const [TrendingPodcasts, setTrendingPodcast] = useState([])
@@ -37,7 +38,7 @@ export default function TrendingPosts() {
                     item?.fullname?.length > 20 ? CapitalizeString(item.fullname).substring(0, 20) + '...' : CapitalizeString(item.fullname)
                   }
                 </Text>
-                <Image key={index} source={{ uri: item.avatar ? `${item.avatar}` : defaultProfile }}
+                <Image key={index} source={{ uri: item.avatar ? MakeCompleteUrl(item.avatar) : defaultProfile }}
                   style={{ height: scale(250), width: '100%' }}
                   resizeMode='cover'
                   className='rounded-lg my-2'

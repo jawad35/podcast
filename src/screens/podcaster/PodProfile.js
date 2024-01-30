@@ -7,10 +7,12 @@ import { useSelector } from 'react-redux'
 import { ApiUrl, ServerUrl } from '../../constants/globalUrl'
 import { scale, moderateVerticalScale } from 'react-native-size-matters';
 import podProfileStyles from '../../styles/podProfileStyle'
-import { PencilSquareIcon } from 'react-native-heroicons/solid';
+import { PencilSquareIcon, TrashIcon } from 'react-native-heroicons/solid';
 import { CheckIsFollowed } from '../../components/Helper/CheckIsFollowed';
-import { defaultProfile } from '../../utils/Constants';
+import { defaultProfile, defaultVideoThumbnail } from '../../utils/Constants';
 import GridView from '../../components/Grid/GridView';
+import { MakeCompleteUrl } from '../../components/Helper/MakeCompleteUrl';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const PodProfile = ({ route }) => {
   const podcastData = useSelector(state => state.userData)
@@ -20,18 +22,16 @@ const PodProfile = ({ route }) => {
   const [followers, setFollowers] = useState(0)
   const [UserData, SetUserData] = useState({})
   const [UserShorts, SetUserShorts] = useState([])
-
   const [isLoading, setIsLoading] = useState(false)
-  console.log(UserShorts, 'kjj9')
+  const [isLoadingDelete, setIsLoadingDelete] = useState(false)
 
   const GetUserShorts = async () => {
-    await ApiUrl.get(`/api/user/get-short-videos`, {
-      headers: {
-        'Content-Type': 'multipart/form-data',
-      },
-    }).then(res => {
+    console.log('called')
+    await ApiUrl.get(`/api/user/get-short-videos`).then(async (res) => {
       if (res.data.success) {
-        const filteredShorts = res.data?.shorts?.filter(short => short.userid === UserData?._id)
+        const AllShorts = res.data?.shorts
+        const userid = await AsyncStorage.getItem('isLogged')
+        const filteredShorts = AllShorts?.filter(short => short.userid === userid)
         SetUserShorts(filteredShorts)
       }
     })
@@ -117,25 +117,33 @@ const PodProfile = ({ route }) => {
       console.log(err)
     }
   }
-  const windowWidth = Dimensions.get('window').width;
-  const images = [
-    'https://icons.iconarchive.com/icons/designbolts/free-instagram/256/Active-Instagram-1-icon.png',
-    'https://icons.iconarchive.com/icons/designbolts/free-instagram/256/Active-Instagram-1-icon.png',
-    'http://172.20.10.3:8003/uploads/Screenshot_20240120-085310.jpg-260b2bfa-836b-4081-8bfe-ab102eb79192.jpg',
-    'http://172.20.10.3:8003/uploads/Screenshot_20240120-085310.jpg-260b2bfa-836b-4081-8bfe-ab102eb79192.jpg',
-    'https://icons.iconarchive.com/icons/designbolts/free-instagram/256/Active-Instagram-1-icon.png',
-    'https://icons.iconarchive.com/icons/designbolts/free-instagram/256/Active-Instagram-1-icon.png',
-    'https://icons.iconarchive.com/icons/designbolts/free-instagram/256/Active-Instagram-1-icon.png',
-    'http://172.20.10.3:8003/uploads/magazine-unlock-01-2.3.2023121801-_4C9FF635E81F72E894822576782E2913.jpg-a3ddccaf-1301-44e1-b17a-1ba38aeb0adc.jpg',
-    'http://172.20.10.3:8003/uploads/magazine-unlock-01-2.3.2023121801-_4C9FF635E81F72E894822576782E2913.jpg-a3ddccaf-1301-44e1-b17a-1ba38aeb0adc.jpg',
-    'http://172.20.10.3:8003/uploads/magazine-unlock-01-2.3.2023121801-_4C9FF635E81F72E894822576782E2913.jpg-a3ddccaf-1301-44e1-b17a-1ba38aeb0adc.jpg'
-
-
-    // Add more image URLs as needed
-  ];
-
-  console.log(UserData)
-
+  const handleDeleteVideo = async (item) => {
+    try {
+        setIsLoadingDelete(true)
+        const data = {
+            id: item._id,
+            filename: item.video,
+            thumbnail:item.thumbnail
+        }
+        const response = await ApiUrl.post(`/api/user/svideo-delete`, data, {
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        });
+        if (response.data.success) {
+            setIsLoadingDelete(false)
+            console.log(response.data, 'jkjk8')
+            SetUserShorts(response.data.shorts)
+            Alert.alert("Update", "Video Deleted successfully!")
+        } else {
+            setIsLoadingDelete(false)
+            Alert.alert("Error", "Something went wrong!")
+        }
+    } catch (error) {
+        setIsLoadingDelete(false)
+        console.error('Upload error:', error);
+    }
+};
   return (
     <SafeAreaView className='bg-black flex-1'>
       <HeaderTitle icon={true} title={'Profile'} />
@@ -146,7 +154,7 @@ const PodProfile = ({ route }) => {
       }
       <Text className={`text-white_color text-center`} style={{ marginVertical: scale(15) }}>{UserData?.fullname?.toUpperCase()}</Text>
       <View className='flex justify-center items-center'>
-        <Image source={{ uri: UserData?.avatar ? `${UserData?.avatar}` : defaultProfile }}
+        <Image source={{ uri: UserData?.avatar ? MakeCompleteUrl(UserData?.avatar) : defaultProfile }}
           style={podProfileStyles.profileImage}
           resizeMode='cover'
           className='rounded-full'
@@ -172,13 +180,16 @@ const PodProfile = ({ route }) => {
       </View>
       <View style={podProfileStyles.line}></View>
       <ScrollView>
-         <GridView
-          data={images}
+        <GridView
+          data={UserShorts}
           renderItem={(item) => {
             return (
-              <View style={styles.container}>
-                  <Image source={{ uri: item }} style={styles.image} />
-              </View>
+              <TouchableOpacity onPress={() => navigation.navigate('SingleShortVideo', item)}>
+                <View style={styles.container}>
+                  <TrashIcon onPress={() => handleDeleteVideo(item)} size={25} style={{ color: '#F40000', position: 'absolute', right: scale(15), top: scale(15), zIndex:7 }} />
+                  <Image source={{ uri: item.thumbnail ? MakeCompleteUrl(item?.thumbnail) : defaultVideoThumbnail }} style={styles.image} />
+                </View>
+              </TouchableOpacity>
             );
           }}
         />
@@ -194,6 +205,7 @@ const styles = StyleSheet.create({
     marginBottom: 10,
     justifyContent: "center",
     alignItems: "center",
+    position:'relative'
   },
   title: { color: "white", fontWeight: "bold", fontSize: 25 },
   imageContainer: {
@@ -205,7 +217,7 @@ const styles = StyleSheet.create({
   },
   image: {
     flex: 1,
-    width:'100%',
+    width: '100%',
     resizeMode: 'cover', // Ensure the image covers the entire container
   },
 });
